@@ -317,7 +317,7 @@
         <div class="step-card"><div class="step-num">1</div><h3>place a prior</h3><p>Start with a Gaussian process, a probability distribution over functions encoding our prior beliefs about smoothness and scale.</p></div>
         <div class="step-card"><div class="step-num">2</div><h3>observe</h3><p>Evaluate the true function at a proposed point. The GP updates its beliefs (posterior) to reflect the new data.</p></div>
         <div class="step-card"><div class="step-num">3</div><h3>acquire</h3><p>An acquisition function scores every candidate point by trading off high predicted mean (exploitation) against high uncertainty (exploration).</p></div>
-        <div class="step-card"><div class="step-num">4</div><h3>repeat 2-3</h3><p>Repeat as many times as we want by sampling at the acquisition function's maximum, then updating the GP for the new point.</p></div>
+        <div class="step-card"><div class="step-num">4</div><h3>repeat 2-3x</h3><p>Repeat as many times as we want by sampling at the acquisition function's maximum, then updating the GP for the new point.</p></div>
       </div>
     </section>
 
