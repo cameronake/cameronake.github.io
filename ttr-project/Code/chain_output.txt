@@ -1,0 +1,420 @@
+﻿
+=== Processing 4bot (05-10-quadratic-4) ===
+
+=== Processing averaged4bot (05-10-averaged-quadratic-4) ===
+
+=== Processing linear (05-10-linear-40) ===
+
+=== Processing quadratic (05-10-quadratic-40) ===
+
+
+
+======================================================================
+// ============================================================
+// EVOLUTION DATA ARRAYS
+// ============================================================
+
+// --- 4bot (05-10-quadratic-4) ---
+const EVOLUTION_DATA_4BOT = [
+  {stage:0, avg:57.5, best:111, worst:20, ticketPct:50},
+  {stage:1, avg:66.5, best:88, worst:39, ticketPct:50},
+  {stage:2, avg:74.5, best:87, worst:51, ticketPct:56},
+  {stage:3, avg:63.2, best:103, worst:27, ticketPct:40},
+  {stage:4, avg:55.2, best:99, worst:0, ticketPct:50},
+  {stage:5, avg:40.8, best:69, worst:0, ticketPct:25},
+  {stage:6, avg:64.2, best:85, worst:28, ticketPct:67},
+  {stage:7, avg:40.2, best:86, worst:3, ticketPct:33},
+  {stage:8, avg:68.5, best:107, worst:52, ticketPct:62},
+  {stage:9, avg:65.8, best:111, worst:25, ticketPct:50},
+  {stage:10, avg:57.2, best:81, worst:37, ticketPct:44},
+  {stage:11, avg:71.2, best:95, worst:61, ticketPct:50},
+  {stage:12, avg:77.5, best:84, worst:66, ticketPct:62},
+  {stage:13, avg:50.2, best:79, worst:30, ticketPct:25},
+  {stage:14, avg:67.0, best:102, worst:35, ticketPct:50},
+  {stage:15, avg:63.2, best:87, worst:16, ticketPct:50},
+  {stage:16, avg:61.8, best:91, worst:18, ticketPct:44},
+  {stage:17, avg:60.8, best:91, worst:20, ticketPct:38},
+  {stage:18, avg:75.8, best:105, worst:51, ticketPct:62},
+  {stage:19, avg:73.0, best:103, worst:47, ticketPct:53},
+  {stage:20, avg:76.2, best:110, worst:56, ticketPct:60},
+  {stage:21, avg:49.5, best:74, worst:19, ticketPct:22},
+  {stage:22, avg:54.0, best:74, worst:7, ticketPct:29},
+  {stage:23, avg:68.8, best:106, worst:28, ticketPct:56},
+  {stage:24, avg:72.2, best:103, worst:7, ticketPct:44},
+  {stage:25, avg:59.0, best:64, worst:56, ticketPct:25},
+  {stage:26, avg:44.8, best:82, worst:17, ticketPct:20},
+  {stage:27, avg:55.8, best:73, worst:43, ticketPct:20},
+  {stage:28, avg:65.8, best:107, worst:43, ticketPct:40},
+  {stage:29, avg:60.8, best:88, worst:37, ticketPct:38},
+  {stage:30, avg:76.2, best:98, worst:54, ticketPct:33},
+  {stage:31, avg:56.8, best:79, worst:36, ticketPct:40},
+  {stage:32, avg:72.8, best:94, worst:30, ticketPct:50},
+  {stage:33, avg:73.8, best:101, worst:51, ticketPct:62},
+  {stage:34, avg:53.8, best:82, worst:41, ticketPct:12},
+  {stage:35, avg:58.8, best:101, worst:1, ticketPct:40},
+  {stage:36, avg:68.5, best:107, worst:24, ticketPct:62},
+  {stage:37, avg:50.5, best:62, worst:23, ticketPct:38},
+  {stage:38, avg:83.5, best:99, worst:70, ticketPct:69},
+  {stage:39, avg:50.5, best:118, worst:12, ticketPct:50},
+  {stage:40, avg:51.8, best:76, worst:31, ticketPct:40},
+  {stage:41, avg:54.5, best:109, worst:1, ticketPct:30},
+  {stage:42, avg:71.5, best:99, worst:43, ticketPct:56},
+  {stage:43, avg:53.8, best:103, worst:0, ticketPct:50},
+  {stage:44, avg:75.0, best:85, worst:60, ticketPct:50},
+  {stage:45, avg:76.8, best:104, worst:45, ticketPct:62},
+  {stage:46, avg:74.5, best:98, worst:51, ticketPct:62},
+  {stage:47, avg:77.8, best:104, worst:50, ticketPct:75},
+  {stage:48, avg:70.0, best:90, worst:39, ticketPct:62},
+  {stage:49, avg:56.2, best:128, worst:0, ticketPct:38},
+  {stage:50, avg:91.0, best:101, worst:77, ticketPct:78},
+  {stage:51, avg:79.5, best:122, worst:50, ticketPct:67},
+  {stage:52, avg:90.5, best:102, worst:76, ticketPct:60},
+  {stage:53, avg:53.5, best:114, worst:0, ticketPct:36},
+  {stage:54, avg:57.2, best:75, worst:31, ticketPct:44},
+  {stage:55, avg:82.0, best:102, worst:52, ticketPct:44},
+  {stage:56, avg:69.5, best:99, worst:20, ticketPct:44},
+  {stage:57, avg:48.5, best:92, worst:0, ticketPct:25},
+  {stage:58, avg:46.5, best:103, worst:0, ticketPct:19},
+  {stage:59, avg:60.2, best:85, worst:22, ticketPct:50},
+  {stage:60, avg:76.2, best:103, worst:41, ticketPct:67},
+  {stage:61, avg:26.8, best:57, worst:0, ticketPct:36},
+  {stage:62, avg:64.8, best:103, worst:41, ticketPct:36},
+  {stage:63, avg:66.5, best:106, worst:0, ticketPct:43},
+  {stage:64, avg:74.8, best:83, worst:65, ticketPct:70},
+  {stage:65, avg:58.0, best:82, worst:26, ticketPct:44},
+  {stage:66, avg:86.2, best:111, worst:75, ticketPct:73},
+  {stage:67, avg:70.0, best:96, worst:50, ticketPct:70},
+  {stage:68, avg:70.5, best:105, worst:24, ticketPct:60},
+  {stage:69, avg:49.5, best:109, worst:0, ticketPct:56},
+  {stage:70, avg:79.2, best:87, worst:73, ticketPct:73},
+  {stage:71, avg:61.8, best:92, worst:39, ticketPct:50},
+  {stage:72, avg:58.2, best:96, worst:6, ticketPct:44},
+  {stage:73, avg:66.2, best:87, worst:38, ticketPct:55},
+  {stage:74, avg:72.0, best:114, worst:34, ticketPct:53},
+  {stage:75, avg:56.0, best:89, worst:20, ticketPct:50},
+  {stage:76, avg:66.0, best:78, worst:45, ticketPct:75},
+  {stage:77, avg:63.2, best:76, worst:48, ticketPct:60},
+  {stage:78, avg:54.2, best:101, worst:15, ticketPct:56},
+  {stage:79, avg:59.8, best:95, worst:25, ticketPct:50},
+  {stage:80, avg:48.8, best:80, worst:14, ticketPct:33},
+  {stage:81, avg:60.8, best:83, worst:49, ticketPct:56},
+  {stage:82, avg:74.8, best:106, worst:34, ticketPct:78},
+  {stage:83, avg:69.5, best:81, worst:59, ticketPct:50},
+  {stage:84, avg:55.0, best:97, worst:4, ticketPct:44},
+  {stage:85, avg:66.5, best:106, worst:17, ticketPct:56},
+  {stage:86, avg:44.8, best:66, worst:13, ticketPct:25},
+  {stage:87, avg:75.5, best:104, worst:29, ticketPct:56},
+  {stage:88, avg:76.8, best:114, worst:61, ticketPct:62},
+  {stage:89, avg:59.8, best:90, worst:30, ticketPct:38},
+  {stage:90, avg:85.5, best:113, worst:57, ticketPct:67},
+  {stage:91, avg:60.8, best:72, worst:40, ticketPct:38},
+  {stage:92, avg:56.2, best:85, worst:12, ticketPct:62},
+  {stage:93, avg:34.0, best:70, worst:4, ticketPct:12},
+  {stage:94, avg:58.2, best:89, worst:38, ticketPct:38},
+  {stage:95, avg:90.0, best:99, worst:76, ticketPct:89},
+  {stage:96, avg:65.8, best:128, worst:26, ticketPct:55},
+  {stage:97, avg:65.0, best:103, worst:17, ticketPct:56},
+  {stage:98, avg:57.5, best:102, worst:38, ticketPct:40},
+  {stage:99, avg:77.8, best:94, worst:66, ticketPct:67},
+];
+
+// --- averaged4bot (05-10-averaged-quadratic-4) ---
+const EVOLUTION_DATA_AVERAGED4BOT = [
+  {stage:0, avg:29.0, best:83, worst:0, ticketPct:38},
+  {stage:1, avg:28.8, best:84, worst:0, ticketPct:0},
+  {stage:2, avg:57.2, best:77, worst:46, ticketPct:12},
+  {stage:3, avg:54.8, best:75, worst:37, ticketPct:0},
+  {stage:4, avg:53.5, best:65, worst:41, ticketPct:12},
+  {stage:5, avg:57.0, best:78, worst:37, ticketPct:0},
+  {stage:6, avg:58.5, best:77, worst:39, ticketPct:0},
+  {stage:7, avg:60.0, best:77, worst:40, ticketPct:0},
+  {stage:8, avg:68.0, best:73, worst:62, ticketPct:38},
+  {stage:9, avg:55.8, best:83, worst:40, ticketPct:12},
+  {stage:10, avg:62.5, best:83, worst:42, ticketPct:12},
+  {stage:11, avg:68.8, best:95, worst:40, ticketPct:38},
+  {stage:12, avg:56.2, best:74, worst:34, ticketPct:25},
+  {stage:13, avg:63.8, best:66, worst:62, ticketPct:25},
+  {stage:14, avg:63.0, best:82, worst:53, ticketPct:12},
+  {stage:15, avg:77.5, best:96, worst:64, ticketPct:12},
+  {stage:16, avg:66.8, best:75, worst:44, ticketPct:25},
+  {stage:17, avg:69.2, best:74, worst:64, ticketPct:25},
+  {stage:18, avg:64.2, best:91, worst:46, ticketPct:0},
+  {stage:19, avg:61.2, best:92, worst:34, ticketPct:12},
+  {stage:20, avg:49.0, best:68, worst:27, ticketPct:12},
+  {stage:21, avg:58.5, best:89, worst:22, ticketPct:0},
+  {stage:22, avg:67.0, best:84, worst:57, ticketPct:25},
+  {stage:23, avg:76.2, best:89, worst:62, ticketPct:62},
+  {stage:24, avg:64.2, best:80, worst:57, ticketPct:38},
+  {stage:25, avg:65.8, best:83, worst:33, ticketPct:38},
+  {stage:26, avg:73.8, best:86, worst:56, ticketPct:62},
+  {stage:27, avg:68.8, best:80, worst:51, ticketPct:25},
+  {stage:28, avg:72.5, best:78, worst:67, ticketPct:50},
+  {stage:29, avg:77.5, best:86, worst:70, ticketPct:50},
+  {stage:30, avg:80.2, best:92, worst:73, ticketPct:50},
+  {stage:31, avg:82.0, best:86, worst:72, ticketPct:38},
+  {stage:32, avg:72.0, best:92, worst:53, ticketPct:62},
+  {stage:33, avg:72.5, best:83, worst:60, ticketPct:25},
+  {stage:34, avg:71.5, best:95, worst:46, ticketPct:50},
+  {stage:35, avg:75.0, best:95, worst:55, ticketPct:50},
+  {stage:36, avg:70.0, best:88, worst:43, ticketPct:25},
+  {stage:37, avg:69.5, best:88, worst:36, ticketPct:38},
+  {stage:38, avg:83.2, best:97, worst:67, ticketPct:50},
+  {stage:39, avg:69.5, best:88, worst:48, ticketPct:38},
+  {stage:40, avg:70.5, best:94, worst:49, ticketPct:62},
+  {stage:41, avg:75.0, best:97, worst:57, ticketPct:38},
+  {stage:42, avg:68.5, best:92, worst:50, ticketPct:12},
+  {stage:43, avg:56.2, best:81, worst:39, ticketPct:12},
+  {stage:44, avg:68.8, best:83, worst:53, ticketPct:25},
+  {stage:45, avg:74.5, best:86, worst:64, ticketPct:50},
+  {stage:46, avg:60.5, best:87, worst:49, ticketPct:12},
+  {stage:47, avg:63.2, best:83, worst:39, ticketPct:25},
+  {stage:48, avg:70.5, best:79, worst:62, ticketPct:38},
+  {stage:49, avg:73.5, best:95, worst:54, ticketPct:50},
+  {stage:50, avg:75.5, best:88, worst:66, ticketPct:25},
+  {stage:51, avg:60.8, best:86, worst:49, ticketPct:12},
+  {stage:52, avg:72.2, best:94, worst:48, ticketPct:12},
+  {stage:53, avg:67.0, best:97, worst:49, ticketPct:25},
+  {stage:54, avg:81.8, best:109, worst:63, ticketPct:62},
+  {stage:55, avg:62.5, best:84, worst:34, ticketPct:25},
+  {stage:56, avg:61.2, best:89, worst:47, ticketPct:25},
+  {stage:57, avg:75.5, best:89, worst:62, ticketPct:38},
+  {stage:58, avg:74.5, best:78, worst:72, ticketPct:50},
+  {stage:59, avg:75.0, best:101, worst:64, ticketPct:56},
+  {stage:60, avg:77.2, best:110, worst:49, ticketPct:50},
+  {stage:61, avg:58.8, best:103, worst:17, ticketPct:25},
+  {stage:62, avg:72.2, best:86, worst:54, ticketPct:38},
+  {stage:63, avg:63.0, best:79, worst:52, ticketPct:12},
+  {stage:64, avg:80.2, best:89, worst:67, ticketPct:62},
+  {stage:65, avg:64.5, best:82, worst:45, ticketPct:38},
+  {stage:66, avg:66.5, best:71, worst:56, ticketPct:75},
+  {stage:67, avg:72.5, best:83, worst:61, ticketPct:50},
+  {stage:68, avg:69.5, best:81, worst:43, ticketPct:50},
+  {stage:69, avg:85.5, best:97, worst:74, ticketPct:88},
+  {stage:70, avg:76.0, best:93, worst:59, ticketPct:50},
+  {stage:71, avg:57.8, best:82, worst:0, ticketPct:14},
+  {stage:72, avg:64.8, best:84, worst:46, ticketPct:21},
+  {stage:73, avg:73.2, best:101, worst:52, ticketPct:43},
+  {stage:74, avg:79.0, best:92, worst:50, ticketPct:44},
+  {stage:75, avg:78.2, best:90, worst:62, ticketPct:62},
+  {stage:76, avg:87.0, best:93, worst:81, ticketPct:60},
+  {stage:77, avg:80.8, best:98, worst:60, ticketPct:75},
+  {stage:78, avg:89.0, best:96, worst:83, ticketPct:89},
+  {stage:79, avg:88.2, best:97, worst:80, ticketPct:100},
+  {stage:80, avg:71.2, best:94, worst:53, ticketPct:56},
+  {stage:81, avg:67.5, best:107, worst:32, ticketPct:44},
+  {stage:82, avg:78.2, best:89, worst:63, ticketPct:30},
+  {stage:83, avg:67.2, best:89, worst:51, ticketPct:62},
+  {stage:84, avg:76.5, best:90, worst:62, ticketPct:56},
+  {stage:85, avg:69.0, best:80, worst:47, ticketPct:62},
+  {stage:86, avg:74.0, best:98, worst:52, ticketPct:62},
+  {stage:87, avg:69.8, best:85, worst:42, ticketPct:75},
+  {stage:88, avg:56.8, best:69, worst:33, ticketPct:62},
+  {stage:89, avg:56.0, best:58, worst:54, ticketPct:62},
+  {stage:90, avg:55.0, best:74, worst:33, ticketPct:12},
+  {stage:91, avg:51.5, best:60, worst:39, ticketPct:25},
+  {stage:92, avg:50.2, best:73, worst:28, ticketPct:38},
+  {stage:93, avg:61.8, best:76, worst:52, ticketPct:12},
+  {stage:94, avg:69.8, best:85, worst:50, ticketPct:67},
+  {stage:95, avg:71.8, best:83, worst:55, ticketPct:25},
+  {stage:96, avg:64.5, best:84, worst:44, ticketPct:38},
+  {stage:97, avg:54.0, best:86, worst:11, ticketPct:38},
+  {stage:98, avg:67.5, best:87, worst:43, ticketPct:38},
+  {stage:99, avg:73.0, best:85, worst:63, ticketPct:56},
+];
+
+// --- linear (05-10-linear-40) ---
+const EVOLUTION_DATA_LINEAR = [
+  {stage:0, avg:45.5, best:113, worst:0, ticketPct:34},
+  {stage:1, avg:54.0, best:107, worst:0, ticketPct:35},
+  {stage:2, avg:53.6, best:109, worst:0, ticketPct:38},
+  {stage:3, avg:51.5, best:93, worst:0, ticketPct:36},
+  {stage:4, avg:55.6, best:106, worst:0, ticketPct:34},
+  {stage:5, avg:64.6, best:120, worst:2, ticketPct:45},
+  {stage:6, avg:61.3, best:97, worst:15, ticketPct:36},
+  {stage:7, avg:57.8, best:109, worst:0, ticketPct:32},
+  {stage:8, avg:62.1, best:97, worst:0, ticketPct:41},
+  {stage:9, avg:55.1, best:103, worst:0, ticketPct:24},
+  {stage:10, avg:61.1, best:132, worst:0, ticketPct:39},
+  {stage:11, avg:57.5, best:100, worst:0, ticketPct:30},
+  {stage:12, avg:63.8, best:116, worst:0, ticketPct:39},
+  {stage:13, avg:67.8, best:133, worst:0, ticketPct:49},
+  {stage:14, avg:58.2, best:108, worst:11, ticketPct:41},
+  {stage:15, avg:63.0, best:108, worst:7, ticketPct:40},
+  {stage:16, avg:65.5, best:112, worst:13, ticketPct:43},
+  {stage:17, avg:62.2, best:108, worst:14, ticketPct:44},
+  {stage:18, avg:62.4, best:105, worst:0, ticketPct:43},
+  {stage:19, avg:63.4, best:101, worst:0, ticketPct:51},
+  {stage:20, avg:60.9, best:104, worst:1, ticketPct:30},
+  {stage:21, avg:62.7, best:116, worst:0, ticketPct:30},
+  {stage:22, avg:62.5, best:108, worst:0, ticketPct:32},
+  {stage:23, avg:66.4, best:102, worst:19, ticketPct:41},
+  {stage:24, avg:63.0, best:121, worst:0, ticketPct:39},
+  {stage:25, avg:62.4, best:118, worst:0, ticketPct:39},
+  {stage:26, avg:63.9, best:117, worst:0, ticketPct:30},
+  {stage:27, avg:56.8, best:113, worst:9, ticketPct:35},
+  {stage:28, avg:58.2, best:111, worst:0, ticketPct:37},
+  {stage:29, avg:61.0, best:114, worst:0, ticketPct:41},
+  {stage:30, avg:66.9, best:106, worst:0, ticketPct:42},
+  {stage:31, avg:64.7, best:126, worst:0, ticketPct:53},
+  {stage:32, avg:61.9, best:114, worst:0, ticketPct:40},
+  {stage:33, avg:70.0, best:108, worst:18, ticketPct:49},
+  {stage:34, avg:62.8, best:126, worst:0, ticketPct:54},
+  {stage:35, avg:63.2, best:107, worst:0, ticketPct:46},
+  {stage:36, avg:69.9, best:114, worst:19, ticketPct:54},
+  {stage:37, avg:67.4, best:105, worst:0, ticketPct:40},
+  {stage:38, avg:59.7, best:119, worst:3, ticketPct:34},
+  {stage:39, avg:64.7, best:115, worst:0, ticketPct:44},
+  {stage:40, avg:66.3, best:128, worst:7, ticketPct:42},
+  {stage:41, avg:59.1, best:107, worst:0, ticketPct:36},
+  {stage:42, avg:57.0, best:106, worst:0, ticketPct:37},
+  {stage:43, avg:67.6, best:118, worst:16, ticketPct:47},
+  {stage:44, avg:63.5, best:122, worst:2, ticketPct:44},
+  {stage:45, avg:66.8, best:129, worst:0, ticketPct:45},
+  {stage:46, avg:59.3, best:117, worst:0, ticketPct:41},
+  {stage:47, avg:68.5, best:123, worst:15, ticketPct:53},
+  {stage:48, avg:68.2, best:134, worst:10, ticketPct:54},
+  {stage:49, avg:73.5, best:108, worst:0, ticketPct:60},
+];
+
+// --- quadratic (05-10-quadratic-40) ---
+const EVOLUTION_DATA_QUADRATIC = [
+  {stage:0, avg:46.0, best:124, worst:0, ticketPct:27},
+  {stage:1, avg:51.8, best:109, worst:0, ticketPct:38},
+  {stage:2, avg:59.9, best:127, worst:8, ticketPct:44},
+  {stage:3, avg:61.7, best:110, worst:0, ticketPct:45},
+  {stage:4, avg:56.2, best:111, worst:0, ticketPct:40},
+  {stage:5, avg:64.7, best:133, worst:0, ticketPct:41},
+  {stage:6, avg:64.0, best:117, worst:0, ticketPct:32},
+  {stage:7, avg:69.2, best:116, worst:0, ticketPct:45},
+  {stage:8, avg:64.8, best:118, worst:0, ticketPct:37},
+  {stage:9, avg:61.2, best:115, worst:2, ticketPct:42},
+  {stage:10, avg:60.1, best:109, worst:0, ticketPct:38},
+  {stage:11, avg:64.5, best:130, worst:0, ticketPct:43},
+  {stage:12, avg:60.4, best:114, worst:9, ticketPct:40},
+  {stage:13, avg:61.9, best:116, worst:2, ticketPct:35},
+  {stage:14, avg:69.7, best:119, worst:0, ticketPct:49},
+  {stage:15, avg:64.7, best:115, worst:7, ticketPct:41},
+  {stage:16, avg:61.4, best:122, worst:6, ticketPct:41},
+  {stage:17, avg:59.1, best:103, worst:11, ticketPct:36},
+  {stage:18, avg:62.7, best:108, worst:0, ticketPct:36},
+  {stage:19, avg:67.8, best:114, worst:0, ticketPct:45},
+  {stage:20, avg:68.2, best:112, worst:28, ticketPct:42},
+  {stage:21, avg:73.8, best:113, worst:14, ticketPct:51},
+  {stage:22, avg:66.5, best:115, worst:12, ticketPct:39},
+  {stage:23, avg:62.7, best:108, worst:4, ticketPct:41},
+  {stage:24, avg:66.9, best:118, worst:3, ticketPct:41},
+  {stage:25, avg:67.4, best:111, worst:21, ticketPct:39},
+  {stage:26, avg:63.0, best:106, worst:25, ticketPct:29},
+  {stage:27, avg:73.9, best:121, worst:18, ticketPct:51},
+  {stage:28, avg:71.0, best:115, worst:31, ticketPct:40},
+  {stage:29, avg:60.3, best:120, worst:0, ticketPct:28},
+  {stage:30, avg:72.6, best:110, worst:26, ticketPct:46},
+  {stage:31, avg:70.0, best:117, worst:0, ticketPct:45},
+  {stage:32, avg:68.8, best:112, worst:5, ticketPct:44},
+  {stage:33, avg:70.9, best:111, worst:27, ticketPct:40},
+  {stage:34, avg:68.7, best:110, worst:4, ticketPct:45},
+  {stage:35, avg:66.9, best:113, worst:24, ticketPct:42},
+  {stage:36, avg:67.3, best:115, worst:0, ticketPct:46},
+  {stage:37, avg:70.3, best:120, worst:7, ticketPct:52},
+  {stage:38, avg:70.9, best:116, worst:18, ticketPct:46},
+  {stage:39, avg:68.5, best:114, worst:25, ticketPct:42},
+  {stage:40, avg:66.1, best:108, worst:0, ticketPct:40},
+  {stage:41, avg:76.5, best:120, worst:40, ticketPct:49},
+  {stage:42, avg:67.5, best:105, worst:33, ticketPct:41},
+  {stage:43, avg:70.3, best:114, worst:17, ticketPct:40},
+  {stage:44, avg:73.8, best:111, worst:21, ticketPct:45},
+  {stage:45, avg:71.9, best:111, worst:19, ticketPct:46},
+  {stage:46, avg:72.5, best:109, worst:25, ticketPct:48},
+  {stage:47, avg:71.1, best:117, worst:19, ticketPct:41},
+  {stage:48, avg:73.5, best:123, worst:17, ticketPct:48},
+  {stage:49, avg:74.2, best:108, worst:4, ticketPct:50},
+];
+
+// ============================================================
+// STAGE_0 POPULATIONS (top 4 by score)
+// ============================================================
+
+// --- 4bot (05-10-quadratic-4) ---
+const STAGE_0_4BOT = [
+  {w: [1.835, 0.028, 0.004, 0.774, 0.929, 0.895, 1.828, 0.041, 10.159, 53.276, 0.853, 0.546, 0.29, -0.381, 0.413, 0.375, 0.115], score: 111, longestRoute: false, tickets: [{route: 'New York → Atlanta', achieved: true}, {route: 'Boston → Miami', achieved: true}]},
+  {w: [4.087, 0.018, 0.049, 1.81, 1.33, 0.064, 2.165, 0.254, 28.769, 57.514, 0.925, 0.557, -1.365, 0.284, -0.167, 0.487, -0.329], score: 67, longestRoute: true, tickets: [{route: 'Montreal → New Orleans', achieved: true}, {route: 'San Francisco → Atlanta', achieved: false}]},
+  {w: [0.622, 0.044, 0.003, 0.056, 1.295, 0.588, 1.302, 0.093, 13.104, 45.767, 0.853, 0.872, 0.302, -0.552, 0.418, 0.181, -0.091], score: 32, longestRoute: false, tickets: [{route: 'Winnipeg → Little Rock', achieved: false}, {route: 'Portland → Phoenix', achieved: false}]},
+  {w: [4.639, 0.024, 0.065, 0.966, 1.861, 0.805, 3.731, 0.31, 18.484, 54.127, 0.069, 0.292, -1.506, 0.217, 0.769, -0.569, -0.692], score: 20, longestRoute: false, tickets: [{route: 'Chicago → New Orleans', achieved: false}, {route: 'Toronto → Miami', achieved: true}]},
+];
+
+// --- averaged4bot (05-10-averaged-quadratic-4) ---
+const STAGE_0_AVERAGED4BOT = [
+  {w: [0.346, 0.024, 0.077, 1.876, 1.956, 0.253, 3.437, 0.401, 15.753, 54.807, 0.662, 0.605, -1.547, 0.527, 0.074, -0.242, -0.4], score: 83, longestRoute: true, tickets: [{route: 'Denver → El Paso', achieved: true}, {route: 'San Francisco → Atlanta', achieved: false}]},
+  {w: [2.906, 0.114, 0.021, 0.114, 0.363, 0.077, 2.95, 0.147, 22.105, 49.984, 0.936, 0.574, 0.63, 0.06, -0.154, 0.499, -0.419], score: 31, longestRoute: false, tickets: [{route: 'Portland → Phoenix', achieved: true}, {route: 'Seattle → Los Angeles', achieved: true}]},
+  {w: [1.471, 0.095, 0.12, 0.146, 1.372, 0.304, 2.869, 0.238, 22.598, 53.031, 0.194, 0.198, -0.564, 0.016, -0.336, 0.686, -0.217], score: 2, longestRoute: false, tickets: [{route: 'Montreal → New Orleans', achieved: false}, {route: 'Chicago → Santa Fe', achieved: false}]},
+  {w: [1.003, 0.11, 0.124, 0.582, 1.565, 0.972, 3.208, 0.232, 23.915, 56.995, 0.632, 0.195, -1.925, 0.51, -0.502, 0.581, 0.119], score: 0, longestRoute: false, tickets: [{route: 'Los Angeles → New York', achieved: false}, {route: 'Calgary → Phoenix', achieved: false}]},
+];
+
+// --- linear (05-10-linear-40) ---
+const STAGE_0_LINEAR = [
+  {w: [1.697, 0.092, 0.15, 0.666, 0.428, 0.269, 3.8, 0.372, 22.161, 50.359, 0.084, 0.41, -0.018, -0.217, -0.324, -0.156, -0.704], score: 113, longestRoute: true, tickets: [{route: 'Seattle → New York', achieved: true}, {route: 'San Francisco → Atlanta', achieved: true}]},
+  {w: [0.659, 0.054, 0.127, 1.709, 0.446, 0.94, 3.903, 0.436, 23.005, 56.106, 0.027, 0.918, -0.273, -0.428, 0.31, -0.047, -0.964], score: 111, longestRoute: true, tickets: [{route: 'Calgary → Salt Lake City', achieved: true}, {route: 'Montreal → Atlanta', achieved: false}]},
+  {w: [3.277, 0.07, 0.035, 1.315, 0.394, 0.198, 3.217, 0.222, 29.036, 46.733, 0.201, 0.222, -0.683, -0.421, -0.196, 0.176, -0.02], score: 110, longestRoute: true, tickets: [{route: 'Boston → Miami', achieved: true}, {route: 'Vancouver → Santa Fe', achieved: true}, {route: 'Vancouver → Montreal', achieved: true}]},
+  {w: [4.092, 0.114, 0.118, 1.162, 0.841, 0.826, 1.902, 0.09, 18.545, 54.647, 0.688, 0.448, -0.513, 0.071, 0.314, 0.779, -0.784], score: 96, longestRoute: true, tickets: [{route: 'Los Angeles → New York', achieved: true}, {route: 'Denver → El Paso', achieved: true}]},
+];
+
+// --- quadratic (05-10-quadratic-40) ---
+const STAGE_0_QUADRATIC = [
+  {w: [0.815, 0.116, 0.039, 0.484, 0.181, 0.057, 2.165, 0.083, 12.585, 46.251, 0.624, 0.684, 0.128, 0.106, 0.647, 0.491, -0.216], score: 124, longestRoute: true, tickets: [{route: 'Toronto → Miami', achieved: true}, {route: 'San Francisco → Atlanta', achieved: true}]},
+  {w: [4.69, 0.132, 0.132, 1.237, 1.396, 0.181, 2.309, 0.185, 25.19, 51.308, 0.283, 0.214, -0.626, -0.324, 0.758, 0.058, -0.747], score: 121, longestRoute: true, tickets: [{route: 'Kansas City → Houston', achieved: true}, {route: 'Denver → Pittsburgh', achieved: true}, {route: 'Dallas → New York', achieved: true}]},
+  {w: [0.325, 0.134, 0.073, 1.508, 0.434, 0.707, 3.513, 0.138, 32.55, 56.447, 0.294, 0.817, 0.502, 0.505, 0.274, 0.007, -0.148], score: 95, longestRoute: true, tickets: [{route: 'Los Angeles → Chicago', achieved: false}, {route: 'Winnipeg → Little Rock', achieved: false}]},
+  {w: [2.778, 0.045, 0.043, 1.82, 0.192, 0.077, 2.055, 0.157, 32.589, 48.464, 0.272, 0.295, -1.34, 0.344, -0.494, 0.234, 0.163], score: 93, longestRoute: true, tickets: [{route: 'Seattle → Los Angeles', achieved: true}, {route: 'Vancouver → Santa Fe', achieved: true}]},
+];
+
+// ============================================================
+// FINAL POPULATIONS (top 4 by score)
+// ============================================================
+
+// --- 4bot (05-10-quadratic-4) ---
+const STAGE_FINAL_4BOT = [
+  {w: [2.761, 0.082, 0.04, 1.021, 0.683, 0.096, 1.899, 0.258, 30.723, 54.315, 0.94, 0.943, -0.94, -0.6, -0.057, 0.277, -0.142], score: 94, longestRoute: true, tickets: [{route: 'Los Angeles → Miami', achieved: true}, {route: 'Seattle → Los Angeles', achieved: true}]},
+  {w: [3.497, 0.077, 0.039, 1.014, 0.777, 0.0, 2.193, 0.228, 33.048, 55.389, 1.0, 0.89, -0.926, -0.539, -0.047, 0.33, 0.163], score: 78, longestRoute: false, tickets: [{route: 'New York → Atlanta', achieved: false}, {route: 'Calgary → Salt Lake City', achieved: true}]},
+  {w: [2.806, 0.051, 0.068, 1.512, 0.425, 0.165, 2.267, 0.075, 36.0, 57.958, 0.852, 0.763, 0.43, -0.581, 0.063, -0.262, -0.185], score: 73, longestRoute: false, tickets: [{route: 'Winnipeg → Little Rock', achieved: true}, {route: 'Winnipeg → Houston', achieved: true}, {route: 'Portland → Nashville', achieved: false}]},
+  {w: [3.157, 0.088, 0.104, 1.331, 0.816, 0.386, 2.541, 0.0, 25.54, 54.956, 0.94, 0.952, -1.069, -0.6, 0.429, 0.184, -0.19], score: 66, longestRoute: false, tickets: [{route: 'Duluth → Houston', achieved: false}, {route: 'Los Angeles → New York', achieved: true}]},
+];
+
+// --- averaged4bot (05-10-averaged-quadratic-4) ---
+const STAGE_FINAL_AVERAGED4BOT = [
+  {w: [1.625, 0.063, 0.15, 1.577, 1.257, 0.04, 3.289, 0.303, 24.691, 45.332, 0.0, 0.312, -2.0, 0.055, 0.048, -0.086, -0.453], score: 85, longestRoute: true, tickets: [{route: 'Los Angeles → Miami', achieved: true}, {route: 'Seattle → Los Angeles', achieved: false}]},
+  {w: [2.045, 0.075, 0.15, 1.894, 1.201, 0.16, 3.75, 0.332, 28.05, 45.079, 0.027, 0.437, -1.872, 0.125, 0.067, -0.208, -0.31], score: 75, longestRoute: false, tickets: [{route: 'Winnipeg → Houston', achieved: true}, {route: 'Duluth → Houston', achieved: true}, {route: 'Denver → Pittsburgh', achieved: false}]},
+  {w: [2.253, 0.056, 0.15, 1.371, 1.33, 0.102, 3.162, 0.308, 24.052, 46.031, 0.0, 0.377, -2.0, -0.1, 0.382, 0.002, -0.491], score: 69, longestRoute: false, tickets: [{route: 'Portland → Nashville', achieved: true}, {route: 'Calgary → Phoenix', achieved: true}]},
+  {w: [1.92, 0.036, 0.141, 2.0, 1.245, 0.173, 3.158, 0.272, 24.67, 45.305, 0.099, 0.273, -1.666, 0.197, 0.352, -0.448, -0.33], score: 63, longestRoute: false, tickets: [{route: 'Los Angeles → New York', achieved: false}, {route: 'Seattle → New York', achieved: false}]},
+];
+
+// --- linear (05-10-linear-40) ---
+const STAGE_FINAL_LINEAR = [
+  {w: [0.717, 0.06, 0.121, 1.648, 0.726, 0.52, 3.538, 0.407, 16.004, 52.142, 0.132, 0.351, 0.919, 0.031, 0.305, -0.457, -0.348], score: 133, longestRoute: true, tickets: [{route: 'Denver → El Paso', achieved: true}, {route: 'Los Angeles → Chicago', achieved: true}]},
+  {w: [4.206, 0.078, 0.128, 1.615, 0.669, 0.694, 3.484, 0.203, 17.916, 50.436, 0.592, 0.937, -0.413, 0.481, -0.474, -0.6, -0.592], score: 110, longestRoute: true, tickets: [{route: 'Montreal → New Orleans', achieved: true}, {route: 'Los Angeles → Miami', achieved: true}]},
+  {w: [4.812, 0.04, 0.085, 1.83, 0.888, 1.0, 3.403, 0.147, 21.051, 44.072, 0.412, 0.663, -0.215, 0.232, -0.178, -0.419, -0.603], score: 105, longestRoute: false, tickets: [{route: 'Chicago → New Orleans', achieved: true}, {route: 'Chicago → Santa Fe', achieved: true}]},
+  {w: [4.044, 0.038, 0.133, 1.771, 0.44, 0.724, 3.419, 0.274, 16.793, 50.996, 0.0, 0.283, 0.675, 0.2, 0.124, -0.466, 0.172], score: 97, longestRoute: false, tickets: [{route: 'Sault St. Marie → Nashville', achieved: true}, {route: 'Portland → Phoenix', achieved: true}]},
+];
+
+// --- quadratic (05-10-quadratic-40) ---
+const STAGE_FINAL_QUADRATIC = [
+  {w: [3.445, 0.04, 0.145, 1.852, 0.554, 0.982, 3.849, 0.191, 16.177, 53.026, 0.03, 0.163, 0.612, 0.357, -0.564, -0.43, 0.031], score: 122, longestRoute: true, tickets: [{route: 'Seattle → Los Angeles', achieved: true}, {route: 'Denver → Pittsburgh', achieved: true}]},
+  {w: [3.161, 0.033, 0.088, 1.92, 1.012, 0.943, 3.959, 0.305, 16.306, 53.571, 0.065, 0.193, -1.175, 0.09, 0.408, -0.015, 0.014], score: 117, longestRoute: true, tickets: [{route: 'Denver → Pittsburgh', achieved: true}, {route: 'Portland → Nashville', achieved: true}]},
+  {w: [2.692, 0.0, 0.074, 1.627, 1.226, 0.926, 3.504, 0.16, 26.146, 45.567, 0.009, 0.0, 0.375, 0.251, 0.645, -0.6, 0.2], score: 111, longestRoute: true, tickets: [{route: 'Montreal → Atlanta', achieved: false}, {route: 'Seattle → Los Angeles', achieved: true}]},
+  {w: [3.588, 0.025, 0.092, 1.758, 0.661, 0.926, 4.0, 0.221, 14.217, 44.0, 0.116, 0.082, 0.71, 0.385, -0.572, -0.297, 0.191], score: 109, longestRoute: true, tickets: [{route: 'Boston → Miami', achieved: true}, {route: 'San Francisco → Atlanta', achieved: true}]},
+];
+
+// ============================================================
+// SUMMARY STATS
+// ============================================================
+
+// 4bot (05-10-quadratic-4)
+// startAvg: 57.5, finalAvg: 77.8, peakScore: 128 (stage 49), ticketStart: 50%, ticketFinal: 67%
+
+// averaged4bot (05-10-averaged-quadratic-4)
+// startAvg: 29.0, finalAvg: 73.0, peakScore: 110 (stage 60), ticketStart: 38%, ticketFinal: 56%
+
+// linear (05-10-linear-40)
+// startAvg: 45.5, finalAvg: 73.5, peakScore: 134 (stage 48), ticketStart: 34%, ticketFinal: 60%
+
+// quadratic (05-10-quadratic-40)
+// startAvg: 46.0, finalAvg: 74.2, peakScore: 133 (stage 5), ticketStart: 27%, ticketFinal: 50%
+

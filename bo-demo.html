@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bayesian Optimization — Cameron Ake</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { text-transform: lowercase; }
+
+    html { font-size: 17px; }
+
+    :root {
+      --bg: #f5f4f0; --surface: #ffffff; --border: #dddbd5;
+      --text: #1e1c1a; --muted: #6b6863; --accent: #5c3fa3;
+      --accent-hover: #4a3185; --max-width: 900px; --radius: 8px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 1rem; line-height: 1.75; }
+
+    header { position: sticky; top: 0; z-index: 100; background: rgba(245,244,240,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+    nav { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; height: 60px; display: flex; align-items: center; gap: 16px; }
+    .back-link { color: var(--muted); font-size: 0.9rem; text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: var(--accent); }
+    .nav-title { font-weight: 600; font-size: 1rem; color: var(--text); font-style: italic; }
+
+    main { max-width: var(--max-width); margin: 0 auto; padding: 48px 32px 80px; }
+
+    .page-hero { margin-bottom: 32px; }
+    h1 { font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 600; margin-bottom: 12px; }
+    h1::after { content: ''; display: block; width: 40px; height: 3px; background: var(--accent); margin-top: 8px; border-radius: 2px; }
+    .subtitle { font-size: 1rem; color: var(--muted); max-width: 100%; line-height: 1.75; }
+
+    section { margin-bottom: 48px; }
+    h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+
+    /* tabs */
+    .tab-nav { display: flex; gap: 4px; margin-bottom: 40px; border-bottom: 1px solid var(--border); }
+    .tab-btn {
+      padding: 9px 20px; border: none; border-bottom: 3px solid transparent;
+      background: none; font-family: 'Lora', Georgia, serif; font-size: 1.05rem;
+      cursor: pointer; color: var(--muted); transition: color 0.2s, border-color 0.2s;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* status bar */
+    .status-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 16px; margin-bottom: 24px;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .status-dot {
+      width: 9px; height: 9px; border-radius: 50%; background: #ccc; flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .status-dot.ready { background: #5cb85c; }
+    .status-dot.busy  { background: #f0ad4e; animation: pulse 1s infinite; }
+    .status-dot.error { background: #d9534f; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* charts */
+    .chart-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+    }
+    .chart-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; font-style: italic; }
+
+    /* controls */
+    .controls-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 600px) { .controls-grid { grid-template-columns: 1fr; } }
+
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-label {
+      font-size: 0.9rem; font-weight: 600; color: var(--text);
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .range-value { color: var(--accent); font-weight: 600; }
+    .range-hints { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
+    input[type="range"] { width: 100%; accent-color: var(--accent); margin-top: 2px; }
+    select {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 7px 10px; font-family: 'Lora', Georgia, serif; font-size: 0.9rem;
+      color: var(--text); width: 100%; transition: border-color 0.2s;
+    }
+    select:focus { outline: none; border-color: var(--accent); }
+
+    .btn {
+      display: inline-block; padding: 10px 22px; background: var(--accent); color: #fff;
+      border: none; border-radius: var(--radius); font-family: 'Lora', Georgia, serif;
+      font-size: 0.95rem; cursor: pointer; transition: background 0.2s; font-weight: 600;
+    }
+    .btn:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent);
+    }
+    .btn-secondary:hover:not(:disabled) { background: var(--accent); color: #fff; }
+
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+
+    /* stats strip */
+    .stats-strip {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 20px; margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .stat-val { font-weight: 600; color: var(--text); }
+
+    /* acq toggle inline */
+    .acq-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .acq-btn {
+      padding: 6px 16px; border: 1.5px solid var(--border); border-radius: 20px;
+      background: var(--surface); font-family: 'Lora', Georgia, serif; font-size: 0.88rem;
+      cursor: pointer; color: var(--muted); transition: all 0.18s;
+    }
+    .acq-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+
+    /* explainer boxes */
+    .explain-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px 26px; margin-bottom: 20px;
+    }
+    .explain-box p { color: var(--muted); font-size: 0.95rem; margin-top: 8px; }
+    code { font-family: 'Courier New', monospace; font-size: 0.88rem; background: #f0eeea; padding: 1px 5px; border-radius: 3px; text-transform: none; }
+
+    .math-block {
+      font-family: 'Courier New', monospace; font-size: 0.88rem;
+      background: #f0eeea; border-left: 3px solid var(--accent);
+      padding: 12px 16px; margin: 10px 0; border-radius: 0 var(--radius) var(--radius) 0;
+      color: var(--text); white-space: pre; text-transform: none;
+    }
+
+    .step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .step-num { font-size: 1.4rem; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+    .step-card h3 { font-size: 0.95rem; margin-bottom: 6px; }
+    .step-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+
+    .charts-row { display: flex; gap: 16px; margin-bottom: 16px; }
+    .charts-row .chart-wrap { flex: 1; min-width: 0; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="back-link" href="index.html">← portfolio</a>
+    <span class="nav-title">bayesian optimization</span>
+  </nav>
+</header>
+
+<main>
+  <div class="page-hero">
+    <h1>bayesian optimization</h1>
+    <p class="subtitle">
+      An interactive demo of Bayesian optimization implemented from scratch using only NumPy 
+      math operations. This uses Gaussian process regression and an acquisition function 
+      to balance sampling high-value vs. high-uncertainty regions.
+    </p>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('demo', this)">live demo</button>
+    <button class="tab-btn" onclick="switchTab('explainer', this)">how it works</button>
+  </div>
+
+  <!-- ── Demo Tab ── -->
+  <div id="tab-demo" class="tab-panel active">
+
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusMsg">initializing…</span>
+    </div>
+
+    <!-- Controls -->
+    <section>
+      <h2>controls</h2>
+
+      <div class="controls-grid">
+        <div class="form-group">
+          <label class="form-label">target function
+            <span class="range-value" id="funcLabel"></span>
+          </label>
+          <select id="funcSelect" onchange="onFuncChange()">
+            <option value="sine">sine — sin(6πx)</option>
+            <option value="bumpy">bumpy — sin(6πx) + 0.5 sin(14πx)</option>
+            <option value="multimodal" selected>multimodal — gaussian bumps</option>
+            <option value="easy">easy — single wide peak</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">seed samples (before BO starts)
+            <span class="range-value" id="seedVal">3</span>
+          </label>
+          <input type="range" id="seedSlider" min="1" max="8" step="1" value="3"
+                 oninput="document.getElementById('seedVal').textContent = this.value" />
+          <div class="range-hints"><span>1</span><span>8</span></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><span>length scale <em style="font-weight:400;">(ℓ)</em></span>
+            <span class="range-value" id="lsVal">0.15</span>
+          </label>
+          <input type="range" id="lsSlider" min="0.02" max="0.5" step="0.01" value="0.15"
+                 oninput="document.getElementById('lsVal').textContent = (+this.value).toFixed(2)" />
+          <div class="range-hints"><span>0.02 (wiggly)</span><span>0.50 (smooth)</span></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><span>signal variance <em style="font-weight:400;">(σ²f)</em></span>
+            <span class="range-value" id="svVal">1.0</span>
+          </label>
+          <input type="range" id="svSlider" min="0.1" max="4.0" step="0.1" value="1.0"
+                 oninput="document.getElementById('svVal').textContent = (+this.value).toFixed(1)" />
+          <div class="range-hints"><span>0.1</span><span>4.0</span></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><span>noise variance <em style="font-weight:400;">(σ²n)</em></span>
+            <span class="range-value" id="nvVal">0.02</span>
+          </label>
+          <input type="range" id="nvSlider" min="0.001" max="0.5" step="0.001" value="0.02"
+                 oninput="document.getElementById('nvVal').textContent = (+this.value).toFixed(3)" />
+          <div class="range-hints"><span>0.001 (trust observations)</span><span>0.500 (noisy)</span></div>
+        </div>
+
+        <div class="form-group" id="kappaGroup">
+          <label class="form-label">UCB κ (exploration)
+            <span class="range-value" id="kappaVal">2.0</span>
+          </label>
+          <input type="range" id="kappaSlider" min="0.5" max="5.0" step="0.1" value="2.0"
+                 oninput="document.getElementById('kappaVal').textContent = (+this.value).toFixed(1)" />
+          <div class="range-hints"><span>0.5 (exploit)</span><span>5.0 (explore)</span></div>
+        </div>
+
+        <div class="form-group" id="xiGroup" style="display:none">
+          <label class="form-label">EI ξ (jitter)
+            <span class="range-value" id="xiVal">0.01</span>
+          </label>
+          <input type="range" id="xiSlider" min="0.0" max="0.2" step="0.005" value="0.01"
+                 oninput="document.getElementById('xiVal').textContent = (+this.value).toFixed(3)" />
+          <div class="range-hints"><span>0.0</span><span>0.2</span></div>
+        </div>
+      </div>
+
+      <div class="acq-row">
+        <span style="font-size:0.9rem;color:var(--muted);margin-right:4px;">acquisition:</span>
+        <button class="acq-btn active" id="acqUCB" onclick="setAcq('ucb')">UCB</button>
+        <button class="acq-btn" id="acqEI" onclick="setAcq('ei')">EI</button>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" id="btnSeed"      onclick="doSeed()"      disabled>seed random</button>
+        <button class="btn" id="btnNext"      onclick="doStep()"      disabled>next step</button>
+        <button class="btn" id="btnRun"       onclick="doRunN()"      disabled>run 10 steps</button>
+        <button class="btn btn-secondary" id="btnReset" onclick="doReset()" disabled>reset</button>
+      </div>
+
+      <div class="form-group" style="max-width:260px;">
+        <label class="form-label" style="justify-content:flex-start;gap:8px;">show true function
+          <input type="checkbox" id="showTrueChk" checked onchange="renderCharts()" style="width:auto;margin:0;" />
+        </label>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-strip">
+      <div class="stat"><span class="stat-label">samples</span><span class="stat-val" id="statN">0</span></div>
+      <div class="stat"><span class="stat-label">best y</span><span class="stat-val" id="statBestY">—</span></div>
+      <div class="stat"><span class="stat-label">best x</span><span class="stat-val" id="statBestX">—</span></div>
+      <div class="stat"><span class="stat-label">next proposal</span><span class="stat-val" id="statNextX">—</span></div>
+      <div class="stat"><span class="stat-label">step</span><span class="stat-val" id="statStep">0</span></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-row">
+      <div class="chart-wrap">
+        <div class="chart-label">GP posterior — mean ± 2σ, observed samples, and next proposed point</div>
+        <canvas id="gpChart"></canvas>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-label">acquisition function — maximum marks the next proposed point</div>
+        <canvas id="acqChart"></canvas>
+      </div>
+    </div>
+  </div><!-- /tab-demo -->
+
+  <!-- ── Explainer Tab ── -->
+  <div id="tab-explainer" class="tab-panel">
+
+    <section>
+      <h2>what is bayesian optimization?</h2>
+      <p style="color:var(--muted);margin-bottom:16px;">
+        Bayesian optimization is a strategy for finding the maximum of an unknown function that is 
+        expensive to evaluate, using as few evaluations as possible. Instead of brute-force sampling, 
+        it builds a probabilistic model of what the function may be and uses an acquisition function
+        to decide where to sample next.
+      </p>
+
+      <div class="step-grid">
+        <div class="step-card"><div class="step-num">1</div><h3>place a prior</h3><p>Start with a Gaussian process, a probability distribution over functions encoding our prior beliefs about smoothness and scale.</p></div>
+        <div class="step-card"><div class="step-num">2</div><h3>observe</h3><p>Evaluate the true function at a proposed point. The GP updates its beliefs (posterior) to reflect the new data.</p></div>
+        <div class="step-card"><div class="step-num">3</div><h3>acquire</h3><p>An acquisition function scores every candidate point by trading off high predicted mean (exploitation) against high uncertainty (exploration).</p></div>
+        <div class="step-card"><div class="step-num">4</div><h3>repeat 2-3</h3><p>Repeat as many times as we want by sampling at the acquisition function's maximum, then updating the GP for the new point.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>gaussian process regression</h2>
+      <p style="color:var(--muted);margin-bottom:16px;">
+        Gaussian Process regression uses a kernel with given parameters to establish the prior (the set of 
+        functions we are considering, maybe lumpier or smoother depending on the parameters) and narrows 
+        it down based on new data. Given two points, the kernel aims to express how correlated they are
+        with each other. For this demo, I used a radial basis function (RBF) kernel, AKA a Gaussian kernel.
+      </p>
+      <div class="explain-box">
+        <h3>RBF kernel</h3>
+        <div class="math-block">k(x, x') = σ²f · exp( −‖x − x'‖² / (2 ℓ²) )</div>
+        <p>Controls how correlation decays as distance increases. 
+          Higher <code>ℓ</code> makes our prior a set of smoother, more slowly varying functions.</p>
+      </div>
+      <div class="explain-box">
+        <h3>posterior equations</h3>
+        <p>We get the mean and variance of the posterior at a given (testing) point <code>x*</code> as follows, with <code>X</code> as our
+          existing (training) data.
+        </p>
+        <div class="math-block">
+K      = k(X, X) + σ²n · I   ← training covariance + noise
+k*     = k(X, x*)            ← train–test covariance
+k**    = k(x*, x*)           ← prior variance at x*
+
+μ(x*)  = k*ᵀ K⁻¹ y           ← posterior mean
+σ²(x*) = k** − k*ᵀ K⁻¹ k*    ← posterior variance</div>
+        <p>I implemented matrix inversion via Cholesky decomposition for more efficiency.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>acquisition functions</h2>
+      <p style="color:var(--muted);margin-bottom:16px;">
+        Our acquisition function balances sampling points that we know have high values (exploitation) 
+        with sampling points with lots of uncertainty (exploration). For instance, say we're looking
+        for oil: drilling is costly, but we want to find areas with lots of oil, so we have to make
+        tradeoffs between drilling in places we know have a lot of oil and trying places where we
+        don't yet have enough information to know whether there's oil (high-uncertainty areas). For this demo, I used two different 
+        acquisition functions for the user to choose from.
+      </p>
+      <div class="explain-box">
+        <h3>upper confidence bound (UCB)</h3>
+        <div class="math-block">a(x) = μ(x) + κ · σ(x)</div>
+        <p>This acquisition function is just a weighted sum. <code>κ</code> directly controls the tradeoff between exploration and exploitation; higher κ favors exploration.</p>
+      </div>
+      <div class="explain-box">
+        <h3>expected improvement (EI)</h3>
+        <div class="math-block">Z    = (μ(x) − f⁺ − ξ) / σ(x)
+a(x) = (μ(x) − f⁺ − ξ) · Φ(Z) + σ(x) · φ(Z)</div>
+        <p>This function measures how much improvement over the current best value <code>f⁺</code> we expect. <code>Φ</code> and <code>φ</code> are standard normal CDF and PDF; <code>ξ</code> is an exploration bonus.</p>
+      </div>
+    </section>
+
+  </div><!-- /tab-explainer -->
+
+</main>
+
+<script>
+// ── State ────────────────────────────────────────────────────────────────────
+const GRID_N   = 500;
+const X_GRID   = Array.from({length: GRID_N}, (_, i) => i / (GRID_N - 1));
+
+let samples     = [];   // [{x, y}]
+let lastGP      = null; // last gp_result from worker
+let stepCount   = 0;
+let acqType     = 'ucb';
+let workerReady = false;
+let workerBusy  = false;
+
+const worker = new Worker('./bo-worker.js');
+
+// ── Target Functions (JS mirrors of bo.py) ───────────────────────────────────
+const TARGET_FNS = {
+  sine:       x => Math.sin(6 * Math.PI * x),
+  bumpy:      x => Math.sin(6 * Math.PI * x) + 0.5 * Math.sin(14 * Math.PI * x),
+  multimodal: x => {
+    const cs = [0.2, 0.55, 0.85], hs = [1.0, 0.8, 1.2], ws = [0.08, 0.10, 0.07];
+    return cs.reduce((s, c, i) => s + hs[i] * Math.exp(-0.5 * ((x - c) / ws[i]) ** 2), 0);
+  },
+  easy: x => Math.exp(-0.5 * ((x - 0.6) / 0.2) ** 2),
+};
+
+function evalTrue(x) {
+  const fn = TARGET_FNS[document.getElementById('funcSelect').value];
+  return fn(x);
+}
+
+function noisyEval(x) {
+  const nv = +document.getElementById('nvSlider').value;
+  return evalTrue(x) + gaussRandom(0, Math.sqrt(nv));
+}
+
+function gaussRandom(mu, sigma) {
+  // Box-Muller
+  const u = 1 - Math.random(), v = Math.random();
+  return mu + sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+// ── Worker Communication ─────────────────────────────────────────────────────
+worker.onmessage = function(e) {
+  const { type, msg, result } = e.data;
+
+  if (type === 'status') { setStatus('busy', msg); return; }
+  if (type === 'ready')  { onWorkerReady(); return; }
+  if (type === 'error')  { setStatus('error', 'error: ' + msg); return; }
+
+  if (type === 'bo_result') {
+    workerBusy = false;
+    lastGP = result;
+    renderCharts();
+    updateStats();
+    setStatus('ready', `ready — ${samples.length} sample${samples.length !== 1 ? 's' : ''}`);
+    enableButtons(true);
+  }
+
+  if (type === 'bo_error') {
+    workerBusy = false;
+    setStatus('error', 'python error: ' + msg);
+    enableButtons(true);
+  }
+};
+
+function requestBoUpdate() {
+  if (!workerReady || samples.length === 0) return;
+  workerBusy = true;
+  enableButtons(false);
+  worker.postMessage({
+    type: 'bo_step',
+    data: {
+      X_train:      samples.map(s => s.x),
+      y_train:      samples.map(s => s.y),
+      X_grid:       X_GRID,
+      length_scale: +document.getElementById('lsSlider').value,
+      signal_var:   +document.getElementById('svSlider').value,
+      noise_var:    +document.getElementById('nvSlider').value,
+      acq_type:     acqType,
+      kappa:        +document.getElementById('kappaSlider').value,
+      xi:           +document.getElementById('xiSlider').value,
+    }
+  });
+}
+
+// ── Actions ──────────────────────────────────────────────────────────────────
+function doSeed() {
+  const n = +document.getElementById('seedSlider').value;
+  samples = [];
+  stepCount = 0;
+  for (let i = 0; i < n; i++) {
+    const x = Math.random();
+    samples.push({x, y: noisyEval(x)});
+  }
+  requestBoUpdate();
+}
+
+function doStep() {
+  if (!workerReady || workerBusy || !lastGP) return;
+  const x = lastGP.next_x;
+  samples.push({x, y: noisyEval(x)});
+  stepCount++;
+  requestBoUpdate();
+}
+
+async function doRunN() {
+  if (!workerReady || workerBusy) return;
+  const N = 10;
+  for (let i = 0; i < N; i++) {
+    if (!lastGP) break;
+    const x = lastGP.next_x;
+    const y = noisyEval(x);
+    samples.push({x, y});
+    stepCount++;
+    await new Promise(resolve => {
+      const handler = e => {
+        if (e.data.type === 'bo_result' || e.data.type === 'bo_error') {
+          worker.removeEventListener('message', handler);
+          resolve();
+        }
+      };
+      worker.addEventListener('message', handler);
+      requestBoUpdate();
+    });
+  }
+}
+
+function doReset() {
+  samples   = [];
+  lastGP    = null;
+  stepCount = 0;
+  workerBusy = false;
+  updateStats();
+  renderCharts();
+  setStatus('ready', 'reset — seed to begin');
+}
+
+function onFuncChange() {
+  doReset();
+}
+
+function setAcq(type) {
+  acqType = type;
+  document.getElementById('acqUCB').classList.toggle('active', type === 'ucb');
+  document.getElementById('acqEI').classList.toggle('active',  type === 'ei');
+  document.getElementById('kappaGroup').style.display = type === 'ucb' ? '' : 'none';
+  document.getElementById('xiGroup').style.display    = type === 'ei'  ? '' : 'none';
+  if (samples.length > 0) requestBoUpdate();
+}
+
+// ── Charts ───────────────────────────────────────────────────────────────────
+let gpChart  = null;
+let acqChart = null;
+
+function initCharts() {
+  const gpCtx  = document.getElementById('gpChart').getContext('2d');
+  const acqCtx = document.getElementById('acqChart').getContext('2d');
+
+  gpChart = new Chart(gpCtx, {
+    type: 'line',
+    data: { labels: X_GRID, datasets: [] },
+    options: {
+      animation: false,
+      responsive: true,
+      aspectRatio: 1.5,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: true, labels: { font: { family: 'Lora, Georgia, serif', size: 12 }, boxWidth: 24 } } },
+      scales: {
+        x: { display: true, ticks: { maxTicksLimit: 11, callback: v => (+X_GRID[v] || 0).toFixed(1) }, grid: { color: '#eee' } },
+        y: { display: true, grid: { color: '#eee' } },
+      }
+    }
+  });
+
+  acqChart = new Chart(acqCtx, {
+    type: 'line',
+    data: { labels: X_GRID, datasets: [] },
+    options: {
+      animation: false,
+      responsive: true,
+      aspectRatio: 1.5,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: true, ticks: { maxTicksLimit: 11, callback: v => (+X_GRID[v] || 0).toFixed(1) }, grid: { color: '#eee' } },
+        y: { display: true, ticks: { callback: v => (+v).toFixed(1) }, grid: { color: '#eee' } },
+      }
+    }
+  });
+}
+
+function renderCharts() {
+  if (!gpChart || !acqChart) return;
+
+  const showTrue = document.getElementById('showTrueChk').checked;
+  const trueY    = X_GRID.map(x => evalTrue(x));
+  const gpDS     = [];
+  const acqDS    = [];
+
+  if (showTrue) {
+    gpDS.push({
+      label: 'true function',
+      data: trueY,
+      borderColor: '#aaa',
+      borderWidth: 1.5,
+      borderDash: [5, 3],
+      pointRadius: 0,
+      fill: false,
+      tension: 0.3,
+    });
+  }
+
+  if (lastGP) {
+    const mu    = lastGP.mu;
+    const sigma = lastGP.sigma;
+    const upper = mu.map((m, i) => m + 2 * sigma[i]);
+    const lower = mu.map((m, i) => m - 2 * sigma[i]);
+
+    gpDS.push({
+      label: 'GP mean',
+      data: mu,
+      borderColor: '#5c3fa3',
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: false,
+      tension: 0.3,
+    });
+    gpDS.push({
+      label: 'mean + 2σ',
+      data: upper,
+      borderColor: 'rgba(92,63,163,0.25)',
+      borderWidth: 0,
+      pointRadius: 0,
+      fill: '+1',
+      tension: 0.3,
+      backgroundColor: 'rgba(92,63,163,0.12)',
+    });
+    gpDS.push({
+      label: 'mean − 2σ',
+      data: lower,
+      borderColor: 'rgba(92,63,163,0.25)',
+      borderWidth: 0,
+      pointRadius: 0,
+      fill: false,
+      tension: 0.3,
+    });
+
+    // Next proposed point vertical line via annotation-free approach: scatter point at top/bottom
+    const nx     = lastGP.next_x;
+    const nxIdx  = X_GRID.reduce((best, v, i) => Math.abs(v - nx) < Math.abs(X_GRID[best] - nx) ? i : best, 0);
+    const nxData = X_GRID.map((_, i) => i === nxIdx ? mu[nxIdx] : null);
+    gpDS.push({
+      label: 'next proposal',
+      data: nxData,
+      borderColor: '#e05c00',
+      backgroundColor: '#e05c00',
+      pointRadius: X_GRID.map((_, i) => i === nxIdx ? 7 : 0),
+      pointStyle: 'crossRot',
+      showLine: false,
+      fill: false,
+    });
+
+    acqDS.push({
+      data: lastGP.acq,
+      borderColor: '#5c3fa3',
+      borderWidth: 1.5,
+      pointRadius: 0,
+      fill: { target: 'origin', above: 'rgba(92,63,163,0.08)' },
+      tension: 0.3,
+    });
+  }
+
+  // Observed samples as scatter
+  if (samples.length > 0) {
+    const scatterData = X_GRID.map(() => null);
+    samples.forEach(s => {
+      const idx = X_GRID.reduce((b, v, i) => Math.abs(v - s.x) < Math.abs(X_GRID[b] - s.x) ? i : b, 0);
+      scatterData[idx] = s.y;
+    });
+    gpDS.push({
+      label: 'samples',
+      data: scatterData,
+      borderColor: '#2a7a2a',
+      backgroundColor: '#2a7a2a',
+      pointRadius: X_GRID.map(x => samples.some(s => Math.abs(s.x - x) < 0.003) ? 5 : 0),
+      showLine: false,
+      fill: false,
+    });
+  }
+
+  gpChart.data.datasets  = gpDS;
+  acqChart.data.datasets = acqDS;
+  gpChart.update();
+  acqChart.update();
+}
+
+// ── UI Helpers ───────────────────────────────────────────────────────────────
+function setStatus(state, msg) {
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot ' + state;
+  document.getElementById('statusMsg').textContent = msg;
+}
+
+function enableButtons(on) {
+  const ids = ['btnSeed', 'btnNext', 'btnRun', 'btnReset'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    el.disabled = !on;
+  });
+  if (on) {
+    document.getElementById('btnNext').disabled = !lastGP;
+    document.getElementById('btnRun').disabled  = !lastGP;
+  }
+}
+
+function updateStats() {
+  document.getElementById('statN').textContent    = samples.length;
+  document.getElementById('statStep').textContent = stepCount;
+  if (samples.length > 0) {
+    const best = samples.reduce((b, s) => s.y > b.y ? s : b);
+    document.getElementById('statBestY').textContent = best.y.toFixed(4);
+    document.getElementById('statBestX').textContent = best.x.toFixed(4);
+  } else {
+    document.getElementById('statBestY').textContent = '—';
+    document.getElementById('statBestX').textContent = '—';
+  }
+  document.getElementById('statNextX').textContent = lastGP ? lastGP.next_x.toFixed(4) : '—';
+}
+
+function onWorkerReady() {
+  workerReady = true;
+  setStatus('ready', 'ready — press "seed random" to begin');
+  enableButtons(true);
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+initCharts();
+setStatus('busy', 'loading python runtime…');
+worker.postMessage({ type: 'init' });
+</script>
+</body>
+</html>

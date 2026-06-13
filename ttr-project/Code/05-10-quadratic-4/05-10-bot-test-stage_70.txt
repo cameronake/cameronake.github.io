@@ -1,0 +1,4 @@
+[3.976, 0.047, 0.024, 1.48, 0.219, 0.247, 3.949, 0, 35.325, 53.546, 1, 0.87, 0.292, -0.319, -0.443, -0.338, -0.157]	87	False	('Helena', 'Los Angeles'):True;('Seattle', 'Los Angeles'):True;('Duluth', 'El Paso'):False;('Chicago', 'Santa Fe'):True
+[3.85, 0.027, 0.054, 1.636, 0.189, 0.099, 2.295, 0.063, 27.867, 52.054, 0.88, 0.836, 0.012, -0.492, 0.098, -0.319, 0.023]	80	False	('Winnipeg', 'Little Rock'):True;('Dallas', 'New York'):True
+[4.544, 0.052, 0, 1.133, 0.797, 0.325, 2.704, 0.044, 31.788, 50.916, 0.837, 0.775, 0.21, -0.6, 0.198, -0.238, 0.2]	77	True	('Sault St. Marie', 'Nashville'):False;('Seattle', 'New York'):True
+[4.076, 0.041, 0.011, 1.549, 0.053, 0.287, 2.232, 0.024, 34.912, 50.821, 0.956, 0.817, 0.355, -0.579, 0.111, -0.259, -0.024]	73	False	('Denver', 'Pittsburgh'):True;('Toronto', 'Miami'):True;('Vancouver', 'Montreal'):False

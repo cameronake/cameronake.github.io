@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(head *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-quadratic-4\" | Select-Object -First 20 | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-averaged-quadratic-4\" | Select-Object -First 20 | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-linear-40\" | Select-Object -First 20 | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-quadratic-40\" | Select-Object -First 20 | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(\\(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-averaged-quadratic-4\"\\).Count; Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-averaged-quadratic-4\" | Sort-Object Name | Select-Object -Last 5 | ForEach-Object { $_.Name })",
+      "PowerShell(\\(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-linear-40\"\\).Count; Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-linear-40\" | Sort-Object Name | Select-Object -Last 5 | ForEach-Object { $_.Name })",
+      "PowerShell(\\(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-quadratic-40\"\\).Count; Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-quadratic-40\" | Sort-Object Name | Select-Object -Last 5 | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-averaged-quadratic-4\" | Sort-Object { if \\($_.BaseName -match '_\\(\\\\d+\\)$'\\) { [int]$Matches[1] } else { -1 } } | Select-Object -Last 10 | ForEach-Object { $_.Name })",
+      "PowerShell(python \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\process_chains.py\" 2>&1)",
+      "PowerShell($content = Get-Content \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\05-10-quadratic-4\\\\05-10-bot-test-stage_0.txt\" -Encoding UTF8; $line1 = $content[0]; $parts = $line1 -split \"`t\"; Write-Host \"Number of parts: $\\($parts.Count\\)\"; for \\($i = 0; $i -lt $parts.Count; $i++\\) { Write-Host \"Part $i`: $\\($parts[$i].Substring\\(0, [Math]::Min\\(80, $parts[$i].Length\\)\\)\\)\" })",
+      "PowerShell(Out-File *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell($content = Get-Content \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\ttr-project\\\\Code\\\\chain_output.txt\" -Encoding UTF8; \\($content | Where-Object { $_ -match [char]0x2192 }\\).Count)",
+      "PowerShell(python \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\compute_quartiles.py\")",
+      "Bash(Remove-Item \"C:\\\\Users\\\\camer\\\\OneDrive\\\\Documents\\\\Projects\\\\Portfolio\\\\compute_quartiles.py\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"done\")",
+      "Bash(python run_greedy40_games.py 30)",
+      "Bash(Get-Content *)"
+    ]
+  }
+}

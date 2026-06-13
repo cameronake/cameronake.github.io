@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * { text-transform: lowercase; }
+    #resume * { text-transform: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <header>
+    <nav>
+      <span class="logo" onclick="showPage('hero')" style="cursor:pointer;">Cameron Ake</span>
+      <ul>
+        <li class="dropdown">
+          <a href="#" onclick="showPage('about'); return false;">About Me</a>
+          <ul class="dropdown-menu">
+            <li><a href="#" onclick="showPage('about-cats'); return false;">Cats</a></li>
+            <li><a href="#" onclick="showPage('about-media'); return false;">Media</a></li>
+            <li><a href="#" onclick="showPage('about-hobbies'); return false;">Hobbies</a></li>
+          </ul>
+        </li>
+        <li><a href="#" onclick="showPage('education'); return false;">Education</a></li>
+        <li><a href="#" onclick="showPage('projects'); return false;">Projects</a></li>
+        <li><a href="#" onclick="showPage('resume'); return false;">Resume</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section id="hero" class="page active">
+    <h1><span class="accent">Cameron Ake</span></h1>
+    <a href="#" class="btn" onclick="showPage('projects'); return false;">Check out my work!</a>
+    <ul class="hero-contact">
+      <li><a href="mailto:cake@hmc.edu">cake@hmc.edu</a></li>
+      <li><a href="https://www.linkedin.com/in/cameron-ake/">LinkedIn</a></li>
+    </ul>
+  </section>
+
+  <!-- ── About ── -->
+  <section id="about" class="page">
+    <h2>About Me</h2>
+    <div class="about-intro section-content">
+      <p>
+        hi, i'm cameron! i'm a rising junior at harvey mudd college i'm studying cs and math.
+        i grew up in northern virginia, so now my favorite things include urban planning,
+        summer thunderstorms, and good guacamole. (only the really really good guacamole. 
+        i'm very picky about it.) my day-to-day interests include coding, talking about dnd,
+        and excitedly thinking about how good sad music is.
+      </p>
+    </div>
+
+    <p class="photo-hint">click an image to learn a little more about me :)</p>
+
+    <div class="about-photo-grid">
+      <div class="about-photo-item"
+           data-src="assets/about-me/drinks.jpg"
+           data-caption="i am a fan of extremely sweet drinks (and friends <3). my drink is almond flavored and purple and i like both of those things"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/drinks.jpg" alt="drinks" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/textbook.png"
+           data-caption="i have a sense of whimsy just like knuth. ...maybe putting a textbook in my about me page undermines that a bit, but i swear i have whimsy"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/textbook.png" alt="math textbook reading instructions steps 14 and 15" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/magnolia.jpg"
+           data-caption="some of the first trees to bloom in my neighborhood are the saucer magnolias (like this one). sometimes they remind me that even after a long and beige winter (don't come at me i love winter too), there's still colorful spring on the way. also they're purpleish and i like purple"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/magnolia.jpg" alt="magnolia" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/xkcd.PNG"
+           data-caption="i had a geoegraphy nerd era in middle school and i've literally had this as a top pet peeve ever since. when i found this xkcd a few years later i felt so seen. also i know this is an ice-cold take but xkcd is the best"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/xkcd.PNG" alt="xkcd comic about geographic profile maps" />
+      </div>
+      <div class="about-photo-item wide" 
+           data-src="assets/about-me/sunset.jpg"
+           data-caption="plane ride from BWI to ONT and i had the perfect seat to do nothing but watch the sunset for hours. not to brag or anything, but i took this picture out an airplane window. (a blizzard had also just hit the midwest and we flew over the midwest, so i have an entire photo album that's completely just stunning photos from this plane ride. best plane ride of my life)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/sunset.jpg" alt="sunset" />
+      </div>
+      <div class="about-photo-item wide"
+           data-src="assets/about-me/hobbies/stop-motion.mp4"
+           data-caption="in an alternate universe where i loved stem slightly less and had more spare time maybe i'd be an art kid. i've done a bit of animation though :)"
+           data-is-video="true"
+           onclick="openPhotoModal(this)">
+        <video src="assets/about-me/hobbies/stop-motion.mp4" muted playsinline preload="metadata"></video>
+      </div>
+    </div>
+
+    <p class="subpage-links-label">get to know me better:</p>
+    <div class="subpage-links">
+      <a class="subpage-link-card" href="#" onclick="showPage('about-cats'); return false;">
+        <div class="subpage-link-img">
+          <img src="assets/about-me/cats/floof-1.jpg" alt="my cat floof" />
+        </div>
+        <div class="subpage-link-text">
+          <div class="subpage-link-title">cats</div>
+          <div class="subpage-link-desc">did you know i really like cats?? well if you didn't you're about to. (i mean it. look at my cats)</div>
+        </div>
+      </a>
+      <a class="subpage-link-card" href="#" onclick="showPage('about-media'); return false;">
+        <div class="subpage-link-img">
+          <img src="assets/about-me/media/folklore-cover.png" alt="taylor swift folklore album cover" />
+        </div>
+        <div class="subpage-link-text">
+          <div class="subpage-link-title">media</div>
+          <div class="subpage-link-desc">i am completely normal about character development, and show tunes, and sad music, and cartoons, and-</div>
+        </div>
+      </a>
+      <a class="subpage-link-card" href="#" onclick="showPage('about-hobbies'); return false;">
+        <div class="subpage-link-img">
+          <img src="assets/about-me/hobbies/froyo.jpg" alt="froyo with friends" />
+        </div>
+        <div class="subpage-link-text">
+          <div class="subpage-link-title">hobbies</div>
+          <div class="subpage-link-desc">assorted other obsessions. i mean, um, hobbies. also friends! i like friends. also travel! traveling is the best</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── About: Cats ── -->
+  <section id="about-cats" class="page">
+    <h2>Cats</h2>
+    <div class="about-intro section-content">
+      <p>
+        these are my cats back home, Siri and Floof. they are the most important thing about me.
+        you might as well not read anything else on my about me pages.
+      </p>
+      <p>
+        uh anyway they're the best. Siri is the sleek, stylish one and she's very smart. Floof is... 
+        the one who looks like he's named Floof. (He's silly and sweet.) Floof is the annoying younger
+        sibling, and Siri is the annoyed older sibling.
+      </p>
+    </div>
+
+    <p class="photo-hint">click an image to learn a little more about me :)</p>
+
+    <div class="about-photo-grid">
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/both-cats.jpg"
+           data-caption="We love Floof, but sometimes he's a little bit stupid. Siri judges him for it. Sometimes you can feel the contempt oozing out of her. She's very judgmental"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/both-cats.jpg" alt="both cats together" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/siri-1.jpg"
+           data-caption="Siri when she's not within ten feet of Floof: poised, graceful, elegant, eloquent. (I know she can't talk. but if she could, I firmly believe she would be a wonderful speaker.)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/siri-1.jpg" alt="Siri" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/siri-2.jpg"
+           data-caption="Siri judging me for lying on the floor. She's very opinionated. Sometimes her opinions are that I should be petting her... or scratching her in front of her ears or under her chin like she likes it. But not in this picture. In this picture, she judges me"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/siri-2.jpg" alt="Siri" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/siri-3.jpg"
+           data-caption="eepy siri <3 (we named her siri as a shortening of cirrus because she always acted so free-spirited and kind as a kitten. she's still very sweet but some of that has mellowed out with age... she's 12 now)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/siri-3.jpg" alt="Siri" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/floof-1.jpg"
+           data-caption="he's literally so beautiful omg i can't. in photos like these you almost forget he's the sort of cat who will attempt to climb onto a lit stove... or befriend the neighborhood foxes... or play with the neighbors' aggressive 70 pound dog (all true stories). but he's very pretty <3"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/floof-1.jpg" alt="Floof" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/floof-2.jpg"
+           data-caption="where siri loves cat beds, floof loves cardboard boxes. floof sleeps 8 hours a night like he's a human, and then he takes a 4-hour midday nap because cats need more sleep. he finds a new place to sleep every night and it's never comfortable. sometimes it's on top of a table, sometimes on the hard-wood floor... this is a comfier bed by comparison i guess"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/floof-2.jpg" alt="Floof" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/michelangelo.jpg"
+           data-caption="siri usually wouldn't let floof this close to her. she loves him, but she doesn't like him. but in this case she fell asleep, he wanted to be near her because he loves her very much, and then he fell asleep next to her. note that siri falls asleep in a dignified curled-up pose, and floof just kind of sleeps however he feels like sleeping. (also why is it kind of giving michelangelo's creation of adam?????)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/michelangelo.jpg" alt="cats in michelangelo pose" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/cats/mila.jpg"
+           data-caption="even from california i still seek out cats. this is mila, my suitemate's cat from last year! (yes, i specifically sought out a living arrangement with a cat.) she's a little sassy but mostly a goofball. i love siri and floof the most obviously but i love all cats :)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/cats/mila.jpg" alt="Mila" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About: Media ── -->
+  <section id="about-media" class="page">
+    <h2>Media</h2>
+    <div class="about-intro section-content">
+      <p>
+        i've probably said this already, but i'm such a huge fan of good sad music and good character writing.
+        i'm also a big musical fan and have a complicated relationship with big brother and survivor.
+      </p>
+    </div>
+
+    <p class="photo-hint">click an image to learn a little more about me :)</p>
+
+    <div class="about-photo-grid">
+      <div class="about-photo-item"
+           data-src="assets/about-me/media/bb24.jpg"
+           data-caption="my favorite big brother winner: taylor hale (big brother 24). i still remember where i was when this finale aired live. if you're not familiar with it, seriously take a few minutes and learn what she went through on this season. her winning this season felt practically impossible, and she was literally the only decent person to win. the single most inspiring thing i've ever seen"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/media/bb24.jpg" alt="Big Brother 24 winner Taylor Hale" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/media/atla.AVIF"
+           data-caption="avatar: the last airbender (atla) is my go-to show rec. azula is my favorite villain of all time. she's ridiculously iconic (watch a 3 minute compilation on youtube and you'll see what i mean), but at the same time her character development is so strong and she's a deeply wounded person. her arc of devolving into paranoia and villainy is basically the opposite of her brother zuko's arc of redemption and love and growth (often called the best redemption arc ever), and it's actually such good writing. did i mention i love atla?"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/media/atla.AVIF" alt="Avatar: The Last Airbender" />
+      </div>
+      <div class="about-photo-item"
+            data-src="assets/about-me/media/rtc-cover.jpg"
+            data-caption="as far as musicals go, this one (ride the cyclone) is kind of a wild one but it's actually so good. it's about six dead teenagers who compete to return back to life. it's about dreams and identity and emptiness and life itself and it's so good. also, the songs range from whimsically grim to outrageous to hardcore angst, and i just think that's neat."
+            onclick="openPhotoModal(this)">
+          <img src="assets/about-me/media/rtc-cover.jpg" alt="Ride the Cyclone — Cast Recording" />
+      </div>
+      <div class="about-photo-item"
+            data-src="assets/about-me/media/nimona.jpg"
+            data-caption="nimona: my favorite movie. anyone who shares this opinion is automatically my favorite person. it handles themes of identity, ostracism, and assimilationism ridiculously well while also being hilarious. every time i watch this movie it leaves me sobbing hysterically"
+            onclick="openPhotoModal(this)">
+          <img src="assets/about-me/media/nimona.jpg" alt="Nimona" />
+      </div>
+    </div>
+
+    <div class="photo-cluster">
+      <div class="photo-cluster-label">albums on heavy rotation</div>
+      <div class="about-photo-grid">
+        <div class="about-photo-item"
+             data-src="assets/about-me/media/folklore-cover.png"
+             data-caption="folklore by Taylor Swift. cold take but it's my favorite album of hers... although my favorite songs by her are all too well (10 minute version) and champagne problems, because as i said, i really like sad music. but i really like almost every song on folklore, and it's actually also really good to work to"
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/media/folklore-cover.png" alt="folklore — Taylor Swift" />
+        </div>
+        <div class="about-photo-item"
+             data-src="assets/about-me/media/guts-cover.png"
+             data-caption="GUTS by Olivia Rodrigo. this album came out at arguably the angstiest point of my life and got me through some really hard periods. also, some of the songs (all-american b*tch, ballad of a homeschooled girl, and making the bed... i'm looking at you) have no right to be so good. (guts (spilled) is also so good because it has obsessed and so american and those are also sooo good)"
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/media/guts-cover.png" alt="GUTS — Olivia Rodrigo" />
+        </div>
+        <div class="about-photo-item"
+             data-src="assets/about-me/media/magbay-cover.png"
+             data-caption="Imaginal Disk by Magdalena Bay. the first time i listened to this album i didn't really like it. the second time i listened to this album i kind of liked it. now it's at the top of my last.fm and i listen to it at least weekly. it's mesmerizingly good and has so much to say about life and consciousness and morality and love and-"
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/media/magbay-cover.png" alt="Imaginal Disk — Magdalena Bay" />
+        </div>
+        <div class="about-photo-item"
+             data-src="assets/about-me/media/ABBA-gold-cover.png"
+             data-caption="ABBA Gold. one of my friends gets mad at me for calling it an album because technically it's a collection of songs and i get that. but also, this is comfort food in the form of music and i don't think i need to explain why i love it so much."
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/media/ABBA-gold-cover.png" alt="Gold — ABBA" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About: Hobbies ── -->
+  <section id="about-hobbies" class="page">
+    <h2>Hobbies</h2>
+    <div class="about-intro section-content">
+      <p>
+        some things i do when i'm not doing math or ranting about amazing music.
+        i can never get enough of my friends or of traveling.
+      </p>
+      <p>
+        or sometimes of whatever game i'm playing (the worst recent culprit 
+        has been ticket to ride). if you see the ticket to ride photos and you're sad
+        that that bot is pretty bad... <a href="ttr-demo.html">well one day i decided i agreed</a>
+      </p>
+    </div>
+
+    <p class="photo-hint">click an image to learn a little more about me :)</p>
+
+    <div class="about-photo-grid">
+      <div class="about-photo-item"
+           data-src="assets/about-me/hobbies/froyo.jpg"
+           data-caption="my friends and i try to go for the walk to get froyo and take the same picture every semester. i get vanilla with strawberries, peanut butter cups, and more (shoutout ray of sunshine)... but even sweeter than my order are my friends <3 (oh god that was sappy help my friends are gonna see this)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/hobbies/froyo.jpg" alt="froyo with friends" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/hobbies/shardspire-map.png"
+           data-caption="so um i drew this really high-resolution map of shardspire, the world for my dnd campaign (credit for the actual worldbuilding goes to our amazing dm). open the image in a new tab if you're curious for more detail. the purple line tracks my character's journey. don't ask me about the dnd campaign or i will talk for a full hour. (it turns out that my character's best friend of sixteen years is actually the main villain and leading a plot for mass mind control and tried to kill the party multiple times!! ...it's a really long story.) i'm so obsessed with our dnd campaign that i keep a running tally of how many times i accidentally almost write the name 'elsie' instead of the word 'else' (elsie is the name of the evil best friend). it's in the hundreds"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/hobbies/shardspire-map.png" alt="hand-drawn map of Shardspire" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/hobbies/nyc.jpg"
+           data-caption="highlight of this summer: visiting my high school bestie over weekends in new york city (i stayed in connecticut). i have now lived in three separate places and all of them are suburbs so now i want to escape suburbia. i want to live in a city so badly and new york city is amazing (we also love functional public transit systems!!!!)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/hobbies/nyc.jpg" alt="New York City" />
+      </div>
+      <div class="about-photo-item"
+           data-src="assets/about-me/hobbies/geneva.jpg"
+           data-caption="geneva, summer 2024. the single best day of my life. (so far!) switzerland is so colorful and so beautiful and the mountains are actually stunning and the water flows so well with the city and public transit is so accessible and the buildings are beautiful and there are beautiful waterfalls and mountains all over the place. when i was in geneva every single direction i looked gave me a beautiful view in a completely different way. it also helped that i was on a lot of caffeine in geneva after the red-eye. (can you tell i really like travel?)"
+           onclick="openPhotoModal(this)">
+        <img src="assets/about-me/hobbies/geneva.jpg" alt="Jet d'Eau fountain, Geneva, Switzerland" />
+      </div>
+    </div>
+
+    <div class="photo-cluster">
+      <div class="photo-cluster-label">ticket to ride</div>
+      <div class="about-photo-grid">
+        <div class="about-photo-item"s
+             data-src="assets/about-me/hobbies/ttr-achievements-1.jpg"
+             data-caption="some of the Ticket to Ride app achievements. i have completed way too many of these. the worst ones of these by far were the 15-ticket one and the coal one. the 15-ticket achievement is to succesfully connect 15 tickets, which is wild. you basically have to get a very specific route and just desperately hope you get lucky. the coal one is even worse: you have to win while claiming all black routes. just claiming all black routes requires you to get a full 27 black trains and/or locomotives, which is astronomically unlikely already, but winning while claiming all those random routes is basically impossible... so you basically need to game the terrible bots into perpetually drawing tickets and screwing themselves over so you can have enough turns to claim all the black routes and also have a chance to win the game. (it's such a broken achievement and it took way too long to get.)"
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/hobbies/ttr-achievements-1.jpg" alt="Ticket to Ride achievements" />
+        </div>
+        <div class="about-photo-item"
+             data-src="assets/about-me/hobbies/ttr-achievements-2.png"
+             data-caption="it's already really really hard to get over like 170 points in a ticket to ride game. so um i'm not going to tell you how long it took for me to get the 400-point badge. it was a test of patience and sheer willpower"
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/hobbies/ttr-achievements-2.png" alt="Ticket to Ride score achievements" />
+        </div>
+        <div class="about-photo-item"
+             data-src="assets/about-me/hobbies/ttr-achievements-3.png"
+             data-caption="i may have done a slightly alright job this game. (to be fair there's no way this would have happened in a real game... but again, the bots are bad and you can find ways to exploit their weaknesses)"
+             onclick="openPhotoModal(this)">
+          <img src="assets/about-me/hobbies/ttr-achievements-3.png" alt="Ticket to Ride win screen — Cameron 418, Jane Stanbot 44" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Education ── -->
+  <section id="education" class="page">
+    <h2>Education</h2>
+
+    <!-- Harvey Mudd College -->
+    <div class="edu-block">
+      <div class="edu-split">
+        <div class="edu-split-img">
+          <img src="assets/education/shan.jpg" alt="Harvey Mudd College campus: Shanahan Center" />
+          <img src="assets/education/mcgregor.png" alt="Harvey Mudd College campus: McGregor Center" />
+        </div>
+        <div class="edu-split-text">
+          <div class="edu-tag">current</div>
+          <h3 class="edu-school">Harvey Mudd College</h3>
+          <div class="edu-degree">B.S., Computer Science and Mathematics</div>
+          <div class="edu-meta">Claremont, CA &nbsp;·&nbsp; Aug 2024 – Expected May 2028</div>
+          <p>HMC is a small STEM liberal arts college of about 900 students. i'm majoring in CS and Math, positioned happily between fun conceptual insights and rewarding real-world applications.</p>
+          <p>There are always cool problems to be solving at Mudd, and it has a famously challenging curriculum. I love a good challenge, though :) I've maintained a 4.0 GPA even though only <a href="https://www.hmc.edu/career-services/wp-content/uploads/sites/9/2022/07/OCS-Recruiting-Guide.pdf" target="_blank" rel="noopener noreferrer">14 people</a> 
+            have ever graduated with a 4.0, and even though the freshman/sophomore core classes are usually the GPA-killer classes.</p>
+          <p>The best part of Mudd is being surrounded by people who are so genuinely excited by everything they do. Mudd is such a collaborative environment that everyone's passion for their work is really contagious.
+            Like, I went into Real Analysis honestly not really expecting to enjoy it (plus, I'd heard it's one of the hardest classes in the math department, and a big part of me was worried), but it ended up being
+            one of my favorite classes I've ever taken. (Check out the pictures below if you're curious why!!)
+          </p>
+          <ul class="edu-bullets">
+            <li>GPA 4.00 / 4 — Dean's List all graded semesters</li>
+            <li>Math Undergraduate Researcher, summer 2025 — <a href="https://doi.org/10.63151/amjc.v4i.35" target="_blank" rel="noopener noreferrer">published in the American Journal of Combinatorics</a></li>
+            <li>Grader and Tutor, CS dept. (intro CS + data structures), 2025–present</li>
+            <li>Mentor, HMC Residential Life, 2025–present</li>
+            <li>Classes: bayesian statistics, algorithms, real analysis, computer systems, database systems, data structures/program development, computability and logic, probability and stats, cs principles and practice, differential equations, discrete math, linear algebra, multivariable calc</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="photo-hint">click a photo to learn a bit about me at mudd :)</p>
+      <div class="edu-snapshots edu-photo-grid">
+        <div class="edu-snapshot edu-photo-item"
+             data-src="assets/education/analysis-proof.png"
+             data-caption="a proof sketch from real analysis that compact sets are closed. part of why analysis was so scary was because i started off staring at proofs that felt impossible for me to just come up with like that. but by the end i was coming up with all sorts of proofs that I felt so clever about all on my own - I can't share any of those because of Mudd's honor code, but here's one of my favorite proofs the professor guided us through. watching hard math click into place is one of the most satisfying things i've ever experienced, and this proof is such a good combination of conceptually interesting but also so intuitive. the moment i realized where this proof was going i looked up at my friend and my jaw dropped in awe at how intuitive and creative it was compared to the other proof of this that we'd seen - i love cool and creative solutions to things like this :) (anyway to anyone remotely interested in math reading this, you should take analysis)"
+             onclick="openPhotoModal(this)">
+          <img src="assets/education/analysis-proof.png" alt="real analysis proof: compact sets are closed" />
+          <div class="edu-snapshot-label">real analysis</div>
+        </div>
+        <div class="edu-snapshot edu-photo-item"
+             data-src="assets/education/bayesian-graphs.png"
+             data-caption="prior and posterior distributions from bayesian statistics. i love bayesian stats because it gives you a rigorous yet intuitive framework for making insights on complicated questions. taking 'here's what i believed, here's what i observed, here's how my beliefs updated' and using it for more potent statistical inference feels so natural i wish i'd learned it earlier. ...hence my fascination with applying bayesian methods all over the place (as you'll see if you read through my projects)"
+             onclick="openPhotoModal(this)">
+          <img src="assets/education/bayesian-graphs.png" alt="bayesian prior and posterior distributions" />
+          <div class="edu-snapshot-label">bayesian statistics</div>
+        </div>
+        <div class="edu-snapshot edu-photo-item"
+             data-src="assets/education/cs70-planning.jpg"
+             data-caption="planning notes for BST insert and exists, from data structures. one of the most important lessons i've learned in my education is how important it is to approach a problem from a high level first and plan everything out (because otherwise you will regret it)."
+             onclick="openPhotoModal(this)">
+          <img src="assets/education/cs70-planning.jpg" alt="BST insert and exists planning notes" />
+          <div class="edu-snapshot-label">data structures</div>
+        </div>
+        <div class="edu-snapshot edu-photo-item"
+             data-src="assets/education/robot.png"
+             data-caption="testing our underwater robot for our systems engineering course! one of my first times building something that had to actually work in the real world, not just on paper. i didn't expect to like systems engineering as much i did and it's always so cool to watch theory back up a project in the real world"
+             onclick="openPhotoModal(this)">
+          <img src="assets/education/robot.png" alt="underwater robotics project" />
+          <div class="edu-snapshot-label">systems engineering</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="edu-divider" />
+
+    <!-- TJHSST -->
+    <div class="edu-block">
+      <div class="edu-split edu-split-flip">
+        <div class="edu-split-img">
+          <img src="assets/education/tjhsst.jpg" alt="Thomas Jefferson High School for Science and Technology" />
+        </div>
+        <div class="edu-split-text">
+          <h3 class="edu-school">Thomas Jefferson High School for Science and Technology</h3>
+          <div class="edu-degree">High School Diploma</div>
+          <div class="edu-meta">Alexandria, VA &nbsp;·&nbsp; Graduated June 2024</div>#navpanes=0&pagemode=none
+          <p>TJ is a highly-selective STEM magnet school in Northern Virginia. 
+            the curriculum pushes you hard. considering all the chaos that comes with high school i'd honestly say it was even harder than mudd.
+            but it was also where i really fell in love with CS (math had already had my heart by then).</p>
+          <p>Like Mudd, getting all-A's is super hard, but I did. (Well, except senior year Geosystems where my A slipped to an A-
+            in the fourth quarter, but that was intentional... because I wanted to prove to myself that it was okay to be imperfect)
+          </p>
+          <ul class="edu-bullets">
+            <li>GPA 4.629 / 4.0 (weighted)</li>
+            <li>National Merit Scholar</li>
+            <li>Classes: computer systems research, machine learning, ai, computer vision, data structures, complex analysis</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="photo-hint">click a photo to learn a bit about my high school experience :)</p>
+      <div class="edu-photo-row edu-photo-grid">
+        <div class="edu-photo-row-item edu-photo-item"
+             data-src="assets/education/graduation.jpg"
+             data-caption="graduating from TJ (with my mom and grandma)! TJ was really intense, so finishing felt surreal, but also so good. Even now I feel like if I did so well at TJ, I can do anything. The best thing about being at a place like TJ is that it pushed me to be the best I could be... and that I met some of the most incredible people there <3"
+             onclick="openPhotoModal(this)">
+          <img src="assets/education/graduation.jpg" alt="graduation from TJHSST, June 2024" />
+          <div class="edu-photo-row-label">graduation, june 2024</div>
+        </div>
+        <div class="edu-photo-row-item edu-photo-item"
+             data-src="assets/education/complex-graph.png"
+             data-caption="a graph from my complex analysis class. in senior year sometimes i would try and plot the prettiest functions i could. mathematica is the best, and so is dr. osborne and all the other tj teachers that inspired curiosity while pushing for the best."
+             onclick="openPhotoModal(this)">
+          <img src="assets/education/complex-graph.png" alt="domain coloring of a complex function" />
+          <div class="edu-photo-row-label">complex analysis</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Projects ── -->
+  <section id="projects" class="page">
+    <h2>Projects</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>Ticket to Ride Bot</h3>
+        <p>A genetic algorithm that breeds Ticket to Ride AI players. Evolves a population of strategy-weight vectors through simulated selection, crossover, and mutation across multiple generations. After evolution, bots outperform <a href="https://www.daysofwonder.com/game/ticket-to-ride/" target="_blank" rel="noopener noreferrer">current</a> best bots.</p>
+        <div class="card-links">
+          <a href="ttr-demo.html">Live Demo</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Bayesian Optimization</h3>
+        <p>Implements Bayesian optimization from scratch using only NumPy. Fits a Gaussian process posterior via RBF kernel and Cholesky decomposition, then selects the next sample point via UCB or Expected Improvement acquisition functions.</p>
+        <div class="card-links">
+          <a href="bo-demo.html">Live Demo</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Monte Carlo Options Pricing</h3>
+        <p>Prices European options via Black-Scholes and Monte Carlo simulation side by side. Adjust strike, expiry, and volatility to see how the MC distribution and expected price respond in real time.</p>
+        <div class="card-links">
+          <a href="mcop-demo.html">Live Demo</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>LLM Agent App for Workflow Automation</h3>
+        <p>Created web app to host custom AI agent workflows for <a href="https://www.fcm.com/" target="_blank" rel="noopener noreferrer">Fermat</a> R&D team, then designed workflows for it.  Used Anthropic API via Bedrock, linking to Gmail/Drive/Box APIs. Balanced making LLM calls with using less costly algorithms, then designed custom algorithms to simplify tasks too dense for the LLM.</p>
+      </div>
+
+      <div class="card">
+        <h3>Neural Networks from Scratch</h3>
+        <p>Implemented feedforward neural networks and backpropagation from scratch three times across coursework: twice in pure Python with no external libraries (including manual matrix operations), and once with NumPy, trained on MNIST handwritten digit classification. Supported configurable network depth, layer widths, and activation functions.</p>
+      </div>
+
+      <div class="card">
+        <h3>Augmented Random Forest</h3>
+        <p>Applied skewed probability distributions to stabilize the Random Forest algorithm by introducing additional randomness to the splitting of the individual trees.</p>
+      </div>
+
+      <div class="card">
+        <h3>LSTM Model for Database Automation</h3>
+        <p>Created and fine-tuned custom-architecture LSTM model that predicted priority and category values for messy, unstandardized <a href="https://www.mcdean.com/" target="_blank" rel="noopener noreferrer">M.C. Dean</a> database inputs with wild formatting and content inconsistencies.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Resume ── -->
+  <section id="resume" class="page">
+    <h2>Resume</h2>
+    <div class="resume-pdf-actions">
+      <a href="assets/cameron-ake-resume.pdf" class="btn" target="_blank" rel="noopener noreferrer">Download Resume</a>
+      <a href="assets/cameron-ake-transcript.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Download Transcript</a>
+    </div>
+    <div class="resume-pdf-viewer">
+      <iframe src="assets/cameron-ake-resume.pdf#navpanes=0&pagemode=none" title="Cameron Ake Resume"></iframe>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>&copy; 2026 Cameron Ake</p>
+  </footer>
+
+  <!-- ── Photo Modal ── -->
+  <div class="photo-modal-overlay" id="photo-modal-overlay" onclick="closePhotoModal()">
+    <div class="photo-modal" onclick="event.stopPropagation()">
+      <div class="photo-modal-close-row">
+        <button class="photo-modal-close" onclick="closePhotoModal()">&#x2715;</button>
+      </div>
+      <div class="photo-modal-media">
+        <button class="modal-nav modal-prev" id="modal-prev" onclick="modalNav(-1)">&#8249;</button>
+        <img id="photo-modal-img" src="" alt="" />
+        <video id="photo-modal-video" controls></video>
+        <button class="modal-nav modal-next" id="modal-next" onclick="modalNav(1)">&#8250;</button>
+      </div>
+      <p class="photo-modal-caption" id="photo-modal-caption"></p>
+    </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('nav ul a').forEach(a => a.classList.remove('active'));
+
+      document.getElementById(id).classList.add('active');
+
+      const navId = id.startsWith('about') ? 'about' : id;
+      const link = document.querySelector(`nav ul a[onclick*="'${navId}'"]`);
+      if (link) link.classList.add('active');
+
+      window.scrollTo(0, 0);
+    }
+
+    let _modalItems = [];
+    let _modalIndex = 0;
+
+    function openPhotoModal(el) {
+      const grid  = el.closest('.about-photo-grid, .edu-photo-grid');
+      const items = Array.from(grid.querySelectorAll('.about-photo-item, .edu-photo-item'));
+      _modalItems = items.map(item => ({
+        src:     item.dataset.src,
+        caption: item.dataset.caption,
+        isVideo: item.dataset.isVideo === 'true'
+      }));
+      _modalIndex = items.indexOf(el);
+      _renderModalItem();
+      document.getElementById('photo-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function _renderModalItem() {
+      const item  = _modalItems[_modalIndex];
+      const img   = document.getElementById('photo-modal-img');
+      const video = document.getElementById('photo-modal-video');
+      const cap   = document.getElementById('photo-modal-caption');
+      const prev  = document.getElementById('modal-prev');
+      const next  = document.getElementById('modal-next');
+
+      prev.style.visibility = _modalIndex === 0                    ? 'hidden' : 'visible';
+      next.style.visibility = _modalIndex === _modalItems.length - 1 ? 'hidden' : 'visible';
+
+      if (item.isVideo) {
+        img.style.display   = 'none';
+        video.style.display = 'block';
+        video.src = item.src;
+        video.play();
+      } else {
+        img.style.display   = 'block';
+        video.style.display = 'none';
+        video.pause();
+        video.src = '';
+        img.src = item.src;
+      }
+      cap.textContent = item.caption;
+    }
+
+    function modalNav(dir) {
+      const next = _modalIndex + dir;
+      if (next >= 0 && next < _modalItems.length) {
+        _modalIndex = next;
+        _renderModalItem();
+      }
+    }
+
+    function closePhotoModal() {
+      const video = document.getElementById('photo-modal-video');
+      document.getElementById('photo-modal-overlay').classList.remove('open');
+      video.pause();
+      video.src = '';
+      document.body.style.overflow = '';
+    }
+
+    // Size each cluster box to exactly fit its images
+    (function() {
+      var ITEM = 185, GAP = 10, PAD = 36; // must match .about-photo-item flex-basis and gap
+      document.querySelectorAll('.photo-cluster').forEach(function(cluster) {
+        var n = cluster.querySelectorAll('.about-photo-item').length;
+        cluster.style.width = (n * (ITEM + GAP) - GAP + PAD) + 'px';
+      });
+    })();
+
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('photo-modal-overlay').classList.contains('open')) return;
+      if (e.key === 'Escape')      closePhotoModal();
+      if (e.key === 'ArrowLeft')   modalNav(-1);
+      if (e.key === 'ArrowRight')  modalNav(1);
+    });
+  </script>
+
+</body>
+</html>

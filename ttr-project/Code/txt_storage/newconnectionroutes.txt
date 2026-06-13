@@ -1,0 +1,200 @@
+Vancouver	Calgary	3	gray
+Vancouver	Seattle	1	gray
+Vancouver	Seattle	1	gray
+Calgary	Vancouver	3	gray
+Calgary	Seattle	4	gray
+Calgary	Helena	4	gray
+Calgary	Winnipeg	6	white
+Winnipeg	Calgary	6	white
+Winnipeg	Helena	4	blue
+Winnipeg	Duluth	4	black
+Winnipeg	Sault St. Marie	6	gray
+Sault St. Marie	Winnipeg	6	gray
+Sault St. Marie	Duluth	3	gray
+Sault St. Marie	Toronto	2	gray
+Sault St. Marie	Montreal	5	black
+Montreal	Sault St. Marie	5	black
+Montreal	Toronto	3	gray
+Montreal	New York	3	blue
+Montreal	Boston	2	gray
+Montreal	Boston	2	gray
+Seattle	Vancouver	1	gray
+Seattle	Vancouver	1	gray
+Seattle	Calgary	4	gray
+Seattle	Portland	1	gray
+Seattle	Portland	1	gray
+Seattle	Helena	6	yellow
+Portland	Seattle	1	gray
+Portland	Seattle	1	gray
+Portland	San Francisco	5	pink
+Portland	San Francisco	5	green
+Portland	Salt Lake City	6	blue
+San Francisco	Portland	5	pink
+San Francisco	Portland	5	green
+San Francisco	Salt Lake City	5	white
+San Francisco	Salt Lake City	5	orange
+San Francisco	Los Angeles	3	pink
+San Francisco	Los Angeles	3	yellow
+Salt Lake City	San Francisco	5	orange
+Salt Lake City	San Francisco	5	white
+Salt Lake City	Portland	6	blue
+Salt Lake City	Helena	3	pink
+Salt Lake City	Denver	3	red
+Salt Lake City	Denver	3	yellow
+Salt Lake City	Las Vegas	3	orange
+Los Angeles	San Francisco	3	pink
+Los Angeles	San Francisco	3	yellow
+Los Angeles	Las Vegas	2	gray
+Los Angeles	Phoenix	3	gray
+Los Angeles	El Paso	6	black
+Las Vegas	Salt Lake City	3	orange
+Las Vegas	Los Angeles	2	gray
+Helena	Calgary	4	gray
+Helena	Salt Lake City	3	pink
+Helena	Seattle	6	yellow
+Helena	Winnipeg	4	blue
+Helena	Duluth	6	orange
+Helena	Omaha	5	red
+Helena	Denver	4	green
+Phoenix	Los Angeles	3	gray
+Phoenix	Denver	5	white
+Phoenix	Santa Fe	3	gray
+Phoenix	El Paso	3	gray
+Santa Fe	Phoenix	3	gray
+Santa Fe	Denver	2	gray
+Santa Fe	Oklahoma City	3	blue
+Santa Fe	El Paso	2	gray
+Denver	Salt Lake City	3	red
+Denver	Salt Lake City	3	yellow
+Denver	Helena	4	green
+Denver	Omaha	4	pink
+Denver	Kansas City	4	black
+Denver	Kansas City	4	orange
+Denver	Oklahoma City	4	red
+Denver	Santa Fe	2	gray
+Denver	Phoenix	5	white
+Oklahoma City	Santa Fe	3	blue
+Oklahoma City	Denver	4	red
+Oklahoma City	Kansas City	2	gray
+Oklahoma City	Kansas City	2	gray
+Oklahoma City	Little Rock	2	gray
+Oklahoma City	Dallas	2	gray
+Oklahoma City	Dallas	2	gray
+Oklahoma City	El Paso	5	yellow
+El Paso	Los Angeles	6	black
+El Paso	Phoenix	3	gray
+El Paso	Santa Fe	2	gray
+El Paso	Oklahoma City	5	yellow
+El Paso	Dallas	4	red
+El Paso	Houston	6	green
+Dallas	El Paso	4	red
+Dallas	Oklahoma City	2	gray
+Dallas	Oklahoma City	2	gray
+Dallas	Little Rock	2	gray
+Dallas	Houston	1	gray
+Dallas	Houston	1	gray
+Houston	El Paso	6	green
+Houston	Dallas	1	gray
+Houston	Dallas	1	gray
+Houston	New Orleans	2	gray
+Kansas City	Denver	4	black
+Kansas City	Denver	4	orange
+Kansas City	Omaha	1	gray
+Kansas City	Omaha	1	gray
+Kansas City	Saint Louis	2	blue
+Kansas City	Saint Louis	2	pink
+Kansas City	Oklahoma City	2	gray
+Kansas City	Oklahoma City	2	gray
+Little Rock	Oklahoma City	2	gray
+Little Rock	Saint Louis	2	gray
+Little Rock	Nashville	3	white
+Little Rock	New Orleans	3	green
+Little Rock	Dallas	2	gray
+New Orleans	Houston	2	gray
+New Orleans	Little Rock	3	green
+New Orleans	Atlanta	4	yellow
+New Orleans	Atlanta	4	orange
+New Orleans	Miami	6	red
+Duluth	Helena	6	orange
+Duluth	Winnipeg	4	black
+Duluth	Sault St. Marie	3	gray
+Duluth	Toronto	6	pink
+Duluth	Chicago	3	red
+Duluth	Omaha	2	gray
+Duluth	Omaha	2	gray
+Omaha	Helena	5	red
+Omaha	Duluth	2	gray
+Omaha	Duluth	2	gray
+Omaha	Chicago	4	blue
+Omaha	Kansas City	1	gray
+Omaha	Kansas City	1	gray
+Omaha	Denver	4	pink
+Saint Louis	Kansas City	2	pink
+Saint Louis	Kansas City	2	blue
+Saint Louis	Chicago	2	green
+Saint Louis	Chicago	2	white
+Saint Louis	Pittsburgh	5	green
+Saint Louis	Nashville	2	gray
+Saint Louis	Little Rock	2	gray
+Chicago	Omaha	4	blue
+Chicago	Duluth	3	red
+Chicago	Toronto	4	white
+Chicago	Pittsburgh	3	orange
+Chicago	Pittsburgh	3	black
+Chicago	Saint Louis	2	white
+Chicago	Saint Louis	2	green
+Toronto	Duluth	6	pink
+Toronto	Sault St. Marie	2	gray
+Toronto	Montreal	3	gray
+Toronto	Pittsburgh	2	gray
+Toronto	Chicago	4	white
+Pittsburgh	Chicago	3	black
+Pittsburgh	Chicago	3	orange
+Pittsburgh	Toronto	2	gray
+Pittsburgh	New York	2	white
+Pittsburgh	New York	2	green
+Pittsburgh	Washington	2	gray
+Pittsburgh	Raleigh	2	gray
+Pittsburgh	Nashville	4	yellow
+Pittsburgh	Saint Louis	5	green
+Nashville	Saint Louis	2	gray
+Nashville	Pittsburgh	4	yellow
+Nashville	Raleigh	3	black
+Nashville	Atlanta	1	gray
+Nashville	Little Rock	3	white
+Raleigh	Nashville	3	black
+Raleigh	Pittsburgh	2	gray
+Raleigh	Washington	2	gray
+Raleigh	Washington	2	gray
+Raleigh	Charleston	2	gray
+Raleigh	Atlanta	2	gray
+Raleigh	Atlanta	2	gray
+Atlanta	Nashville	1	gray
+Atlanta	Raleigh	2	gray
+Atlanta	Raleigh	2	gray
+Atlanta	Charleston	2	gray
+Atlanta	Miami	5	blue
+Atlanta	New Orleans	4	orange
+Atlanta	New Orleans	4	yellow
+Miami	New Orleans	6	red
+Miami	Atlanta	5	blue
+Miami	Charleston	4	pink
+Charleston	Atlanta	2	gray
+Charleston	Raleigh	2	gray
+Charleston	Miami	4	pink
+Washington	Pittsburgh	2	gray
+Washington	New York	2	orange
+Washington	New York	2	black
+Washington	Raleigh	2	gray
+Washington	Raleigh	2	gray
+New York	Montreal	3	blue
+New York	Boston	2	yellow
+New York	Boston	2	red
+New York	Washington	2	black
+New York	Washington	2	orange
+New York	Pittsburgh	2	green
+New York	Pittsburgh	2	white
+Boston	Montreal	2	gray
+Boston	Montreal	2	gray
+Boston	New York	2	red
+Boston	New York	2	yellow

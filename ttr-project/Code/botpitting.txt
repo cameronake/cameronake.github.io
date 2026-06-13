@@ -1,0 +1,465 @@
+PS C:\Users\camer\OneDrive\Documents\Projects\Portfolio\ttr-project\Code> python BotPitting.py
+Beginning game
+
+Bot YELLOW got 79 points
+         with tickets {('Toronto', 'Miami'): 10, ('Calgary', 'Salt Lake City'): 7}
+         longest route: True
+                 ('Toronto', 'Miami') NOT satisfied
+                 ('Calgary', 'Salt Lake City') satisfied
+Bot BLUE got 69 points
+         with tickets {('Kansas City', 'Houston'): 5, ('Portland', 'Phoenix'): 11}
+         longest route: False
+                 ('Kansas City', 'Houston') NOT satisfied
+                 ('Portland', 'Phoenix') NOT satisfied
+Bot GREEN got 61 points
+         with tickets {('Seattle', 'Los Angeles'): 9, ('Dallas', 'New York'): 11}
+         longest route: False
+                 ('Seattle', 'Los Angeles') NOT satisfied
+                 ('Dallas', 'New York') NOT satisfied
+Bot RED got 53 points
+         with tickets {('Winnipeg', 'Houston'): 12, ('Montreal', 'Atlanta'): 9}
+         longest route: False
+                 ('Winnipeg', 'Houston') NOT satisfied
+                 ('Montreal', 'Atlanta') NOT satisfied
+
+Beginning game
+
+Bot YELLOW got 104 points
+         with tickets {('Denver', 'El Paso'): 4, ('Calgary', 'Salt Lake City'): 7}
+         longest route: True
+                 ('Denver', 'El Paso') satisfied
+                 ('Calgary', 'Salt Lake City') satisfied
+Bot BLUE got 98 points
+         with tickets {('Los Angeles', 'Chicago'): 16, ('Montreal', 'New Orleans'): 13}
+         longest route: False
+                 ('Los Angeles', 'Chicago') satisfied
+                 ('Montreal', 'New Orleans') satisfied
+Bot RED got 76 points
+         with tickets {('Helena', 'Los Angeles'): 8, ('Sault St. Marie', 'Oklahoma City'): 9}
+         longest route: False
+                 ('Helena', 'Los Angeles') NOT satisfied
+                 ('Sault St. Marie', 'Oklahoma City') satisfied
+Bot GREEN got 35 points
+         with tickets {('Montreal', 'Atlanta'): 9, ('Portland', 'Nashville'): 17}
+         longest route: False
+                 ('Montreal', 'Atlanta') satisfied
+                 ('Portland', 'Nashville') NOT satisfied
+
+Beginning game
+
+Bot BLUE got 87 points
+         with tickets {('Portland', 'Nashville'): 17, ('Calgary', 'Salt Lake City'): 7}
+         longest route: True
+                 ('Portland', 'Nashville') satisfied
+                 ('Calgary', 'Salt Lake City') satisfied
+Bot GREEN got 83 points
+         with tickets {('Denver', 'Pittsburgh'): 11, ('Los Angeles', 'Miami'): 20}
+         longest route: False
+                 ('Denver', 'Pittsburgh') satisfied
+                 ('Los Angeles', 'Miami') satisfied
+Bot YELLOW got 78 points
+         with tickets {('Kansas City', 'Houston'): 5, ('Boston', 'Miami'): 12}
+         longest route: False
+                 ('Kansas City', 'Houston') NOT satisfied
+                 ('Boston', 'Miami') satisfied
+Bot RED got 39 points
+         with tickets {('Los Angeles', 'New York'): 21, ('Seattle', 'New York'): 22}
+         longest route: False
+                 ('Los Angeles', 'New York') NOT satisfied
+                 ('Seattle', 'New York') NOT satisfied
+
+Beginning game
+
+Bot YELLOW got 113 points
+         with tickets {('Sault St. Marie', 'Nashville'): 8, ('Portland', 'Nashville'): 17}
+         longest route: True
+                 ('Sault St. Marie', 'Nashville') satisfied
+                 ('Portland', 'Nashville') satisfied
+Bot RED got 90 points
+         with tickets {('Los Angeles', 'Chicago'): 16, ('Seattle', 'Los Angeles'): 9}
+         longest route: False
+                 ('Los Angeles', 'Chicago') satisfied
+                 ('Seattle', 'Los Angeles') satisfied
+Bot BLUE got 13 points
+         with tickets {('Calgary', 'Salt Lake City'): 7, ('Chicago', 'New Orleans'): 7}
+         longest route: False
+                 ('Calgary', 'Salt Lake City') satisfied
+                 ('Chicago', 'New Orleans') NOT satisfied
+Bot GREEN got 11 points
+         with tickets {('Los Angeles', 'Miami'): 20, ('Vancouver', 'Montreal'): 20}
+         longest route: False
+                 ('Los Angeles', 'Miami') NOT satisfied
+                 ('Vancouver', 'Montreal') NOT satisfied
+
+Beginning game
+
+Bot RED got 100 points
+         with tickets {('Seattle', 'Los Angeles'): 9, ('Montreal', 'New Orleans'): 13}
+         longest route: True
+                 ('Seattle', 'Los Angeles') satisfied
+                 ('Montreal', 'New Orleans') NOT satisfied
+Bot YELLOW got 74 points
+         with tickets {('New York', 'Atlanta'): 6, ('Vancouver', 'Santa Fe'): 13}
+         longest route: False
+                 ('New York', 'Atlanta') NOT satisfied
+                 ('Vancouver', 'Santa Fe') NOT satisfied
+Bot BLUE got 68 points
+         with tickets {('Boston', 'Miami'): 12, ('Duluth', 'Houston'): 8}
+         longest route: False
+                 ('Boston', 'Miami') satisfied
+                 ('Duluth', 'Houston') NOT satisfied
+Bot GREEN got 38 points
+         with tickets {('Montreal', 'Atlanta'): 9, ('Chicago', 'New Orleans'): 7}
+         longest route: False
+                 ('Montreal', 'Atlanta') satisfied
+                 ('Chicago', 'New Orleans') satisfied
+
+Beginning game
+
+Bot RED got 102 points
+         with tickets {('Vancouver', 'Santa Fe'): 13, ('Portland', 'Phoenix'): 11}
+         longest route: True
+                 ('Vancouver', 'Santa Fe') satisfied
+                 ('Portland', 'Phoenix') satisfied
+Bot GREEN got 92 points
+         with tickets {('Denver', 'El Paso'): 4, ('Sault St. Marie', 'Oklahoma City'): 9}
+         longest route: True
+                 ('Denver', 'El Paso') NOT satisfied
+                 ('Sault St. Marie', 'Oklahoma City') satisfied
+Bot YELLOW got 76 points
+         with tickets {('Montreal', 'New Orleans'): 13, ('Winnipeg', 'Little Rock'): 11}
+         longest route: False
+                 ('Montreal', 'New Orleans') NOT satisfied
+                 ('Winnipeg', 'Little Rock') NOT satisfied
+Bot BLUE got 10 points
+         with tickets {('Chicago', 'New Orleans'): 7, ('Los Angeles', 'New York'): 21}
+         longest route: False
+                 ('Chicago', 'New Orleans') satisfied
+                 ('Los Angeles', 'New York') NOT satisfied
+
+Beginning game
+
+Bot YELLOW got 87 points
+         with tickets {('Kansas City', 'Houston'): 5, ('Montreal', 'Atlanta'): 9}
+         longest route: False
+                 ('Kansas City', 'Houston') NOT satisfied
+                 ('Montreal', 'Atlanta') NOT satisfied
+Bot GREEN got 81 points
+         with tickets {('Sault St. Marie', 'Oklahoma City'): 9, ('Helena', 'Los Angeles'): 8}
+         longest route: False
+                 ('Sault St. Marie', 'Oklahoma City') satisfied
+                 ('Helena', 'Los Angeles') satisfied
+Bot RED got 79 points
+         with tickets {('Denver', 'El Paso'): 4, ('Chicago', 'New Orleans'): 7}
+         longest route: True
+                 ('Denver', 'El Paso') NOT satisfied
+                 ('Chicago', 'New Orleans') satisfied
+Bot BLUE got 48 points
+         with tickets {('San Francisco', 'Atlanta'): 17, ('Duluth', 'Houston'): 8, ('Portland', 'Phoenix'): 11}
+         longest route: False
+                 ('San Francisco', 'Atlanta') satisfied
+                 ('Duluth', 'Houston') NOT satisfied
+                 ('Portland', 'Phoenix') NOT satisfied
+
+Beginning game
+
+Bot RED got 101 points
+         with tickets {('Helena', 'Los Angeles'): 8, ('Los Angeles', 'Chicago'): 16}
+         longest route: True
+                 ('Helena', 'Los Angeles') satisfied
+                 ('Los Angeles', 'Chicago') satisfied
+Bot YELLOW got 68 points
+         with tickets {('Montreal', 'Atlanta'): 9, ('Seattle', 'Los Angeles'): 9}
+         longest route: False
+                 ('Montreal', 'Atlanta') satisfied
+                 ('Seattle', 'Los Angeles') NOT satisfied
+Bot BLUE got 44 points
+         with tickets {('New York', 'Atlanta'): 6, ('Toronto', 'Miami'): 10}
+         longest route: False
+                 ('New York', 'Atlanta') satisfied
+                 ('Toronto', 'Miami') NOT satisfied
+Bot GREEN got 29 points
+         with tickets {('Portland', 'Phoenix'): 11, ('Montreal', 'New Orleans'): 13}
+         longest route: False
+                 ('Portland', 'Phoenix') satisfied
+                 ('Montreal', 'New Orleans') NOT satisfied
+
+Beginning game
+
+Bot RED got 91 points
+         with tickets {('Duluth', 'Houston'): 8, ('Portland', 'Phoenix'): 11}
+         longest route: False
+                 ('Duluth', 'Houston') NOT satisfied
+                 ('Portland', 'Phoenix') NOT satisfied
+Bot YELLOW got 68 points
+         with tickets {('Helena', 'Los Angeles'): 8, ('Boston', 'Miami'): 12}
+         longest route: True
+                 ('Helena', 'Los Angeles') satisfied
+                 ('Boston', 'Miami') NOT satisfied
+Bot BLUE got 62 points
+         with tickets {('Seattle', 'Los Angeles'): 9, ('Denver', 'Pittsburgh'): 11}
+         longest route: False
+                 ('Seattle', 'Los Angeles') NOT satisfied
+                 ('Denver', 'Pittsburgh') satisfied
+Bot GREEN got 46 points
+         with tickets {('San Francisco', 'Atlanta'): 17, ('Toronto', 'Miami'): 10}
+         longest route: False
+                 ('San Francisco', 'Atlanta') NOT satisfied
+                 ('Toronto', 'Miami') satisfied
+
+Beginning game
+
+Bot GREEN got 92 points
+         with tickets {('Dallas', 'New York'): 11, ('Sault St. Marie', 'Oklahoma City'): 9}
+         longest route: True
+                 ('Dallas', 'New York') satisfied
+                 ('Sault St. Marie', 'Oklahoma City') satisfied
+Bot BLUE got 86 points
+         with tickets {('Seattle', 'Los Angeles'): 9, ('Boston', 'Miami'): 12}
+         longest route: False
+                 ('Seattle', 'Los Angeles') satisfied
+                 ('Boston', 'Miami') satisfied
+Bot RED got 77 points
+         with tickets {('Denver', 'Pittsburgh'): 11, ('Chicago', 'Santa Fe'): 9}
+         longest route: False
+                 ('Denver', 'Pittsburgh') NOT satisfied
+                 ('Chicago', 'Santa Fe') NOT satisfied
+Bot YELLOW got 39 points
+         with tickets {('Duluth', 'Houston'): 8, ('Duluth', 'El Paso'): 10}
+         longest route: False
+                 ('Duluth', 'Houston') NOT satisfied
+                 ('Duluth', 'El Paso') NOT satisfied
+
+Beginning game
+
+Bot BLUE got 116 points
+         with tickets {('Portland', 'Phoenix'): 11, ('Denver', 'El Paso'): 4}
+         longest route: True
+                 ('Portland', 'Phoenix') satisfied
+                 ('Denver', 'El Paso') satisfied
+Bot GREEN got 98 points
+         with tickets {('Kansas City', 'Houston'): 5, ('Toronto', 'Miami'): 10}
+         longest route: False
+                 ('Kansas City', 'Houston') satisfied
+                 ('Toronto', 'Miami') satisfied
+Bot YELLOW got 51 points
+         with tickets {('Chicago', 'New Orleans'): 7, ('Winnipeg', 'Little Rock'): 11}
+         longest route: False
+                 ('Chicago', 'New Orleans') satisfied
+                 ('Winnipeg', 'Little Rock') NOT satisfied
+Bot RED got 46 points
+         with tickets {('Chicago', 'Santa Fe'): 9, ('Los Angeles', 'Miami'): 20}
+         longest route: False
+                 ('Chicago', 'Santa Fe') NOT satisfied
+                 ('Los Angeles', 'Miami') NOT satisfied
+
+Beginning game
+
+Bot RED got 83 points
+         with tickets {('Montreal', 'New Orleans'): 13, ('Montreal', 'Atlanta'): 9, ('Sault St. Marie', 'Nashville'): 8, ('Helena', 'Los Angeles'): 8}
+         longest route: True
+                 ('Montreal', 'New Orleans') satisfied
+                 ('Montreal', 'Atlanta') satisfied
+                 ('Sault St. Marie', 'Nashville') NOT satisfied
+                 ('Helena', 'Los Angeles') NOT satisfied
+Bot GREEN got 59 points
+         with tickets {('Calgary', 'Salt Lake City'): 7, ('Calgary', 'Phoenix'): 13, ('Duluth', 'Houston'): 8}
+         longest route: False
+                 ('Calgary', 'Salt Lake City') satisfied
+                 ('Calgary', 'Phoenix') satisfied
+                 ('Duluth', 'Houston') satisfied
+Bot BLUE got 54 points
+         with tickets {('Boston', 'Miami'): 12, ('Seattle', 'Los Angeles'): 9}
+         longest route: False
+                 ('Boston', 'Miami') NOT satisfied
+                 ('Seattle', 'Los Angeles') NOT satisfied
+Bot YELLOW got 29 points
+         with tickets {('New York', 'Atlanta'): 6, ('Denver', 'Pittsburgh'): 11, ('Winnipeg', 'Houston'): 12}
+         longest route: False
+                 ('New York', 'Atlanta') satisfied
+                 ('Denver', 'Pittsburgh') satisfied
+                 ('Winnipeg', 'Houston') NOT satisfied
+
+Beginning game
+
+Bot YELLOW got 115 points
+         with tickets {('Denver', 'Pittsburgh'): 11, ('Los Angeles', 'New York'): 21}
+         longest route: True
+                 ('Denver', 'Pittsburgh') satisfied
+                 ('Los Angeles', 'New York') satisfied
+Bot GREEN got 89 points
+         with tickets {('Vancouver', 'Montreal'): 20, ('Winnipeg', 'Houston'): 12}
+         longest route: False
+                 ('Vancouver', 'Montreal') satisfied
+                 ('Winnipeg', 'Houston') satisfied
+Bot RED got 89 points
+         with tickets {('Sault St. Marie', 'Oklahoma City'): 9, ('Duluth', 'Houston'): 8}
+         longest route: False
+                 ('Sault St. Marie', 'Oklahoma City') NOT satisfied
+                 ('Duluth', 'Houston') satisfied
+Bot BLUE got 63 points
+         with tickets {('Sault St. Marie', 'Nashville'): 8, ('Denver', 'El Paso'): 4}
+         longest route: False
+                 ('Sault St. Marie', 'Nashville') NOT satisfied
+                 ('Denver', 'El Paso') satisfied
+
+Beginning game
+
+Bot GREEN got 105 points
+         with tickets {('Chicago', 'Santa Fe'): 9, ('Los Angeles', 'New York'): 21}
+         longest route: True
+                 ('Chicago', 'Santa Fe') satisfied
+                 ('Los Angeles', 'New York') satisfied
+Bot BLUE got 70 points
+         with tickets {('Portland', 'Nashville'): 17, ('New York', 'Atlanta'): 6}
+         longest route: True
+                 ('Portland', 'Nashville') satisfied
+                 ('New York', 'Atlanta') NOT satisfied
+Bot YELLOW got 54 points
+         with tickets {('Helena', 'Los Angeles'): 8, ('Duluth', 'Houston'): 8}
+         longest route: False
+                 ('Helena', 'Los Angeles') NOT satisfied
+                 ('Duluth', 'Houston') NOT satisfied
+Bot RED got 49 points
+         with tickets {('Denver', 'Pittsburgh'): 11, ('Vancouver', 'Santa Fe'): 13}
+         longest route: False
+                 ('Denver', 'Pittsburgh') NOT satisfied
+                 ('Vancouver', 'Santa Fe') NOT satisfied
+
+Beginning game
+
+Bot YELLOW got 66 points
+         with tickets {('Sault St. Marie', 'Nashville'): 8, ('Winnipeg', 'Houston'): 12}
+         longest route: False
+                 ('Sault St. Marie', 'Nashville') NOT satisfied
+                 ('Winnipeg', 'Houston') NOT satisfied
+Bot RED got 62 points
+         with tickets {('Los Angeles', 'New York'): 21, ('Kansas City', 'Houston'): 5}
+         longest route: False
+                 ('Los Angeles', 'New York') NOT satisfied
+                 ('Kansas City', 'Houston') NOT satisfied
+Bot BLUE got 34 points
+         with tickets {('San Francisco', 'Atlanta'): 17, ('Seattle', 'Los Angeles'): 9}
+         longest route: True
+                 ('San Francisco', 'Atlanta') NOT satisfied
+                 ('Seattle', 'Los Angeles') NOT satisfied
+Bot GREEN got 32 points
+         with tickets {('Chicago', 'Santa Fe'): 9, ('Toronto', 'Miami'): 10}
+         longest route: False
+                 ('Chicago', 'Santa Fe') NOT satisfied
+                 ('Toronto', 'Miami') NOT satisfied
+
+Beginning game
+
+Bot RED got 95 points
+         with tickets {('Chicago', 'Santa Fe'): 9, ('Los Angeles', 'New York'): 21}
+         longest route: False
+                 ('Chicago', 'Santa Fe') satisfied
+                 ('Los Angeles', 'New York') satisfied
+Bot GREEN got 57 points
+         with tickets {('Winnipeg', 'Little Rock'): 11, ('Duluth', 'El Paso'): 10}
+         longest route: True
+                 ('Winnipeg', 'Little Rock') NOT satisfied
+                 ('Duluth', 'El Paso') NOT satisfied
+Bot YELLOW got 17 points
+         with tickets {('Toronto', 'Miami'): 10, ('Sault St. Marie', 'Nashville'): 8}
+         longest route: False
+                 ('Toronto', 'Miami') satisfied
+                 ('Sault St. Marie', 'Nashville') NOT satisfied
+Bot BLUE got -5 points
+         with tickets {('Los Angeles', 'Miami'): 20, ('Seattle', 'New York'): 22}
+         longest route: False
+                 ('Los Angeles', 'Miami') NOT satisfied
+                 ('Seattle', 'New York') NOT satisfied
+
+Beginning game
+
+Bot RED got 107 points
+         with tickets {('San Francisco', 'Atlanta'): 17, ('Kansas City', 'Houston'): 5}
+         longest route: True
+                 ('San Francisco', 'Atlanta') satisfied
+                 ('Kansas City', 'Houston') satisfied
+Bot GREEN got 75 points
+         with tickets {('Chicago', 'New Orleans'): 7, ('Sault St. Marie', 'Nashville'): 8}
+         longest route: False
+                 ('Chicago', 'New Orleans') satisfied
+                 ('Sault St. Marie', 'Nashville') NOT satisfied
+Bot YELLOW got 45 points
+         with tickets {('Vancouver', 'Montreal'): 20, ('New York', 'Atlanta'): 6}
+         longest route: True
+                 ('Vancouver', 'Montreal') NOT satisfied
+                 ('New York', 'Atlanta') NOT satisfied
+Bot BLUE got 18 points
+         with tickets {('Seattle', 'New York'): 22, ('Vancouver', 'Santa Fe'): 13}
+         longest route: False
+                 ('Seattle', 'New York') NOT satisfied
+                 ('Vancouver', 'Santa Fe') NOT satisfied
+
+Beginning game
+
+Bot RED got 79 points
+         with tickets {('Chicago', 'Santa Fe'): 9, ('Chicago', 'New Orleans'): 7}
+         longest route: False
+                 ('Chicago', 'Santa Fe') NOT satisfied
+                 ('Chicago', 'New Orleans') NOT satisfied
+Bot BLUE got 69 points
+         with tickets {('Winnipeg', 'Little Rock'): 11, ('Portland', 'Phoenix'): 11}
+         longest route: False
+                 ('Winnipeg', 'Little Rock') NOT satisfied
+                 ('Portland', 'Phoenix') satisfied
+Bot GREEN got 56 points
+         with tickets {('Boston', 'Miami'): 12, ('Seattle', 'New York'): 22}
+         longest route: False
+                 ('Boston', 'Miami') NOT satisfied
+                 ('Seattle', 'New York') NOT satisfied
+Bot YELLOW got 50 points
+         with tickets {('New York', 'Atlanta'): 6, ('Los Angeles', 'Chicago'): 16}
+         longest route: True
+                 ('New York', 'Atlanta') NOT satisfied
+                 ('Los Angeles', 'Chicago') NOT satisfied
+
+Beginning game
+
+Bot GREEN got 88 points
+         with tickets {('Vancouver', 'Montreal'): 20, ('Duluth', 'Houston'): 8}
+         longest route: False
+                 ('Vancouver', 'Montreal') satisfied
+                 ('Duluth', 'Houston') NOT satisfied
+Bot RED got 76 points
+         with tickets {('Montreal', 'Atlanta'): 9, ('Chicago', 'Santa Fe'): 9}
+         longest route: True
+                 ('Montreal', 'Atlanta') NOT satisfied
+                 ('Chicago', 'Santa Fe') NOT satisfied
+Bot YELLOW got 72 points
+         with tickets {('Denver', 'Pittsburgh'): 11, ('New York', 'Atlanta'): 6}
+         longest route: False
+                 ('Denver', 'Pittsburgh') satisfied
+                 ('New York', 'Atlanta') NOT satisfied
+Bot BLUE got 58 points
+         with tickets {('Montreal', 'New Orleans'): 13, ('Boston', 'Miami'): 12}
+         longest route: False
+                 ('Montreal', 'New Orleans') NOT satisfied
+                 ('Boston', 'Miami') NOT satisfied
+
+Beginning game
+
+Bot BLUE got 77 points
+         with tickets {('Calgary', 'Phoenix'): 13, ('Seattle', 'Los Angeles'): 9}
+         longest route: True
+                 ('Calgary', 'Phoenix') NOT satisfied
+                 ('Seattle', 'Los Angeles') satisfied
+Bot RED got 72 points
+         with tickets {('Sault St. Marie', 'Oklahoma City'): 9, ('Montreal', 'Atlanta'): 9}
+         longest route: False
+                 ('Sault St. Marie', 'Oklahoma City') NOT satisfied
+                 ('Montreal', 'Atlanta') NOT satisfied
+Bot GREEN got 49 points
+         with tickets {('Los Angeles', 'Chicago'): 16, ('Denver', 'El Paso'): 4}
+         longest route: False
+                 ('Los Angeles', 'Chicago') NOT satisfied
+                 ('Denver', 'El Paso') satisfied
+Bot YELLOW got 34 points
+         with tickets {('Duluth', 'Houston'): 8, ('Los Angeles', 'New York'): 21}
+         longest route: False
+                 ('Duluth', 'Houston') NOT satisfied
+                 ('Los Angeles', 'New York') NOT satisfied
