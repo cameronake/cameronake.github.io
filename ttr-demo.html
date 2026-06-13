@@ -22,11 +22,11 @@
     body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 1rem; line-height: 1.75; }
 
     /* nav */
-    header { position: sticky; top: 0; z-index: 100; background: rgba(245,244,240,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+    header { position: sticky; top: 0; z-index: 100; background: var(--accent); border-bottom: 1px solid var(--accent-hover); }
     nav { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; height: 60px; display: flex; align-items: center; gap: 16px; }
-    .back-link { color: var(--muted); font-size: 0.9rem; text-decoration: none; transition: color 0.2s; }
-    .back-link:hover { color: var(--accent); }
-    .nav-title { font-weight: 600; font-size: 1rem; color: var(--text); font-style: italic; }
+    .back-link { color: rgba(255,255,255,0.75); font-size: 0.9rem; text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: #fff; }
+    .nav-title { font-weight: 600; font-size: 1rem; color: #fff; font-style: italic; }
 
     main { max-width: var(--max-width); margin: 0 auto; padding: 48px 32px 80px; }
 
