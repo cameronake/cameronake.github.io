@@ -587,6 +587,12 @@ h2::after {
   color: var(--muted);
   line-height: 1.6;
 }
+.photo-modal-caption p {
+  margin: 0;
+}
+.photo-modal-caption p + p {
+  margin-top: 1em;
+}
 
 /* Sub-page link banners ("get to know me better") */
 .subpage-links-label {
