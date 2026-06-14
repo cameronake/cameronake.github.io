@@ -38,12 +38,17 @@
 
   <!-- ── Hero ── -->
   <section id="hero" class="page active">
-    <h1><span class="accent">Cameron Ake</span></h1>
-    <a href="#" class="btn" onclick="showPage('projects'); return false;">Check out my work!</a>
-    <ul class="hero-contact">
-      <li><a href="mailto:cake@hmc.edu">cake@hmc.edu</a></li>
-      <li><a href="https://www.linkedin.com/in/cameron-ake/">LinkedIn</a></li>
-    </ul>
+    <div class="hero-content">
+      <h1><span class="accent">Cameron Ake</span></h1>
+      <a href="#" class="btn" onclick="showPage('projects'); return false;">Check out my work!</a>
+      <ul class="hero-contact">
+        <li><a href="mailto:cake@hmc.edu">cake@hmc.edu</a></li>
+        <li><a href="https://www.linkedin.com/in/cameron-ake/">LinkedIn</a></li>
+      </ul>
+    </div>
+    <div class="hero-photo-btn" onclick="openHeroPhoto()">
+      <img src="assets/breithorn.jpg" alt="the breithorn" />
+    </div>
   </section>
 
   <!-- ── About ── -->
@@ -462,48 +467,243 @@
 
     <div class="cards">
 
+      <!-- Ticket to Ride: genetic algorithm — evolving network of nodes -->
       <div class="card">
-        <h3>Ticket to Ride Bot</h3>
-        <p>A genetic algorithm that breeds Ticket to Ride AI players. Evolves a population of strategy-weight vectors through simulated selection, crossover, and mutation across multiple generations. After evolution, bots outperform <a href="https://www.daysofwonder.com/game/ticket-to-ride/" target="_blank" rel="noopener noreferrer">current</a> best bots.</p>
-        <div class="card-links">
-          <a href="ttr-demo.html">Live Demo</a>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#1a1035"/>
+            <line x1="50" y1="80" x2="150" y2="40" stroke="rgba(196,176,232,0.18)" stroke-width="1.5"/>
+            <line x1="50" y1="80" x2="150" y2="130" stroke="rgba(196,176,232,0.18)" stroke-width="1.5"/>
+            <line x1="150" y1="40" x2="260" y2="65" stroke="rgba(196,176,232,0.2)" stroke-width="1.5"/>
+            <line x1="150" y1="40" x2="310" y2="25" stroke="rgba(196,176,232,0.12)" stroke-width="1"/>
+            <line x1="150" y1="130" x2="260" y2="110" stroke="rgba(196,176,232,0.2)" stroke-width="1.5"/>
+            <line x1="150" y1="130" x2="310" y2="145" stroke="rgba(196,176,232,0.12)" stroke-width="1"/>
+            <line x1="50" y1="80" x2="210" y2="80" stroke="rgba(196,176,232,0.1)" stroke-width="1"/>
+            <line x1="260" y1="65" x2="310" y2="25" stroke="rgba(196,176,232,0.15)" stroke-width="1"/>
+            <line x1="260" y1="110" x2="310" y2="145" stroke="rgba(196,176,232,0.15)" stroke-width="1"/>
+            <line x1="260" y1="65" x2="350" y2="80" stroke="rgba(196,176,232,0.22)" stroke-width="1.5"/>
+            <line x1="260" y1="110" x2="350" y2="80" stroke="rgba(196,176,232,0.22)" stroke-width="1.5"/>
+            <circle cx="310" cy="25" r="6" fill="#5c3fa3" opacity="0.5"/>
+            <circle cx="310" cy="145" r="6" fill="#5c3fa3" opacity="0.5"/>
+            <circle cx="210" cy="80" r="5" fill="#5c3fa3" opacity="0.4"/>
+            <circle cx="50" cy="80" r="9" fill="#5c3fa3" stroke="rgba(196,176,232,0.35)" stroke-width="1.5"/>
+            <circle cx="150" cy="40" r="10" fill="#5c3fa3" stroke="rgba(196,176,232,0.4)" stroke-width="2"/>
+            <circle cx="150" cy="130" r="9" fill="#5c3fa3" stroke="rgba(196,176,232,0.35)" stroke-width="1.5"/>
+            <circle cx="260" cy="65" r="13" fill="#8b6cc8" stroke="rgba(196,176,232,0.55)" stroke-width="2"/>
+            <circle cx="260" cy="110" r="11" fill="#8b6cc8" stroke="rgba(196,176,232,0.5)" stroke-width="2"/>
+            <circle cx="350" cy="80" r="16" fill="#c4b0e8" stroke="rgba(255,255,255,0.5)" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Ticket to Ride Bot</h3>
+          <p>A genetic algorithm that breeds Ticket to Ride AI players. Evolves a population of strategy-weight vectors through simulated selection, crossover, and mutation across multiple generations. After evolution, bots outperform <a href="https://www.daysofwonder.com/game/ticket-to-ride/" target="_blank" rel="noopener noreferrer">current</a> best bots.</p>
+          <div class="card-links">
+            <a href="ttr-demo.html">Live Demo</a>
+          </div>
         </div>
       </div>
 
+      <!-- Bayesian Optimization: GP mean curve + uncertainty bands + data points -->
       <div class="card">
-        <h3>Bayesian Optimization</h3>
-        <p>Implements Bayesian optimization from scratch using only NumPy. Fits a Gaussian process posterior via RBF kernel and Cholesky decomposition, then selects the next sample point via UCB or Expected Improvement acquisition functions.</p>
-        <div class="card-links">
-          <a href="bo-demo.html">Live Demo</a>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#140f2e"/>
+            <path d="M0 100 C60 60 120 30 200 55 C280 80 340 50 400 40 L400 160 L0 160Z" fill="rgba(92,63,163,0.25)"/>
+            <path d="M0 115 C60 85 120 65 200 75 C280 90 340 72 400 65 L400 160 L0 160Z" fill="rgba(92,63,163,0.2)"/>
+            <path d="M0 85 C60 40 120 10 200 35 C280 60 340 28 400 15 L400 55 L0 100Z" fill="rgba(92,63,163,0.15)"/>
+            <path d="M0 100 C60 65 120 40 200 55 C280 75 340 50 400 42" fill="none" stroke="#c4b0e8" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="150" x2="20" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="20" y1="150" x2="390" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <circle cx="60" cy="88" r="5" fill="white" opacity="0.85"/>
+            <circle cx="140" cy="52" r="5" fill="white" opacity="0.85"/>
+            <circle cx="240" cy="72" r="5" fill="white" opacity="0.85"/>
+            <circle cx="340" cy="55" r="5" fill="white" opacity="0.85"/>
+            <circle cx="190" cy="56" r="7" fill="none" stroke="#c4b0e8" stroke-width="2" stroke-dasharray="4,3" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Bayesian Optimization</h3>
+          <p>Implements Bayesian optimization from scratch using only NumPy. Fits a Gaussian process posterior via RBF kernel and Cholesky decomposition, then selects the next sample point via UCB or Expected Improvement acquisition functions.</p>
+          <div class="card-links">
+            <a href="bo-demo.html">Live Demo</a>
+          </div>
         </div>
       </div>
 
+      <!-- Monte Carlo: sample price paths fanning out, distribution on right -->
       <div class="card">
-        <h3>Monte Carlo Options Pricing</h3>
-        <p>Prices European options via Black-Scholes and Monte Carlo simulation side by side. Adjust strike, expiry, and volatility to see how the MC distribution and expected price respond in real time.</p>
-        <div class="card-links">
-          <a href="mcop-demo.html">Live Demo</a>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#1c1240"/>
+            <path d="M20 80 C80 75 140 40 220 30 C280 22 340 35 380 28" fill="none" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
+            <path d="M20 80 C80 85 140 70 220 85 C280 95 340 80 380 75" fill="none" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <path d="M20 80 C80 90 140 105 220 115 C280 122 340 130 380 135" fill="none" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <path d="M20 80 C80 65 140 55 220 50 C280 46 340 55 380 50" fill="none" stroke="rgba(196,176,232,0.35)" stroke-width="1"/>
+            <path d="M20 80 C80 95 140 115 220 125 C280 130 340 120 380 115" fill="none" stroke="rgba(139,108,200,0.4)" stroke-width="1"/>
+            <path d="M20 80 C80 70 140 85 220 70 C280 60 340 65 380 60" fill="none" stroke="rgba(139,108,200,0.35)" stroke-width="1"/>
+            <path d="M20 80 C80 78 140 60 220 55 C280 50 340 42 380 38" fill="none" stroke="rgba(139,108,200,0.3)" stroke-width="1"/>
+            <path d="M20 80 C80 82 140 95 220 100 C280 105 340 110 380 108" fill="none" stroke="rgba(139,108,200,0.3)" stroke-width="1"/>
+            <path d="M382 32 Q400 58 392 80 Q400 102 382 128 L400 128 L400 32Z" fill="rgba(92,63,163,0.35)"/>
+            <circle cx="20" cy="80" r="5" fill="#c4b0e8"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Monte Carlo Options Pricing</h3>
+          <p>Prices European options via Black-Scholes and Monte Carlo simulation side by side. Adjust strike, expiry, and volatility to see how the MC distribution and expected price respond in real time.</p>
+          <div class="card-links">
+            <a href="mcop-demo.html">Live Demo</a>
+          </div>
         </div>
       </div>
 
+      <!-- LLM Agent: input box → router → three tool boxes -->
       <div class="card">
-        <h3>LLM Agent App for Workflow Automation</h3>
-        <p>Created web app to host custom AI agent workflows for <a href="https://www.fcm.com/" target="_blank" rel="noopener noreferrer">Fermat</a> R&D team, then designed workflows for it.  Used Anthropic API via Bedrock, linking to Gmail/Drive/Box APIs. Balanced making LLM calls with using less costly algorithms, then designed custom algorithms to simplify tasks too dense for the LLM.</p>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#160f35"/>
+            <rect x="20" y="62" width="68" height="36" rx="6" fill="rgba(92,63,163,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <rect x="158" y="62" width="76" height="36" rx="6" fill="rgba(92,63,163,0.7)" stroke="rgba(196,176,232,0.65)" stroke-width="2"/>
+            <rect x="302" y="18" width="78" height="30" rx="5" fill="rgba(139,108,200,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <rect x="302" y="65" width="78" height="30" rx="5" fill="rgba(139,108,200,0.55)" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
+            <rect x="302" y="112" width="78" height="30" rx="5" fill="rgba(139,108,200,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <line x1="88" y1="80" x2="156" y2="80" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
+            <line x1="234" y1="73" x2="300" y2="33" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <line x1="234" y1="80" x2="300" y2="80" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <line x1="234" y1="87" x2="300" y2="127" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <circle cx="54" cy="80" r="4" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="196" cy="80" r="4" fill="rgba(255,255,255,0.4)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>LLM Agent App for Workflow Automation</h3>
+          <p>Created web app to host custom AI agent workflows for <a href="https://www.fcm.com/" target="_blank" rel="noopener noreferrer">Fermat</a> R&amp;D team, then designed workflows for it. Used Anthropic API via Bedrock, linking to Gmail/Drive/Box APIs. Balanced making LLM calls with using less costly algorithms, then designed custom algorithms to simplify tasks too dense for the LLM.</p>
+        </div>
       </div>
 
+      <!-- Neural Networks: three-layer network diagram -->
       <div class="card">
-        <h3>Neural Networks from Scratch</h3>
-        <p>Implemented feedforward neural networks and backpropagation from scratch three times across coursework: twice in pure Python with no external libraries (including manual matrix operations), and once with NumPy, trained on MNIST handwritten digit classification. Supported configurable network depth, layer widths, and activation functions.</p>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#1a1138"/>
+            <line x1="90" y1="35" x2="200" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="35" x2="200" y2="60" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="35" x2="200" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="35" x2="200" y2="135" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="80" x2="200" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="80" x2="200" y2="60" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="80" x2="200" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="80" x2="200" y2="135" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="125" x2="200" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="125" x2="200" y2="60" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="125" x2="200" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="90" y1="125" x2="200" y2="135" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="200" y1="25" x2="310" y2="53" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="60" x2="310" y2="53" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="100" x2="310" y2="53" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="135" x2="310" y2="53" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="25" x2="310" y2="107" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="60" x2="310" y2="107" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="100" x2="310" y2="107" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="200" y1="135" x2="310" y2="107" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <circle cx="90" cy="35" r="10" fill="#5c3fa3" stroke="rgba(196,176,232,0.5)" stroke-width="2"/>
+            <circle cx="90" cy="80" r="10" fill="#5c3fa3" stroke="rgba(196,176,232,0.5)" stroke-width="2"/>
+            <circle cx="90" cy="125" r="10" fill="#5c3fa3" stroke="rgba(196,176,232,0.5)" stroke-width="2"/>
+            <circle cx="200" cy="25" r="10" fill="#8b6cc8" stroke="rgba(196,176,232,0.45)" stroke-width="2"/>
+            <circle cx="200" cy="60" r="10" fill="#8b6cc8" stroke="rgba(196,176,232,0.45)" stroke-width="2"/>
+            <circle cx="200" cy="100" r="10" fill="#8b6cc8" stroke="rgba(196,176,232,0.45)" stroke-width="2"/>
+            <circle cx="200" cy="135" r="10" fill="#8b6cc8" stroke="rgba(196,176,232,0.45)" stroke-width="2"/>
+            <circle cx="310" cy="53" r="10" fill="#c4b0e8" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+            <circle cx="310" cy="107" r="10" fill="#c4b0e8" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Neural Networks from Scratch</h3>
+          <p>Implemented feedforward neural networks and backpropagation from scratch three times across coursework: twice in pure Python with no external libraries (including manual matrix operations), and once with NumPy, trained on MNIST handwritten digit classification. Supported configurable network depth, layer widths, and activation functions.</p>
+        </div>
       </div>
 
+      <!-- Random Forest: three decision trees -->
       <div class="card">
-        <h3>Augmented Random Forest</h3>
-        <p>Applied skewed probability distributions to stabilize the Random Forest algorithm by introducing additional randomness to the splitting of the individual trees.</p>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#1b1040"/>
+            <line x1="75" y1="158" x2="75" y2="105" stroke="rgba(196,176,232,0.45)" stroke-width="2"/>
+            <line x1="75" y1="105" x2="45" y2="68" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <line x1="75" y1="105" x2="105" y2="68" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <line x1="45" y1="68" x2="28" y2="38" stroke="rgba(196,176,232,0.3)" stroke-width="1"/>
+            <line x1="45" y1="68" x2="60" y2="38" stroke="rgba(196,176,232,0.3)" stroke-width="1"/>
+            <line x1="105" y1="68" x2="90" y2="38" stroke="rgba(196,176,232,0.3)" stroke-width="1"/>
+            <line x1="105" y1="68" x2="122" y2="38" stroke="rgba(196,176,232,0.3)" stroke-width="1"/>
+            <circle cx="75" cy="105" r="5" fill="#8b6cc8"/>
+            <circle cx="45" cy="68" r="4" fill="#8b6cc8" opacity="0.8"/>
+            <circle cx="105" cy="68" r="4" fill="#8b6cc8" opacity="0.8"/>
+            <line x1="200" y1="158" x2="200" y2="100" stroke="rgba(139,108,200,0.5)" stroke-width="2"/>
+            <line x1="200" y1="100" x2="168" y2="62" stroke="rgba(139,108,200,0.45)" stroke-width="1.5"/>
+            <line x1="200" y1="100" x2="232" y2="62" stroke="rgba(139,108,200,0.45)" stroke-width="1.5"/>
+            <line x1="168" y1="62" x2="150" y2="32" stroke="rgba(139,108,200,0.35)" stroke-width="1"/>
+            <line x1="168" y1="62" x2="183" y2="32" stroke="rgba(139,108,200,0.35)" stroke-width="1"/>
+            <line x1="232" y1="62" x2="217" y2="32" stroke="rgba(139,108,200,0.35)" stroke-width="1"/>
+            <line x1="232" y1="62" x2="248" y2="32" stroke="rgba(139,108,200,0.35)" stroke-width="1"/>
+            <circle cx="200" cy="100" r="5" fill="#8b6cc8"/>
+            <circle cx="168" cy="62" r="4" fill="#8b6cc8" opacity="0.8"/>
+            <circle cx="232" cy="62" r="4" fill="#8b6cc8" opacity="0.8"/>
+            <line x1="330" y1="158" x2="330" y2="108" stroke="rgba(92,63,163,0.65)" stroke-width="2"/>
+            <line x1="330" y1="108" x2="302" y2="70" stroke="rgba(92,63,163,0.6)" stroke-width="1.5"/>
+            <line x1="330" y1="108" x2="358" y2="70" stroke="rgba(92,63,163,0.6)" stroke-width="1.5"/>
+            <line x1="302" y1="70" x2="285" y2="40" stroke="rgba(92,63,163,0.45)" stroke-width="1"/>
+            <line x1="302" y1="70" x2="316" y2="40" stroke="rgba(92,63,163,0.45)" stroke-width="1"/>
+            <line x1="358" y1="70" x2="344" y2="40" stroke="rgba(92,63,163,0.45)" stroke-width="1"/>
+            <line x1="358" y1="70" x2="374" y2="40" stroke="rgba(92,63,163,0.45)" stroke-width="1"/>
+            <circle cx="330" cy="108" r="5" fill="#c4b0e8"/>
+            <circle cx="302" cy="70" r="4" fill="#c4b0e8" opacity="0.8"/>
+            <circle cx="358" cy="70" r="4" fill="#c4b0e8" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Augmented Random Forest</h3>
+          <p>Applied skewed probability distributions to stabilize the Random Forest algorithm by introducing additional randomness to the splitting of the individual trees.</p>
+        </div>
       </div>
 
+      <!-- LSTM: three sequential cells with hidden-state arrows and gate dots -->
       <div class="card">
-        <h3>LSTM Model for Database Automation</h3>
-        <p>Created and fine-tuned custom-architecture LSTM model that predicted priority and category values for messy, unstandardized <a href="https://www.mcdean.com/" target="_blank" rel="noopener noreferrer">M.C. Dean</a> database inputs with wild formatting and content inconsistencies.</p>
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#181038"/>
+            <rect x="22" y="52" width="80" height="56" rx="8" fill="rgba(92,63,163,0.45)" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <rect x="160" y="52" width="80" height="56" rx="8" fill="rgba(92,63,163,0.55)" stroke="rgba(196,176,232,0.5)" stroke-width="2"/>
+            <rect x="298" y="52" width="80" height="56" rx="8" fill="rgba(139,108,200,0.6)" stroke="rgba(196,176,232,0.6)" stroke-width="2"/>
+            <line x1="102" y1="66" x2="160" y2="66" stroke="rgba(196,176,232,0.6)" stroke-width="2"/>
+            <polygon points="155,61 163,66 155,71" fill="rgba(196,176,232,0.6)"/>
+            <line x1="240" y1="66" x2="298" y2="66" stroke="rgba(196,176,232,0.6)" stroke-width="2"/>
+            <polygon points="293,61 301,66 293,71" fill="rgba(196,176,232,0.6)"/>
+            <line x1="62" y1="140" x2="62" y2="108" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <polygon points="57,110 62,102 67,110" fill="rgba(255,255,255,0.3)"/>
+            <line x1="200" y1="140" x2="200" y2="108" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <polygon points="195,110 200,102 205,110" fill="rgba(255,255,255,0.3)"/>
+            <line x1="338" y1="140" x2="338" y2="108" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <polygon points="333,110 338,102 343,110" fill="rgba(255,255,255,0.3)"/>
+            <line x1="62" y1="52" x2="62" y2="18" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+            <polygon points="57,21 62,13 67,21" fill="rgba(255,255,255,0.2)"/>
+            <line x1="200" y1="52" x2="200" y2="18" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+            <polygon points="195,21 200,13 205,21" fill="rgba(255,255,255,0.2)"/>
+            <line x1="338" y1="52" x2="338" y2="18" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+            <polygon points="333,21 338,13 343,21" fill="rgba(255,255,255,0.2)"/>
+            <circle cx="42" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="62" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="82" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="180" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="200" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="220" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="318" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="338" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="358" cy="80" r="4" fill="rgba(255,255,255,0.35)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>LSTM Model for Database Automation</h3>
+          <p>Created and fine-tuned custom-architecture LSTM model that predicted priority and category values for messy, unstandardized <a href="https://www.mcdean.com/" target="_blank" rel="noopener noreferrer">M.C. Dean</a> database inputs with wild formatting and content inconsistencies.</p>
+        </div>
       </div>
 
     </div>
@@ -511,10 +711,10 @@
 
   <!-- ── Resume ── -->
   <section id="resume" class="page">
-    <h2>Resume</h2>
+    <h2>resume</h2>
     <div class="resume-pdf-actions">
-      <a href="assets/cameron-ake-resume.pdf" class="btn" target="_blank" rel="noopener noreferrer">Download Resume</a>
-      <a href="assets/cameron-ake-transcript.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Download Transcript</a>
+      <a href="assets/cameron-ake-resume.pdf" class="btn" target="_blank" rel="noopener noreferrer">download resume</a>
+      <a href="assets/cameron-ake-transcript.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">download transcript</a>
     </div>
     <div class="resume-pdf-viewer">
       <iframe src="assets/cameron-ake-resume.pdf#navpanes=0&pagemode=none" title="Cameron Ake Resume"></iframe>
@@ -608,6 +808,14 @@
         _modalIndex = next;
         _renderModalItem();
       }
+    }
+
+    function openHeroPhoto() {
+      _modalItems = [{ src: 'assets/breithorn.jpg', caption: 'the breithorn (right next to the matterhorn). my favorite mountain because just look at all the colors. if you open the image in a new tab and zoom in, you\'ll see some dots on the right side of the mountain. those are people. also, that snowy thing down on the left is a glacier. also, i took this photo in june. i loved seeing this mountain', isVideo: false }];
+      _modalIndex = 0;
+      _renderModalItem();
+      document.getElementById('photo-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
 
     function closePhotoModal() {
