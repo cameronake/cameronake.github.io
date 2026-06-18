@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bayesian Optimization — Cameron Ake</title>
+  <title>Bayesian Optimization</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link type="image/png" sizes="96x96" rel="icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    * { text-transform: lowercase; }
 
     html { font-size: 17px; }
 
@@ -153,20 +153,29 @@
 
     .charts-row { display: flex; gap: 16px; margin-bottom: 16px; }
     .charts-row .chart-wrap { flex: 1; min-width: 0; margin-bottom: 0; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
 
 <header>
   <nav>
-    <a class="back-link" href="index.html">← portfolio</a>
-    <span class="nav-title">bayesian optimization</span>
+    <a class="back-link" href="index.html">← Portfolio</a>
+    <span class="nav-title">Bayesian Optimization</span>
   </nav>
 </header>
 
 <main>
   <div class="page-hero">
-    <h1>bayesian optimization</h1>
+    <h1>Bayesian Optimization</h1>
     <p class="subtitle">
       An interactive demo of Bayesian optimization implemented from scratch using only NumPy 
       math operations. This uses Gaussian process regression and an acquisition function 
@@ -175,8 +184,8 @@
   </div>
 
   <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('demo', this)">live demo</button>
-    <button class="tab-btn" onclick="switchTab('explainer', this)">how it works</button>
+    <button class="tab-btn active" onclick="switchTab('demo', this)">Live Demo</button>
+    <button class="tab-btn" onclick="switchTab('explainer', this)">How It Works</button>
   </div>
 
   <!-- ── Demo Tab ── -->
@@ -184,16 +193,16 @@
 
     <div class="status-bar">
       <div class="status-dot" id="statusDot"></div>
-      <span id="statusMsg">initializing…</span>
+      <span id="statusMsg">Initializing…</span>
     </div>
 
     <!-- Controls -->
     <section>
-      <h2>controls</h2>
+      <h2>Controls</h2>
 
       <div class="controls-grid">
         <div class="form-group">
-          <label class="form-label">target function
+          <label class="form-label">Target function
             <span class="range-value" id="funcLabel"></span>
           </label>
           <select id="funcSelect" onchange="onFuncChange()">
@@ -205,7 +214,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">seed samples (before BO starts)
+          <label class="form-label">Seed samples (before BO starts)
             <span class="range-value" id="seedVal">3</span>
           </label>
           <input type="range" id="seedSlider" min="1" max="8" step="1" value="3"
@@ -214,7 +223,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span>length scale <em style="font-weight:400;">(ℓ)</em></span>
+          <label class="form-label"><span>Length scale <em style="font-weight:400;">(ℓ)</em></span>
             <span class="range-value" id="lsVal">0.15</span>
           </label>
           <input type="range" id="lsSlider" min="0.02" max="0.5" step="0.01" value="0.15"
@@ -223,7 +232,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span>signal variance <em style="font-weight:400;">(σ²f)</em></span>
+          <label class="form-label"><span>Signal variance <em style="font-weight:400;">(σ²f)</em></span>
             <span class="range-value" id="svVal">1.0</span>
           </label>
           <input type="range" id="svSlider" min="0.1" max="4.0" step="0.1" value="1.0"
@@ -232,7 +241,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span>noise variance <em style="font-weight:400;">(σ²n)</em></span>
+          <label class="form-label"><span>Noise variance <em style="font-weight:400;">(σ²n)</em></span>
             <span class="range-value" id="nvVal">0.02</span>
           </label>
           <input type="range" id="nvSlider" min="0.001" max="0.5" step="0.001" value="0.02"
@@ -241,7 +250,7 @@
         </div>
 
         <div class="form-group" id="kappaGroup">
-          <label class="form-label">UCB κ (exploration)
+          <label class="form-label">UCB κ (Exploration)
             <span class="range-value" id="kappaVal">2.0</span>
           </label>
           <input type="range" id="kappaSlider" min="0.5" max="5.0" step="0.1" value="2.0"
@@ -250,7 +259,7 @@
         </div>
 
         <div class="form-group" id="xiGroup" style="display:none">
-          <label class="form-label">EI ξ (jitter)
+          <label class="form-label">EI ξ (Jitter)
             <span class="range-value" id="xiVal">0.01</span>
           </label>
           <input type="range" id="xiSlider" min="0.0" max="0.2" step="0.005" value="0.01"
@@ -260,20 +269,20 @@
       </div>
 
       <div class="acq-row">
-        <span style="font-size:0.9rem;color:var(--muted);margin-right:4px;">acquisition:</span>
+        <span style="font-size:0.9rem;color:var(--muted);margin-right:4px;">Acquisition:</span>
         <button class="acq-btn active" id="acqUCB" onclick="setAcq('ucb')">UCB</button>
         <button class="acq-btn" id="acqEI" onclick="setAcq('ei')">EI</button>
       </div>
 
       <div class="btn-row">
-        <button class="btn" id="btnSeed"      onclick="doSeed()"      disabled>seed random</button>
-        <button class="btn" id="btnNext"      onclick="doStep()"      disabled>next step</button>
-        <button class="btn" id="btnRun"       onclick="doRunN()"      disabled>run 10 steps</button>
-        <button class="btn btn-secondary" id="btnReset" onclick="doReset()" disabled>reset</button>
+        <button class="btn" id="btnSeed"      onclick="doSeed()"      disabled>Seed Random</button>
+        <button class="btn" id="btnNext"      onclick="doStep()"      disabled>Next Step</button>
+        <button class="btn" id="btnRun"       onclick="doRunN()"      disabled>Run 10 Steps</button>
+        <button class="btn btn-secondary" id="btnReset" onclick="doReset()" disabled>Reset</button>
       </div>
 
       <div class="form-group" style="max-width:260px;">
-        <label class="form-label" style="justify-content:flex-start;gap:8px;">show true function
+        <label class="form-label" style="justify-content:flex-start;gap:8px;">Show true function
           <input type="checkbox" id="showTrueChk" checked onchange="renderCharts()" style="width:auto;margin:0;" />
         </label>
       </div>
@@ -281,21 +290,21 @@
 
     <!-- Stats -->
     <div class="stats-strip">
-      <div class="stat"><span class="stat-label">samples</span><span class="stat-val" id="statN">0</span></div>
-      <div class="stat"><span class="stat-label">best y</span><span class="stat-val" id="statBestY">—</span></div>
-      <div class="stat"><span class="stat-label">best x</span><span class="stat-val" id="statBestX">—</span></div>
-      <div class="stat"><span class="stat-label">next proposal</span><span class="stat-val" id="statNextX">—</span></div>
-      <div class="stat"><span class="stat-label">step</span><span class="stat-val" id="statStep">0</span></div>
+      <div class="stat"><span class="stat-label">Samples</span><span class="stat-val" id="statN">0</span></div>
+      <div class="stat"><span class="stat-label">Best y</span><span class="stat-val" id="statBestY">—</span></div>
+      <div class="stat"><span class="stat-label">Best x</span><span class="stat-val" id="statBestX">—</span></div>
+      <div class="stat"><span class="stat-label">Next Proposal</span><span class="stat-val" id="statNextX">—</span></div>
+      <div class="stat"><span class="stat-label">Step</span><span class="stat-val" id="statStep">0</span></div>
     </div>
 
     <!-- Charts -->
     <div class="charts-row">
       <div class="chart-wrap">
-        <div class="chart-label">GP posterior — mean ± 2σ, observed samples, and next proposed point</div>
+        <div class="chart-label">GP Posterior — mean ± 2σ, observed samples, and next proposed point</div>
         <canvas id="gpChart"></canvas>
       </div>
       <div class="chart-wrap">
-        <div class="chart-label">acquisition function — maximum marks the next proposed point</div>
+        <div class="chart-label">Acquisition Function — maximum marks the next proposed point</div>
         <canvas id="acqChart"></canvas>
       </div>
     </div>
@@ -305,7 +314,7 @@
   <div id="tab-explainer" class="tab-panel">
 
     <section>
-      <h2>what is bayesian optimization?</h2>
+      <h2>What Is Bayesian Optimization?</h2>
       <p style="color:var(--muted);margin-bottom:16px;">
         Bayesian optimization is a strategy for finding the maximum of an unknown function that is 
         expensive to evaluate, using as few evaluations as possible. Instead of brute-force sampling, 
@@ -314,15 +323,15 @@
       </p>
 
       <div class="step-grid">
-        <div class="step-card"><div class="step-num">1</div><h3>place a prior</h3><p>Start with a Gaussian process, a probability distribution over functions encoding our prior beliefs about smoothness and scale.</p></div>
-        <div class="step-card"><div class="step-num">2</div><h3>observe</h3><p>Evaluate the true function at a proposed point. The GP updates its beliefs (posterior) to reflect the new data.</p></div>
-        <div class="step-card"><div class="step-num">3</div><h3>acquire</h3><p>An acquisition function scores every candidate point by trading off high predicted mean (exploitation) against high uncertainty (exploration).</p></div>
-        <div class="step-card"><div class="step-num">4</div><h3>repeat 2-3x</h3><p>Repeat as many times as we want by sampling at the acquisition function's maximum, then updating the GP for the new point.</p></div>
+        <div class="step-card"><div class="step-num">1</div><h3>Place a Prior</h3><p>Start with a Gaussian process, a probability distribution over functions encoding our prior beliefs about smoothness and scale.</p></div>
+        <div class="step-card"><div class="step-num">2</div><h3>Observe</h3><p>Evaluate the true function at a proposed point. The GP updates its beliefs (posterior) to reflect the new data.</p></div>
+        <div class="step-card"><div class="step-num">3</div><h3>Acquire</h3><p>An acquisition function scores every candidate point by trading off high predicted mean (exploitation) against high uncertainty (exploration).</p></div>
+        <div class="step-card"><div class="step-num">4</div><h3>Repeat 2–3×</h3><p>Repeat as many times as we want by sampling at the acquisition function's maximum, then updating the GP for the new point.</p></div>
       </div>
     </section>
 
     <section>
-      <h2>gaussian process regression</h2>
+      <h2>Gaussian Process Regression</h2>
       <p style="color:var(--muted);margin-bottom:16px;">
         Gaussian Process regression uses a kernel with given parameters to establish the prior (the set of 
         functions we are considering, maybe lumpier or smoother depending on the parameters) and narrows 
@@ -336,7 +345,7 @@
           Higher <code>ℓ</code> makes our prior a set of smoother, more slowly varying functions.</p>
       </div>
       <div class="explain-box">
-        <h3>posterior equations</h3>
+        <h3>Posterior Equations</h3>
         <p>We get the mean and variance of the posterior at a given (testing) point <code>x*</code> as follows, with <code>X</code> as our
           existing (training) data.
         </p>
@@ -352,7 +361,7 @@ k**    = k(x*, x*)           ← prior variance at x*
     </section>
 
     <section>
-      <h2>acquisition functions</h2>
+      <h2>Acquisition Functions</h2>
       <p style="color:var(--muted);margin-bottom:16px;">
         Our acquisition function balances sampling points that we know have high values (exploitation) 
         with sampling points with lots of uncertainty (exploration). For instance, say we're looking
@@ -362,12 +371,12 @@ k**    = k(x*, x*)           ← prior variance at x*
         acquisition functions for the user to choose from.
       </p>
       <div class="explain-box">
-        <h3>upper confidence bound (UCB)</h3>
+        <h3>Upper Confidence Bound (UCB)</h3>
         <div class="math-block">a(x) = μ(x) + κ · σ(x)</div>
         <p>This acquisition function is just a weighted sum. <code>κ</code> directly controls the tradeoff between exploration and exploitation; higher κ favors exploration.</p>
       </div>
       <div class="explain-box">
-        <h3>expected improvement (EI)</h3>
+        <h3>Expected Improvement (EI)</h3>
         <div class="math-block">Z    = (μ(x) − f⁺ − ξ) / σ(x)
 a(x) = (μ(x) − f⁺ − ξ) · Φ(Z) + σ(x) · φ(Z)</div>
         <p>This function measures how much improvement over the current best value <code>f⁺</code> we expect. <code>Φ</code> and <code>φ</code> are standard normal CDF and PDF; <code>ξ</code> is an exploration bonus.</p>
@@ -425,20 +434,20 @@ worker.onmessage = function(e) {
 
   if (type === 'status') { setStatus('busy', msg); return; }
   if (type === 'ready')  { onWorkerReady(); return; }
-  if (type === 'error')  { setStatus('error', 'error: ' + msg); return; }
+  if (type === 'error')  { setStatus('error', 'Error: ' + msg); return; }
 
   if (type === 'bo_result') {
     workerBusy = false;
     lastGP = result;
     renderCharts();
     updateStats();
-    setStatus('ready', `ready — ${samples.length} sample${samples.length !== 1 ? 's' : ''}`);
+    setStatus('ready', `Ready — ${samples.length} sample${samples.length !== 1 ? 's' : ''}`);
     enableButtons(true);
   }
 
   if (type === 'bo_error') {
     workerBusy = false;
-    setStatus('error', 'python error: ' + msg);
+    setStatus('error', 'Python error: ' + msg);
     enableButtons(true);
   }
 };
@@ -512,7 +521,7 @@ function doReset() {
   workerBusy = false;
   updateStats();
   renderCharts();
-  setStatus('ready', 'reset — seed to begin');
+  setStatus('ready', 'Reset — seed to begin');
 }
 
 function onFuncChange() {
@@ -708,7 +717,7 @@ function updateStats() {
 
 function onWorkerReady() {
   workerReady = true;
-  setStatus('ready', 'ready — press "seed random" to begin');
+  setStatus('ready', 'Ready — press "Seed Random" to begin');
   enableButtons(true);
 }
 
@@ -721,8 +730,13 @@ function switchTab(name, btn) {
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 initCharts();
-setStatus('busy', 'loading python runtime…');
+setStatus('busy', 'Loading Python runtime…');
 worker.postMessage({ type: 'init' });
 </script>
+
+<footer>
+  <span>Cameron Ake — <a href="index.html">Portfolio</a></span>
+</footer>
+
 </body>
 </html>

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monte Carlo Options Pricing — Cameron Ake</title>
+  <title>Monte Carlo Options Pricing</title>
+  <link type="image/png" sizes="96x96" rel="icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -31,7 +32,6 @@
       color: var(--text);
       font-size: 1rem;
       line-height: 1.75;
-      text-transform: lowercase;
     }
 
     a { color: var(--accent); text-decoration: none; }
@@ -90,7 +90,6 @@
       cursor: pointer;
       margin-bottom: -1px;
       transition: color 0.15s;
-      text-transform: lowercase;
     }
     .tab-btn:hover { color: var(--text); }
     .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
@@ -155,7 +154,6 @@
       color: var(--muted);
       cursor: pointer;
       transition: all 0.15s;
-      text-transform: lowercase;
     }
     .type-btn.active {
       background: var(--accent);
@@ -202,7 +200,6 @@
       font-family: inherit;
       font-size: 0.9rem;
       cursor: pointer;
-      text-transform: lowercase;
       transition: background 0.15s;
     }
     .btn:hover { background: var(--accent-hover); }
@@ -366,43 +363,43 @@
 
 <header>
   <nav>
-    <a class="back-link" href="index.html">← portfolio</a>
-    <span class="nav-title">monte carlo options pricing</span>
+    <a class="back-link" href="index.html">← Portfolio</a>
+    <span class="nav-title">Monte Carlo Options Pricing</span>
   </nav>
 </header>
 
 <main>
   <div class="page-hero">
-    <h1>monte carlo options pricing</h1>
+    <h1>Monte Carlo Options Pricing</h1>
     <p class="subtitle">
-      prices european options two ways: the exact black-scholes formula and
-      monte carlo simulation via thousands of random stock paths. adjust
+      Prices European options two ways: the exact Black-Scholes formula and
+      Monte Carlo simulation via thousands of random stock paths. Adjust
       parameters and watch the two methods converge.
     </p>
   </div>
 
   <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('pricer', this)">pricer</button>
-    <button class="tab-btn" onclick="switchTab('explainer', this)">how it works</button>
+    <button class="tab-btn active" onclick="switchTab('pricer', this)">Pricer</button>
+    <button class="tab-btn" onclick="switchTab('explainer', this)">How It Works</button>
   </div>
 
   <!-- ── Tab 1: Pricer ── -->
   <div id="tab-pricer" class="tab-panel active">
     <div class="status-bar">
       <div class="status-dot ready" id="statusDot"></div>
-      <span id="statusMsg">ready</span>
+      <span id="statusMsg">Ready</span>
     </div>
 
     <div class="pricer-layout">
 
       <!-- LEFT: Controls -->
       <div>
-        <div class="panel-title">parameters</div>
+        <div class="panel-title">Parameters</div>
 
         <div class="opt-type-row">
-          <span class="opt-label">option type:</span>
-          <button class="type-btn active" id="btnCall" onclick="setOptionType('call')">call</button>
-          <button class="type-btn"        id="btnPut"  onclick="setOptionType('put')">put</button>
+          <span class="opt-label">Option type:</span>
+          <button class="type-btn active" id="btnCall" onclick="setOptionType('call')">Call</button>
+          <button class="type-btn"        id="btnPut"  onclick="setOptionType('put')">Put</button>
         </div>
 
         <div class="controls-stack">
@@ -468,40 +465,40 @@
         </div>
 
         <div class="btn-row">
-          <button class="btn btn-secondary" onclick="resetAll()">reset defaults</button>
+          <button class="btn btn-secondary" onclick="resetAll()">Reset Defaults</button>
         </div>
       </div>
 
       <!-- RIGHT: Results -->
       <div>
-        <div class="panel-title">results</div>
+        <div class="panel-title">Results</div>
 
         <div class="stats-strip">
           <div class="stat">
-            <span class="stat-label">black-scholes</span>
+            <span class="stat-label">Black-Scholes</span>
             <span class="stat-val accent" id="statBS">—</span>
           </div>
           <div class="stat">
-            <span class="stat-label">monte carlo</span>
+            <span class="stat-label">Monte Carlo</span>
             <span class="stat-val" id="statMC">—</span>
           </div>
           <div class="stat">
-            <span class="stat-label">std error</span>
+            <span class="stat-label">Std Error</span>
             <span class="stat-val" id="statSE">—</span>
           </div>
           <div class="stat">
-            <span class="stat-label">paths run</span>
+            <span class="stat-label">Paths Run</span>
             <span class="stat-val" id="statPaths">—</span>
           </div>
         </div>
 
         <div class="charts-row">
           <div class="chart-wrap">
-            <div class="chart-label">terminal price distribution</div>
+            <div class="chart-label">Terminal Price Distribution</div>
             <canvas id="distChart"></canvas>
           </div>
           <div class="chart-wrap">
-            <div class="chart-label">convergence — mc price vs. paths</div>
+            <div class="chart-label">Convergence — MC Price vs. Paths</div>
             <canvas id="convChart"></canvas>
           </div>
         </div>
@@ -512,17 +509,17 @@
     <!-- Paths chart -->
     <div style="margin-top:36px;">
       <div class="panel-title">
-        simulated GBM price paths (<span id="pathCountLabel">20</span> paths shown)
+        Simulated GBM Price Paths (<span id="pathCountLabel">20</span> paths shown)
       </div>
       <p style="font-size:0.875rem; color:var(--muted); margin-bottom:14px;">
-        a sample of individual stock price paths generated by geometric brownian motion. these paths' terminal prices are then discounted and averaged to give us the monte carlo estimate above.
+        A sample of individual stock price paths generated by Geometric Brownian Motion. These paths' terminal prices are then discounted and averaged to give us the Monte Carlo estimate above.
       </p>
       <div class="paths-chart-wrap">
         <canvas id="pathsChart"></canvas>
       </div>
       <div class="form-group" style="max-width:320px; margin-top:12px;">
         <label class="form-label">
-          paths to display
+          Paths to Display
           <span class="range-value" id="valDisplayPaths">20</span>
         </label>
         <input type="range" id="slDisplayPaths" min="5" max="50" step="5" value="20"
@@ -537,39 +534,39 @@
 
     <!-- Section 1: What is an option? -->
     <div class="explain-section">
-      <h2>what is an option?</h2>
+      <h2>What Is an Option?</h2>
       <div class="explain-box">
         <p>
-          a <em class="term">stock option</em> is a contract that gives you the
+          A <em class="term">stock option</em> is a contract that gives you the
           <em>right</em> (but not the obligation) to buy or sell a stock at a
           specific price, called the strike price (<code>K</code>),
           on or before an expiry date.
         </p>
         <p>
-          a <em class="term">call option</em> profits when the stock goes up.
-          if the stock finishes above <code>K</code> at expiry, you can buy 
+          A <em class="term">call option</em> profits when the stock goes up.
+          If the stock finishes above <code>K</code> at expiry, you can buy 
           the stock for <code>K</code> and then immediately sell at the higher 
-          market price. your payoff is <code>max(S<sub>T</sub> − K, 0)</code>.
+          market price. Your payoff is <code>max(S<sub>T</sub> − K, 0)</code>.
         </p>
         <p>
-          a <em class="term">put option</em> profits when the stock goes down.
-          you can sell the stock at <code>K</code> even though the market is 
-          lower. payoff: <code>max(K − S<sub>T</sub>, 0)</code>.
+          A <em class="term">put option</em> profits when the stock goes down.
+          You can sell the stock at <code>K</code> even though the market is 
+          lower. Payoff: <code>max(K − S<sub>T</sub>, 0)</code>.
         </p>
         <p>
-          in both cases, you just don't exercise (buy/sell at <code>K</code>) 
-          if it would cost you money. this unlimited upside with no downside 
+          In both cases, you just don't exercise (buy/sell at <code>K</code>) 
+          if it would cost you money. This unlimited upside with no downside 
           (besides the premium you pay for the contract) is what makes options 
           worth paying for up front.
         </p>
       </div>
       <div class="payoff-charts-row">
         <div class="payoff-chart-wrap">
-          <div class="payoff-chart-label">call payoff at expiry (<code>K</code> = $100)</div>
+          <div class="payoff-chart-label">Call payoff at expiry (<code>K</code> = $100)</div>
           <canvas id="callPayoffChart" height="160"></canvas>
         </div>
         <div class="payoff-chart-wrap">
-          <div class="payoff-chart-label">put payoff at expiry (<code>K</code> = $100)</div>
+          <div class="payoff-chart-label">Put payoff at expiry (<code>K</code> = $100)</div>
           <canvas id="putPayoffChart" height="160"></canvas>
         </div>
       </div>
@@ -577,12 +574,12 @@
 
     <!-- Section 2: Black-Scholes -->
     <div class="explain-section">
-      <h2>the black-scholes formula</h2>
+      <h2>The Black-Scholes Formula</h2>
       <div class="explain-box">
         <p>
-          black-scholes (1973) gives an exact closed-form price for a
-          <em class="term">european option</em> (one you can only exercise
-          at expiry and not before). it assumes stock prices follow a random walk
+          Black-Scholes (1973) gives an exact closed-form price for a
+          <em class="term">European option</em> (one you can only exercise
+          at expiry and not before). It assumes stock prices follow a random walk
           with constant volatility and no dividends.
         </p>
         <div class="math-block">d₁ = [ ln(S/K) + (r + σ²/2)·T ] / (σ·√T)
@@ -593,7 +590,7 @@ Put:  P = K·e^(−rT)·N(−d₂) − S·N(−d₁)
 
 N(·) = normal CDF</div>
         <p>
-          <strong>inputs:</strong>
+          <strong>Inputs:</strong>
           S = current stock price,
           K = strike price,
           T = years to expiry,
@@ -602,25 +599,25 @@ N(·) = normal CDF</div>
         </p>
         <p>
           <strong>σ:</strong>
-          a <em class="term">log-return</em> over a period is
+          A <em class="term">log-return</em> over a period is
           <code>ln(S_end / S_start)</code>, i.e. the natural log of the price
-          ratio. under Geometric Brownian Motion, these are normally distributed;
+          ratio. Under Geometric Brownian Motion, these are normally distributed;
           σ is their standard deviation.
         </p>
         <p>
-          <strong>how to read the call formula:</strong> it has two terms.
+          <strong>How to read the call formula:</strong> It has two terms.
           <code>S·N(d₁)</code> is the expected value of the stock you receive if
           the option is exercised — the current stock price weighted by the
           "delta" of the option.
           <code>K·e<sup>−rT</sup>·N(d₂)</code> is the present value of the
           strike price you pay, weighted by the probability the option ends
-          up in the money. the call price is the difference: expected receipt
+          up in the money. The call price is the difference: expected receipt
           minus expected cost.
         </p>
         <p>
-          <strong>key assumptions:</strong> log-normal stock prices, constant
-          volatility, no dividends, continuous trading, european exercise only.
-          real markets violate all of these, but black-scholes is still a
+          <strong>Key assumptions:</strong> Log-normal stock prices, constant
+          volatility, no dividends, continuous trading, European exercise only.
+          Real markets violate all of these, but Black-Scholes is still a
           reasonable benchmark.
         </p>
       </div>
@@ -628,29 +625,30 @@ N(·) = normal CDF</div>
 
     <!-- Section 3: GBM -->
     <div class="explain-section">
-      <h2>geometric brownian motion</h2>
+      <h2>Geometric Brownian Motion</h2>
       <div class="explain-box">
         <p>
-          black-scholes assumes stock prices follow
-          <em class="term">geometric brownian motion (GBM)</em> — a continuous
+          Black-Scholes assumes stock prices follow
+          <em class="term">Geometric Brownian Motion (GBM)</em> — a continuous
           random walk where returns are normally distributed and prices can
           never go negative.
         </p>
-        <div class="math-block">continuous form:   dS = μ·S·dt + σ·S·dW
+        <div class="math-block">Continuous form:   dS = μ·S·dt + σ·S·dW
 
-discrete version:
+Discrete version:
   S_T = S · exp( (r − σ²/2)·T  +  σ·√T·Z )
                  └── drift ──┘      └─ random shock
   where Z ~ N(0, 1)</div>
         <p>
-          <strong>drift:</strong> The drift <code>μ</code> corresponds to the expected return demanded by investors.
+          <strong>Drift:</strong> The drift <code>μ</code> corresponds to the expected return demanded by investors.
           In this formula, this drift term combines the risk-free rate <code>r</code>
-          with a correction of <code>−σ²/2</code>. this comes from itô's lemma: when you take the
-          log of a log-normal variable, the mean of <code>log(S_T)</code> is <code>(r − σ²/2)T</code>, 
-          not <code>rT</code>. the correction ensures the average path grows at rate <code>r</code>, 
-          not at rate <code>r + σ²/2</code>. 
+          with a correction of <code>−σ²/2</code>. This comes from Itô's lemma: when you take the
+          log of a log-normal variable, the mean of <code>log(S_T)</code> is <code>(r − σ²/2)T</code>,
+          not <code>rT</code>. The correction ensures the average path grows at rate <code>r</code>,
+          not at rate <code>r + σ²/2</code>.
+        </p>
         <p>
-          <strong>random shock:</strong> The <code>σ·√T</code> in the random shock term 
+          <strong>Random shock:</strong> The <code>σ·√T</code> in the random shock term 
           represents how variance accumulates over time. To generate a standard normal sample 
           <code>Z</code> from uniform random numbers, we use the Box-Muller Transform:
         </p>
@@ -663,7 +661,7 @@ discrete version:
 
     <!-- Section 4: Monte Carlo -->
     <div class="explain-section">
-      <h2>monte carlo pricing</h2>
+      <h2>Monte Carlo Pricing</h2>
       <div class="explain-box">
         <p>
           Monte Carlo pricing relies on the Law of Large Numbers: with enough
@@ -674,22 +672,22 @@ discrete version:
       <div class="step-grid">
         <div class="step-card">
           <div class="step-num">1</div>
-          <h3>draw Z ~ N(0, 1)</h3>
+          <h3>Draw Z ~ N(0, 1)</h3>
           <p>Generate a standard normal random number using the Box-Muller transform.</p>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
-          <h3>simulate S<sub>T</sub></h3>
+          <h3>Simulate S<sub>T</sub></h3>
           <p>Apply the GBM formula <code>S·exp((r−σ²/2)T + σ√T·Z)</code> to create one path.</p>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
-          <h3>compute payoff</h3>
+          <h3>Compute payoff</h3>
           <p>For a call option, the payoff is <code>max(S<sub>T</sub> − K, 0)</code>.</p>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
-          <h3>average &amp; discount</h3>
+          <h3>Average &amp; discount</h3>
           <p>Repeat N times. Price = <code>e<sup>−rT</sup> · mean(payoffs)</code>. 
             (The <code>e<sup>−rT</sup></code> discounts the future payoff back to today's dollars.)
           </p>
@@ -699,13 +697,14 @@ discrete version:
 
     <!-- Section 5: Convergence -->
     <div class="explain-section">
-      <h2>convergence and the standard error</h2>
+      <h2>Convergence and the Standard Error</h2>
       <div class="explain-box">
         <p>
           The Monte Carlo estimate slowly improves with more paths.
           The standard error of the estimate (the average we get from Monte Carlo) 
           is <code>σ_payoffs / √N</code>. (Recall that standard error is the
           standard deviation of the sampling distribution.)
+        </p>
         <p>
           Because of the square root, reducing error gets very costly down the line.
           At N = 10,000 paths, the standard error is typically a few cents
@@ -726,7 +725,7 @@ discrete version:
 </main>
 
 <footer>
-  <span>cameron ake — <a href="index.html">portfolio</a></span>
+  <span>Cameron Ake — <a href="index.html">Portfolio</a></span>
 </footer>
 
 <script>
@@ -806,7 +805,7 @@ function resetAll() {
 // ── Run simulation ─────────────────────────────────────────────────────────
 // runSimulation() is defined in mcop-project/mcop.js (loaded via <script> tag)
 function triggerRun() {
-  setStatus('busy', 'simulating ' + params.N.toLocaleString() + ' paths…');
+  setStatus('busy', 'Simulating ' + params.N.toLocaleString() + ' paths…');
   // setTimeout 0: lets the browser paint the "busy" status before the sync computation
   setTimeout(function () {
     try {
@@ -901,7 +900,7 @@ function renderDistChart(result) {
       },
       {
         type: 'line',
-        label: 'strike K',
+        label: 'Strike K',
         data: kLine,
         borderColor: '#999',
         borderDash: [5, 3],
@@ -981,7 +980,7 @@ function renderConvChart(result) {
         order: 4
       },
       {
-        label: 'monte carlo',
+        label: 'Monte Carlo',
         data: mcVals,
         borderColor: '#5c3fa3',
         borderWidth: 2,
@@ -991,7 +990,7 @@ function renderConvChart(result) {
         order: 2
       },
       {
-        label: 'black-scholes $' + bsp.toFixed(3),
+        label: 'Black-Scholes $' + bsp.toFixed(3),
         data: bsLine,
         borderColor: '#999',
         borderDash: [6, 3],
@@ -1020,7 +1019,7 @@ function renderConvChart(result) {
     scales: {
       x: {
         type: 'logarithmic',
-        title: { display: true, text: 'paths simulated', font: { family: 'Lora, serif', size: 11 } },
+        title: { display: true, text: 'Paths Simulated', font: { family: 'Lora, serif', size: 11 } },
         ticks: {
           font: { family: 'Lora, serif', size: 11 },
           callback: v => v >= 1000 ? (v / 1000) + 'k' : v
@@ -1028,7 +1027,7 @@ function renderConvChart(result) {
         grid: { color: 'rgba(0,0,0,0.05)' }
       },
       y: {
-        title: { display: true, text: 'price ($)', font: { family: 'Lora, serif', size: 11 } },
+        title: { display: true, text: 'Price ($)', font: { family: 'Lora, serif', size: 11 } },
         ticks: {
           font: { family: 'Lora, serif', size: 11 },
           callback: v => '$' + v.toFixed(2)
@@ -1077,7 +1076,7 @@ function renderPathsChart() {
     borderWidth: 1.5,
     pointRadius: 0,
     fill: false,
-    label: 'strike K = $' + p.K
+    label: 'Strike K = $' + p.K
   });
 
   const data = { labels: tAxis, datasets };
@@ -1107,12 +1106,12 @@ function renderPathsChart() {
       },
       scales: {
         x: {
-          title: { display: true, text: 'time (years)', font: { family: 'Lora, serif', size: 11 } },
+          title: { display: true, text: 'Time (years)', font: { family: 'Lora, serif', size: 11 } },
           ticks: { maxTicksLimit: 7, font: { family: 'Lora, serif', size: 11 } },
           grid: { color: 'rgba(0,0,0,0.04)' }
         },
         y: {
-          title: { display: true, text: 'stock price ($)', font: { family: 'Lora, serif', size: 11 } },
+          title: { display: true, text: 'Stock Price ($)', font: { family: 'Lora, serif', size: 11 } },
           ticks: {
             font: { family: 'Lora, serif', size: 11 },
             callback: v => '$' + v.toFixed(0)

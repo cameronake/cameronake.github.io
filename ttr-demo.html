@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TTR Bot Breeder — Cameron Ake</title>
+  <title>TTR Bot Breeder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link type="image/png" sizes="96x96" rel="icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    * { text-transform: lowercase; }
 
     html { font-size: 17px; }
 
@@ -42,10 +42,10 @@
     /* tabs */
     .tab-nav { display: flex; gap: 4px; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
     .tab-btn {
-      padding: 9px 20px; border: none; border-bottom: 3px solid transparent;
-      background: none; font-family: 'Lora', Georgia, serif; font-size: 1.2rem;
+      padding: 9px 16px; border: none; border-bottom: 3px solid transparent;
+      background: none; font-family: 'Lora', Georgia, serif; font-size: 1.05rem;
       cursor: pointer; color: var(--muted); transition: color 0.2s, border-color 0.2s;
-      margin-bottom: -1px; border-radius: 0;
+      margin-bottom: -1px; border-radius: 0; white-space: nowrap;
     }
     .tab-btn:hover { color: var(--text); }
     .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
@@ -250,7 +250,7 @@
     .cmp-winner.tie    { background: var(--bg); color: var(--muted); }
     .cmp-note { font-size: 1rem; color: var(--text); max-width: 100%; line-height: 1.65; margin-bottom: 20px; }
 
-    footer { text-align: center; padding: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--muted); background: var(--surface); }
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 24px; font-size: 0.85rem; color: var(--muted); }
 
     /* weight reference */
     .weight-ref { margin-top: 0; }
@@ -284,7 +284,7 @@
 
 <header>
   <nav>
-    <a href="index.html" class="back-link">← portfolio</a>
+    <a href="index.html" class="back-link">← Portfolio</a>
     <span class="nav-title">Cameron Ake</span>
   </nav>
 </header>
@@ -292,7 +292,7 @@
 <main>
 
   <div class="page-hero">
-    <h1>ticket to ride bot breeder</h1>
+    <h1>Ticket to Ride Bot Breeder</h1>
     <p class="subtitle">
       A genetic algorithm that evolves bots to play the game Ticket to Ride.
       Each bot encodes a strategy as 24 numerical weights, which evolve as the algorithm progresses.
@@ -301,11 +301,11 @@
 
   <!-- Tab navigation -->
   <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('demo', this)">live demo</button>
-    <button class="tab-btn" onclick="switchTab('howtoplay', this)">how to play</button>
-    <button class="tab-btn" onclick="switchTab('fullrun', this)">full run results</button>
-    <button class="tab-btn" onclick="switchTab('compare', this)">bot comparison</button>
-    <button class="tab-btn" onclick="switchTab('limitations', this)">future work</button>
+    <button class="tab-btn active" onclick="switchTab('demo', this)">Live Demo</button>
+    <button class="tab-btn" onclick="switchTab('howtoplay', this)">How to Play</button>
+    <button class="tab-btn" onclick="switchTab('fullrun', this)">Full Run Results</button>
+    <button class="tab-btn" onclick="switchTab('compare', this)">Bot Comparison</button>
+    <button class="tab-btn" onclick="switchTab('limitations', this)">Future Work</button>
   </div>
 
   <!-- ── Demo tab ───────────────────────────────────────────────────────────── -->
@@ -313,33 +313,33 @@
 
     <!-- How it works -->
     <section>
-      <h2>how it works</h2>
+      <h2>How It Works</h2>
       <div class="algo-steps">
         <div class="algo-step">
           <div class="step-num">1</div>
-          <div class="step-label">initialize</div>
+          <div class="step-label">Initialize</div>
           <div class="step-desc">Start from a fresh random population of bots with randomized strategy weights.</div>
         </div>
         <div class="algo-step">
           <div class="step-num">2</div>
-          <div class="step-label">compete</div>
+          <div class="step-label">Compete</div>
           <div class="step-desc">Bots play Ticket to Ride in groups of 4, using a live Python engine running in your browser.</div>
         </div>
         <div class="algo-step">
           <div class="step-num">3</div>
-          <div class="step-label">select</div>
+          <div class="step-label">Select</div>
           <div class="step-desc">Higher-scoring bots have better odds to be chosen as parents for the next generation.</div>
         </div>
         <div class="algo-step">
           <div class="step-num">4</div>
-          <div class="step-label">breed</div>
+          <div class="step-label">Breed</div>
           <div class="step-desc">Parent weights are crossed over gene-by-gene and then mutated to produce offspring.</div>
         </div>
       </div>
     </section>
 
     <section class="htp-section">
-      <h2>how the bots play</h2>
+      <h2>How the Bots Play</h2>
       <p>
         Each bot in this project uses a heuristic function that determines the quality of every possible move
         using 24 numerical weights. The bots then pick whichever move has the highest quality.
@@ -357,35 +357,35 @@
 
     <!-- Config -->
     <section>
-      <h2>try it yourself!</h2>
+      <h2>Try It Yourself!</h2>
       <div class="config-list">
 
         <div class="form-group">
           <label class="form-label" for="n-bots">
-            number of bots <span class="range-value" id="n-bots-val">8</span>
+            Number of Bots <span class="range-value" id="n-bots-val">8</span>
           </label>
           <input type="number" id="n-bots" value="8" min="4" max="40" step="1" />
           <div class="range-hints"><span>min 4</span><span>max 40</span></div>
         </div>
-        <div class="config-desc">population size each generation. more bots = more genetic diversity, but each cycle takes longer.</div>
+        <div class="config-desc">Population size each generation. More bots = more genetic diversity, but each cycle takes longer.</div>
 
         <div class="form-group">
           <label class="form-label" for="n-cycles">
-            generations <span class="range-value" id="n-cycles-val">3</span>
+            Generations <span class="range-value" id="n-cycles-val">3</span>
           </label>
           <input type="number" id="n-cycles" value="3" min="1" max="10" step="1" />
           <div class="range-hints"><span>min 1</span><span>max 10</span></div>
         </div>
-        <div class="config-desc">number of generations to run. each generation is one full compete → select → breed cycle.</div>
+        <div class="config-desc">Number of generations to run. Each generation is one full compete → select → breed cycle.</div>
 
         <div class="form-group">
           <label class="form-label" for="learning-rate">
-            learning rate <span class="range-value" id="lr-val">0.25</span>
+            Learning Rate <span class="range-value" id="lr-val">0.25</span>
           </label>
           <input type="range" id="learning-rate" value="0.25" min="0.05" max="1.0" step="0.05" />
           <div class="range-hints"><span>0.05</span><span>1.0</span></div>
         </div>
-        <div class="config-desc">controls how far each weight can shift during mutation. higher values mean bolder changes each generation.</div>
+        <div class="config-desc">Controls how far each weight can shift during mutation. Higher values mean bolder changes each generation.</div>
 
         <div class="form-group">
           <label class="form-label" for="lr-decay">
@@ -394,41 +394,41 @@
           <input type="range" id="lr-decay" value="1.0" min="0.70" max="1.0" step="0.01" />
           <div class="range-hints"><span>0.70</span><span>1.0 (none)</span></div>
         </div>
-        <div class="config-desc">multiplies the learning rate each cycle. when below 1.0, this slows mutation gradually, so the algorithm moves from exploration toward refinement.</div>
+        <div class="config-desc">Multiplies the learning rate each cycle. When below 1.0, this slows mutation gradually, so the algorithm moves from exploration toward refinement.</div>
 
         <div class="form-group">
-          <label class="form-label" for="selection-mode">selection weighting</label>
+          <label class="form-label" for="selection-mode">Selection Weighting</label>
           <select id="selection-mode">
-            <option value="linear">proportional to score</option>
-            <option value="quadratic">proportional to score²</option>
+            <option value="linear">Proportional to score</option>
+            <option value="quadratic">Proportional to score²</option>
           </select>
         </div>
-        <div class="config-desc">determines the probability a bot is chosen as a parent, based on their game performance. quadratic (score²) heavily amplifies the advantage of top scorers.</div>
+        <div class="config-desc">Determines the probability a bot is chosen as a parent, based on their game performance. Quadratic (score²) heavily amplifies the advantage of top scorers.</div>
 
         <div class="form-group">
           <label class="form-label" for="elite-pct">
-            elite preservation <span class="range-value" id="elite-pct-val">0%</span>
+            Elite Preservation <span class="range-value" id="elite-pct-val">0%</span>
           </label>
           <input type="range" id="elite-pct" value="0" min="0" max="50" step="5" />
           <div class="range-hints"><span>0% (none)</span><span>50%</span></div>
         </div>
-        <div class="config-desc">proportion of top-scoring bots that survive to the next generation unchanged, bypassing breeding.</div>
+        <div class="config-desc">Proportion of top-scoring bots that survive to the next generation unchanged, bypassing breeding.</div>
 
         <div class="form-group">
-          <label class="form-label" for="eval-mode">evaluation mode</label>
+          <label class="form-label" for="eval-mode">Evaluation Mode</label>
           <select id="eval-mode">
-            <option value="1">standard — 1 game per cycle</option>
-            <option value="3">stable — 3 games, averaged (slower)</option>
+            <option value="1">Standard — 1 game per cycle</option>
+            <option value="3">Stable — 3 games, averaged (slower)</option>
           </select>
         </div>
-        <div class="config-desc">stable mode averages scores over 3 games per cycle, reducing noise from lucky or unlucky games.</div>
+        <div class="config-desc">Stable mode averages scores over 3 games per cycle, reducing noise from lucky or unlucky games.</div>
 
       </div>
 
-      <button class="btn" id="breed-btn" onclick="runBreeding()" disabled>breed bots</button>
+      <button class="btn" id="breed-btn" onclick="runBreeding()" disabled>Breed Bots</button>
       <div class="engine-status">
         <div class="engine-dot loading" id="engine-dot"></div>
-        <span id="engine-text">loading python engine…</span>
+        <span id="engine-text">Loading Python engine…</span>
       </div>
 
       <div class="progress-wrap" id="progress-wrap">
@@ -439,14 +439,14 @@
 
     <!-- Results -->
     <section id="results">
-      <h2>results</h2>
+      <h2>Results</h2>
       <div class="chart-wrap" id="demo-chart-wrap" style="display:none; margin-bottom:24px;">
-        <div class="chart-title">score distribution per generation</div>
+        <div class="chart-title">Score Distribution per Generation</div>
         <canvas id="demo-score-chart" height="160"></canvas>
         <div class="chart-legend">
-          <div class="legend-item"><div class="legend-line" style="background:#5c3fa3"></div> avg score</div>
+          <div class="legend-item"><div class="legend-line" style="background:#5c3fa3"></div> Avg score</div>
           <div class="legend-item"><div class="legend-line" style="background:#5c3fa3;opacity:0.35;height:10px;border-radius:2px;width:20px"></div> IQR (Q1–Q3)</div>
-          <div class="legend-item"><div class="legend-line" style="background:#c8860a;border-top:2px dashed #c8860a;height:0"></div> 5-stage trend</div>
+          <div class="legend-item"><div class="legend-line" style="background:#c8860a;border-top:2px dashed #c8860a;height:0"></div> 5-Stage Trend</div>
         </div>
       </div>
       <div class="gen-nav" id="gen-nav"></div>
@@ -457,10 +457,10 @@
 
     <!-- Weight reference -->
     <details class="weight-ref">
-      <summary>weight reference</summary>
+      <summary>Weight Reference</summary>
       <div class="wref-body">
         <div class="wref-group">
-          <div class="wref-group-title">move evaluation (weights 1–17) — scored every turn to pick the best action</div>
+          <div class="wref-group-title">Move evaluation (weights 1–17) — scored every turn to pick the best action</div>
           <table class="wref-table">
             <tr>
               <td class="wref-num">1</td>
@@ -550,7 +550,7 @@
           </table>
         </div>
         <div class="wref-group">
-          <div class="wref-group-title">ticket selection (weights 18–24) — used when choosing which destination tickets to keep</div>
+          <div class="wref-group-title">Ticket selection (weights 18–24) — used when choosing which destination tickets to keep</div>
           <table class="wref-table">
             <tr>
               <td class="wref-num">18</td>
@@ -606,53 +606,53 @@
 
     <section>
       <div class="form-group" style="max-width:340px; margin-bottom:32px;">
-        <label class="dataset-label" for="run-dataset">dataset</label>
+        <label class="dataset-label" for="run-dataset">Dataset</label>
         <select id="run-dataset" onchange="switchDataset(this.value)">
-          <option value="greedy4">run 4a — 4 bots, quadratic, LR decay, 200 stages</option>
-          <option value="linear40">run 40a — 40 bots, linear, 50 stages</option>
-          <option value="quad40">run 40b — 40 bots, quadratic, 50 stages</option>
-          <option value="greedy40">run 40c — 40 bots, quadratic, 3-game avg, LR decay, 200 stages</option>
-          <option value="elite40">run 40d — 40 bots, quadratic, 3-game avg, LR decay, 5% elite, 200 stages</option>
+          <option value="greedy4">Run 4a — 4 bots, quadratic, LR decay, 200 stages</option>
+          <option value="linear40">Run 40a — 40 bots, linear, 50 stages</option>
+          <option value="quad40">Run 40b — 40 bots, quadratic, 50 stages</option>
+          <option value="greedy40">Run 40c — 40 bots, quadratic, 3-game avg, LR decay, 200 stages</option>
+          <option value="elite40">Run 40d — 40 bots, quadratic, 3-game avg, LR decay, 5% elite, 200 stages</option>
         </select>
       </div>
     </section>
 
     <section>
-      <h2>evolution results</h2>
+      <h2>Evolution Results</h2>
       <p class="run-note" id="run-note"></p>
       <div class="run-params" id="run-params"></div>
 
       <div class="run-summary">
         <div class="run-stat">
-          <div class="run-stat-label">starting avg score</div>
+          <div class="run-stat-label">Starting Avg Score</div>
           <div class="run-stat-value" id="run-stat-start">28.2</div>
-          <div class="run-stat-sub">stage 0</div>
+          <div class="run-stat-sub">Stage 0</div>
         </div>
         <div class="run-stat">
-          <div class="run-stat-label">final avg score</div>
+          <div class="run-stat-label">Final Avg Score</div>
           <div class="run-stat-value" id="run-stat-final">96.0</div>
-          <div class="run-stat-sub" id="run-stat-final-sub">stage FINAL</div>
+          <div class="run-stat-sub" id="run-stat-final-sub">Stage Final</div>
         </div>
         <div class="run-stat">
-          <div class="run-stat-label">peak score</div>
+          <div class="run-stat-label">Peak Score</div>
           <div class="run-stat-value" id="run-stat-peak">120</div>
-          <div class="run-stat-sub" id="run-stat-peak-sub">single bot, stage 45</div>
+          <div class="run-stat-sub" id="run-stat-peak-sub">Single bot, stage 45</div>
         </div>
       </div>
 
       <div class="chart-wrap">
-        <div class="chart-title">score distribution per stage</div>
+        <div class="chart-title">Score Distribution per Stage</div>
         <canvas id="scoreChart" height="190"></canvas>
         <div class="chart-legend">
-          <div class="legend-item"><div class="legend-line" style="background:#5c3fa3"></div> avg score</div>
+          <div class="legend-item"><div class="legend-line" style="background:#5c3fa3"></div> Avg score</div>
           <div class="legend-item"><div class="legend-line" style="background:#5c3fa3;opacity:0.35;height:10px;border-radius:2px;width:20px"></div> IQR (Q1–Q3)</div>
-          <div class="legend-item"><div class="legend-line" style="background:#c8860a;border-top:2px dashed #c8860a;height:0"></div> 5-stage trend</div>
+          <div class="legend-item"><div class="legend-line" style="background:#c8860a;border-top:2px dashed #c8860a;height:0"></div> 5-Stage Trend</div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2>final population</h2>
+      <h2>Final Population</h2>
       <p style="margin-bottom:20px;">
         The top four bots at the final stage of evolution for this run. Click a card to see a full strategy breakdown.
       </p>
@@ -662,7 +662,7 @@
 
     <!-- ── Head-to-head comparison ─────────────────────────────────────────── -->
     <section>
-      <h2>head-to-head: stage 0 vs final</h2>
+      <h2>Head-to-Head: Stage 0 vs. Final</h2>
       <p class="cmp-note">
         Pit the top-4 bots from the very first generation of this run against this run's top 4 
         evolved final bots in live game simulations. Each game mixes 2 stage-0 bots with 2 
@@ -672,16 +672,16 @@
       <div class="cmp-controls">
         <div class="form-group" style="min-width:200px;">
           <label class="form-label" for="cmp-n-games">
-            games to run <span class="range-value" id="cmp-n-val">5</span>
+            Games to Run <span class="range-value" id="cmp-n-val">5</span>
           </label>
           <input type="range" id="cmp-n-games" value="5" min="1" max="10" step="1" />
           <div class="range-hints"><span>1</span><span>10</span></div>
         </div>
         <div>
-          <button class="btn" id="cmp-btn" onclick="runComparison()" disabled>run games</button>
+          <button class="btn" id="cmp-btn" onclick="runComparison()" disabled>Run Games</button>
           <div class="engine-status" style="margin-top:10px;">
             <div class="engine-dot loading" id="cmp-engine-dot"></div>
-            <span id="cmp-engine-text">loading python engine…</span>
+            <span id="cmp-engine-text">Loading Python engine…</span>
           </div>
         </div>
       </div>
@@ -694,17 +694,17 @@
       <div id="cmp-results" style="display:none;">
         <div class="run-summary" style="margin-bottom:20px;">
           <div class="run-stat">
-            <div class="run-stat-label">stage 0 avg score</div>
+            <div class="run-stat-label">Stage 0 Avg Score</div>
             <div class="run-stat-value" id="cmp-stat-s0">—</div>
-            <div class="run-stat-sub">across all games</div>
+            <div class="run-stat-sub">Across all games</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">final avg score</div>
+            <div class="run-stat-label">Final Avg Score</div>
             <div class="run-stat-value" id="cmp-stat-fn">—</div>
-            <div class="run-stat-sub">across all games</div>
+            <div class="run-stat-sub">Across all games</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">final bot wins</div>
+            <div class="run-stat-label">Final Bot Wins</div>
             <div class="run-stat-value" id="cmp-stat-wins">—</div>
             <div class="run-stat-sub" id="cmp-stat-wins-sub"></div>
           </div>
@@ -719,7 +719,7 @@
   <div id="tab-howtoplay" class="tab-panel">
 
     <section class="htp-section">
-      <h2>what is ticket to ride?</h2>
+      <h2>What Is Ticket to Ride?</h2>
       <p>
         Ticket to Ride is a competitive board game for 2–5 players.
         Players collect colored train cards and spend them to claim routes between North American cities, racing to
@@ -735,24 +735,24 @@
         <a href="https://www.bramptonlibrary.ca/board-games/tt_rules_2015_en.pdf" target="_blank" rel="noopener noreferrer">here</a>!
       </p>
       <figure class="board-fig">
-        <img class="board-img" src="assets/ttr-board.jpg" alt="the North America ticket to ride board" />
-        <figcaption>the North America board — cities are connected by colored routes of varying lengths.</figcaption>
+        <img class="board-img" src="assets/ttr-board.jpg" alt="The North America Ticket to Ride board" />
+        <figcaption>The North America board — cities are connected by colored routes of varying lengths.</figcaption>
       </figure>
     </section>
 
     <section class="htp-section">
-      <h2>turn structure</h2>
+      <h2>Turn Structure</h2>
       <p>On each turn, a player does exactly one of the following:</p>
       <div class="htp-grid">
         <div class="htp-card">
-          <div class="htp-card-title">draw train cards</div>
+          <div class="htp-card-title">Draw Train Cards</div>
           <div class="htp-card-body">
             Take 2 cards from the face-up display or the face-down deck.
             Taking one face-up locomotive (wild card) uses your entire turn.
           </div>
         </div>
         <div class="htp-card">
-          <div class="htp-card-title">claim a route</div>
+          <div class="htp-card-title">Claim a Route</div>
           <div class="htp-card-body">
             Spend a number of cards equal to the route's length to place your trains on it.
             The card colors must match the color of the route &lpar;gray routes can be any color&rpar;.
@@ -760,7 +760,7 @@
           </div>
         </div>
         <div class="htp-card">
-          <div class="htp-card-title">draw destination tickets</div>
+          <div class="htp-card-title">Draw Destination Tickets</div>
           <div class="htp-card-body">
             Draw 3 ticket cards showing city pairs and point values. Keep at least 1.
             If you complete them by the end of the game, you get those points... but otherwise, you lose those points instead.
@@ -770,13 +770,13 @@
     </section>
 
     <section class="htp-section">
-      <h2>scoring</h2>
+      <h2>Scoring</h2>
       <p>
         When you play on a route, you immediately get points according to the following table.
       </p>
       <table class="score-table">
         <thead>
-          <tr><th>route length</th><th>points earned</th></tr>
+          <tr><th>Route Length</th><th>Points Earned</th></tr>
         </thead>
         <tbody>
           <tr><td>1 car</td><td>1 pt</td></tr>
@@ -795,25 +795,24 @@
     </section>
 
     <section class="htp-section">
-      <h2>strategy basics</h2>
+      <h2>Strategy Basics</h2>
       <div class="htp-tip"><p>
-        <strong>make sure you get your tickets.</strong> If you don't connect a destination ticket, 
+        <strong>Make sure you get your tickets.</strong> If you don't connect a destination ticket, 
         you lose anywhere from 4 to 22 points, depending on the ticket. Getting all your tickets is 
         essential.
       </p></div>
       <div class="htp-tip"><p>
-        <strong>aim for longer routes.</strong> If you can efficiently claim several longer routes while
+        <strong>Aim for longer routes.</strong> If you can efficiently claim several longer routes while
         making progress on your tickets, you can get more route points and more ticket points.
       </p></div>
       <div class="htp-tip"><p>
-        <strong>plan your network early.</strong> The most efficient players claim routes that serve
+        <strong>Plan your network early.</strong> The most efficient players claim routes that serve
         multiple tickets at once. A route between two central cities can be part of several different
         connections.
       </p></div>
       <div class="htp-tip"><p>
-        <strong>manage ticket risk.</strong> Long-distance tickets score more points but are harder to
-        complete. Taking on too many ambitious tickets without a clear path is one of the most common
-        mistakes.
+        <strong>Manage ticket risk.</strong> Long-distance tickets score more points but are harder to
+        complete. Taking on too many ambitious tickets without a clear path can be a big mistake.
       </p></div>
     </section>
 
@@ -823,7 +822,7 @@
   <div id="tab-compare" class="tab-panel">
 
     <section>
-      <h2>my bot vs. days of wonder</h2>
+      <h2>My Bot vs. Days of Wonder</h2>
       <p class="run-note">
         How does an evolved bot compare to commercial competition? Days of Wonder's mobile app
         includes <em>Vanderbot Jr.</em>, their best AI for the USA board. Let's compare Vanderbot
@@ -837,60 +836,60 @@
 
       <div class="botcmp-grid">
         <div class="botcmp-col">
-          <div class="botcmp-col-head" style="--c:#5c3fa3">40d bot (mine)</div>
+          <div class="botcmp-col-head" style="--c:#5c3fa3">40D Bot (Mine)</div>
           <div class="run-stat">
-            <div class="run-stat-label">avg score per bot</div>
+            <div class="run-stat-label">Avg Score per Bot</div>
             <div class="run-stat-value" style="color:#5c3fa3">94.2</div>
-            <div class="run-stat-sub">across 200 bots, 4 per game</div>
+            <div class="run-stat-sub">Across 200 bots, 4 per game</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">median score</div>
+            <div class="run-stat-label">Median Score</div>
             <div class="run-stat-value" style="color:#5c3fa3">97.0</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">std deviation</div>
+            <div class="run-stat-label">Std Deviation</div>
             <div class="run-stat-value" style="color:#5c3fa3">22.1</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">avg winner score</div>
+            <div class="run-stat-label">Avg Winner Score</div>
             <div class="run-stat-value" style="color:#5c3fa3">116.7</div>
-            <div class="run-stat-sub">across 50 games</div>
+            <div class="run-stat-sub">Across 50 games</div>
           </div>
         </div>
         <div class="botcmp-col">
-          <div class="botcmp-col-head" style="--c:#c8860a">vanderbot jr. (days of wonder)</div>
+          <div class="botcmp-col-head" style="--c:#c8860a">Vanderbot Jr. (Days of Wonder)</div>
           <div class="run-stat">
-            <div class="run-stat-label">avg score per bot</div>
+            <div class="run-stat-label">Avg Score per Bot</div>
             <div class="run-stat-value" style="color:#c8860a">75.8</div>
-            <div class="run-stat-sub">across 200 bots, 4 per game</div>
+            <div class="run-stat-sub">Across 200 bots, 4 per game</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">median score</div>
+            <div class="run-stat-label">Median Score</div>
             <div class="run-stat-value" style="color:#c8860a">77.0</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">std deviation</div>
+            <div class="run-stat-label">Std Deviation</div>
             <div class="run-stat-value" style="color:#c8860a">19.4</div>
           </div>
           <div class="run-stat">
-            <div class="run-stat-label">avg winner score</div>
+            <div class="run-stat-label">Avg Winner Score</div>
             <div class="run-stat-value" style="color:#c8860a">96.5</div>
-            <div class="run-stat-sub">across 50 games</div>
+            <div class="run-stat-sub">Across 50 games</div>
           </div>
         </div>
       </div>
 
       <div class="chart-wrap">
-        <div class="chart-title">score distribution — all bots, 50 games each (200 scores per bot type)</div>
+        <div class="chart-title">Score Distribution — All Bots, 50 Games Each (200 Scores per Bot Type)</div>
         <canvas id="compareChart" height="190"></canvas>
         <div class="chart-legend">
           <div class="legend-item">
             <div style="width:14px;height:14px;border-radius:3px;background:rgba(92,63,163,0.5);border:1.5px solid #5c3fa3;flex-shrink:0"></div>
-            40d bot
+            40D Bot
           </div>
           <div class="legend-item">
             <div style="width:14px;height:14px;border-radius:3px;background:rgba(200,134,10,0.5);border:1.5px solid #c8860a;flex-shrink:0"></div>
-            vanderbot jr.
+            Vanderbot Jr.
           </div>
         </div>
       </div>
@@ -916,7 +915,7 @@
     </section>
 
     <section class="htp-section">
-      <h2>current limitations</h2>
+      <h2>Current Limitations</h2>
       <p>
         The bots perform quite well, but this implementation has a few limitations, partially as
         a consequence of some design decisions I made.
@@ -947,7 +946,7 @@
       </p></div>
       <div class="htp-tip"><p>
         <strong>Parts of the heuristic are imperfect.</strong> When computing optimal multi-ticket 
-        networks with shared segments, accounting for every possibile color to play on a gray-colored 
+        networks with shared segments, accounting for every possible color to play on a gray-colored 
         route would be too costly and would occasionally lead to memory errors. Instead, I used a 
         greedy Steiner tree approximation, which stops this problem but is less accurate. This means
         the bots will occasionally overestimate the difficulty of a given network of tickets.
@@ -974,7 +973,7 @@
     </section>
 
     <section class="htp-section">
-      <h2>future work</h2>
+      <h2>Future Work</h2>
       <p>I've already made most of the extensions that seemed feasible, but several more
         additions to this project would meaningfully improve the bots and the demo.</p>
       <div class="htp-tip"><p>
@@ -1001,7 +1000,9 @@
 
 </main>
 
-<footer><p>&copy; 2026 Cameron Ake</p></footer>
+<footer>
+  <span>Cameron Ake — <a href="index.html">Portfolio</a></span>
+</footer>
 
 <script src="data/greedy4.js"></script>
 <script src="data/greedy40.js"></script>
@@ -1163,7 +1164,7 @@ function initCompareChart() {
       labels: CMP_BIN_LABELS,
       datasets: [
         {
-          label: 'elite40 bot',
+          label: '40D Bot',
           data: CMP_ELITE40_COUNTS,
           backgroundColor: 'rgba(92,63,163,0.5)',
           borderColor: '#5c3fa3',
@@ -1174,7 +1175,7 @@ function initCompareChart() {
           order: 1,
         },
         {
-          label: 'vanderbot jr.',
+          label: 'Vanderbot Jr.',
           data: CMP_DOW_COUNTS,
           backgroundColor: 'rgba(200,134,10,0.5)',
           borderColor: '#c8860a',
@@ -1200,12 +1201,12 @@ function initCompareChart() {
       },
       scales: {
         x: {
-          title: { display: true, text: 'score range', color: '#6b6863', font: { size: 18 } },
+          title: { display: true, text: 'Score Range', color: '#6b6863', font: { size: 18 } },
           grid: { color: 'rgba(0,0,0,0.04)' },
           ticks: { color: '#6b6863', font: { size: 13 } },
         },
         y: {
-          title: { display: true, text: 'number of bots', color: '#6b6863', font: { size: 18 } },
+          title: { display: true, text: 'Number of Bots', color: '#6b6863', font: { size: 18 } },
           grid: { color: 'rgba(0,0,0,0.06)' },
           ticks: { color: '#6b6863', stepSize: 5, font: { size: 13 } },
           beginAtZero: true,
@@ -1267,14 +1268,14 @@ function renderDemoChart() {
           label: ctx => {
             if (ctx.dataset.label === 'Q3') return `Q3: ${ctx.parsed.y}`;
             if (ctx.dataset.label === 'Q1') return `Q1: ${ctx.parsed.y}`;
-            if (ctx.dataset.label === 'avg score') return `avg: ${ctx.parsed.y.toFixed(1)}`;
-            if (ctx.dataset.label === '5-stage trend') return `trend: ${ctx.parsed.y.toFixed(1)}`;
+            if (ctx.dataset.label === 'Avg score') return `avg: ${ctx.parsed.y.toFixed(1)}`;
+            if (ctx.dataset.label === '5-Stage Trend') return `trend: ${ctx.parsed.y.toFixed(1)}`;
           }
         }
       }},
       scales: {
-        x: { title: { display: true, text: 'generation', font: { size: 18 } }, ticks: { font: { size: 13 } } },
-        y: { title: { display: true, text: 'score (pts)', font: { size: 18 } }, min: 0, ticks: { font: { size: 13 } } }
+        x: { title: { display: true, text: 'Generation', font: { size: 18 } }, ticks: { font: { size: 13 } } },
+        y: { title: { display: true, text: 'Score (pts)', font: { size: 18 } }, min: 0, ticks: { font: { size: 13 } } }
       }
     }
   });
@@ -1293,7 +1294,7 @@ function updateRunSummary(ds) {
   document.getElementById('run-stat-start').textContent = s.startAvg;
   document.getElementById('run-stat-final').textContent = s.finalAvg;
   const lastStage = ds.evolution[ds.evolution.length - 1].stage;
-  document.getElementById('run-stat-final-sub').textContent = 'stage ' + lastStage + ' (FINAL)';
+  document.getElementById('run-stat-final-sub').textContent = 'stage ' + lastStage + ' (final)';
   document.getElementById('run-stat-peak').textContent = s.peakScore;
   document.getElementById('run-stat-peak-sub').textContent = (ds.avgScores ? 'peak 3-game avg, stage ' : 'single bot, stage ') + s.peakStage;
   document.getElementById('run-note').textContent = ds.note;
@@ -1360,7 +1361,7 @@ function initCharts(key) {
           tension: 0.3,
         },
         {
-          label: 'avg score',
+          label: 'Avg score',
           data: evolutionData.map(d => d.avg),
           borderColor: accent,
           backgroundColor: 'transparent',
@@ -1371,7 +1372,7 @@ function initCharts(key) {
           fill: false,
         },
         {
-          label: '5-stage trend',
+          label: '5-Stage Trend',
           data: trend,
           borderColor: '#c8860a',
           backgroundColor: 'transparent',
@@ -1391,15 +1392,15 @@ function initCharts(key) {
           label: ctx => {
             if (ctx.dataset.label === 'Q3') return `Q3: ${ctx.parsed.y}`;
             if (ctx.dataset.label === 'Q1') return `Q1: ${ctx.parsed.y}`;
-            if (ctx.dataset.label === 'avg score') return `avg: ${ctx.parsed.y.toFixed(1)}`;
-            if (ctx.dataset.label === '5-stage trend') return `trend: ${ctx.parsed.y.toFixed(1)}`;
+            if (ctx.dataset.label === 'Avg score') return `avg: ${ctx.parsed.y.toFixed(1)}`;
+            if (ctx.dataset.label === '5-Stage Trend') return `trend: ${ctx.parsed.y.toFixed(1)}`;
             return ctx.dataset.label + ': ' + ctx.parsed.y;
           }
         }
       }},
       scales: {
-        x: { title: { display: true, text: 'stage', font: { size: 18 } }, ticks: { font: { size: 13 } } },
-        y: { title: { display: true, text: 'score (pts)', font: { size: 18 } }, min: 0, ticks: { font: { size: 13 } } }
+        x: { title: { display: true, text: 'Stage', font: { size: 18 } }, ticks: { font: { size: 13 } } },
+        y: { title: { display: true, text: 'Score (pts)', font: { size: 18 } }, min: 0, ticks: { font: { size: 13 } } }
       }
     }
   });
@@ -1419,7 +1420,7 @@ function renderFinalBots(pop) {
     }).join('');
     const tags = [];
     if (avgScores) {
-      tags.push('<span class="perf-tag unknown">3-game avg score</span>');
+      tags.push('<span class="perf-tag unknown">3-Game Avg Score</span>');
     } else {
       if (bot.longestRoute) tags.push('<span class="perf-tag longest">★ longest route</span>');
       const achieved = bot.tickets.filter(t => t.achieved).length;
@@ -1431,7 +1432,7 @@ function renderFinalBots(pop) {
     card.style.borderTop = `3px solid ${color}`;
     card.innerHTML = `
       <div class="bot-header">
-        <span class="bot-id">bot ${idx + 1}</span>
+        <span class="bot-id">Bot ${idx + 1}</span>
         <span class="bot-score${bot.score >= 70 ? ' high' : ''}">${bot.score} pts</span>
       </div>
       <div class="perf-row">${tags.join('')}</div>
@@ -1448,8 +1449,8 @@ function showFinalDetail(bot, color, num) {
   const top3 = [...sorted].sort((a, b) => b.norm - a.norm).slice(0, 3);
   const bot2 = [...sorted].sort((a, b) => a.norm - b.norm).slice(0, 2);
   const strategyItems = [
-    ...top3.map(w => `<li>high ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
-    ...bot2.map(w => `<li>low ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
+    ...top3.map(w => `<li>High ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
+    ...bot2.map(w => `<li>Low ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
   ].join('');
   const weightRows = bot.w.map((v, i) => {
     const pct = (normW(v, i) * 100).toFixed(1);
@@ -1463,25 +1464,25 @@ function showFinalDetail(bot, color, num) {
   if (avgScores) {
     perfSection = `
       <div class="perf-section">
-        <div class="perf-section-title">game performance (final stage)</div>
+        <div class="perf-section-title">Game Performance (Final Stage)</div>
         <div class="perf-item">
-          <span class="perf-item-label">score</span>
-          <span class="perf-item-value unknown">average of 3 games — per-game breakdown not shown</span>
+          <span class="perf-item-label">Score</span>
+          <span class="perf-item-value unknown">Average of 3 games — per-game breakdown not shown</span>
         </div>
       </div>`;
   } else {
     const lrClass = bot.longestRoute ? 'yes' : 'no';
-    const lrText  = bot.longestRoute ? 'yes — held longest route' : 'no';
+    const lrText  = bot.longestRoute ? 'Yes — held longest route' : 'No';
     const ticketRows = bot.tickets.map(t => `
       <div class="perf-item">
         <span class="perf-item-label">${t.route}</span>
-        <span class="perf-item-value ${t.achieved ? 'yes' : 'no'}">${t.achieved ? '✓ completed' : '✗ incomplete'}</span>
+        <span class="perf-item-value ${t.achieved ? 'yes' : 'no'}">${t.achieved ? '✓ Completed' : '✗ Incomplete'}</span>
       </div>`).join('');
     perfSection = `
       <div class="perf-section">
-        <div class="perf-section-title">game performance (final stage)</div>
+        <div class="perf-section-title">Game Performance (Final Stage)</div>
         <div class="perf-item">
-          <span class="perf-item-label">longest route</span>
+          <span class="perf-item-label">Longest Route</span>
           <span class="perf-item-value ${lrClass}">${lrText}</span>
         </div>
         ${ticketRows}
@@ -1491,13 +1492,13 @@ function showFinalDetail(bot, color, num) {
     <div class="bot-detail">
       <div class="detail-header">
         <div class="detail-dot" style="background:${color}"></div>
-        <span class="detail-title">bot ${num} — strategy profile</span>
+        <span class="detail-title">Bot ${num} — Strategy Profile</span>
         <span class="detail-score">${bot.score} pts</span>
         <button class="detail-close" onclick="document.getElementById('final-bot-detail').innerHTML=''">✕</button>
       </div>
       ${perfSection}
       <div class="strategy-box">
-        <div class="strategy-title">defining traits</div>
+        <div class="strategy-title">Defining Traits</div>
         <ul class="strategy-list">${strategyItems}</ul>
       </div>
       <div class="detail-weights">${weightRows}</div>
@@ -1536,10 +1537,10 @@ function setEngineStatus(msg, state) {
   if (!cmpDot) return;
   cmpDot.className = 'engine-dot' + (state ? ' ' + state : '');
   if (state === 'ready') {
-    cmpText.textContent = 'python engine ready';
+    cmpText.textContent = 'Python engine ready';
     cmpBtn.disabled = false;
   } else if (state === 'error') {
-    cmpText.textContent = 'python engine unavailable';
+    cmpText.textContent = 'Python engine unavailable';
     cmpBtn.disabled = true;
   } else {
     cmpText.textContent = msg;
@@ -1556,7 +1557,7 @@ function initWorker() {
       } else if (type === 'ready') {
         workerReady = true;
         _workerReadyResolve();
-        setEngineStatus('python engine ready', 'ready');
+        setEngineStatus('Python engine ready', 'ready');
       } else if (type === 'game_result') {
         if (_pendingGameResolve) { _pendingGameResolve(e.data.result); _pendingGameResolve = null; }
       } else if (type === 'game_error') {
@@ -1570,7 +1571,7 @@ function initWorker() {
       } else if (type === 'error') {
         workerFailed = true;
         _workerReadyResolve();
-        setEngineStatus('python engine unavailable', 'error');
+        setEngineStatus('Python engine unavailable', 'error');
         console.error('Worker:', e.data.msg);
         if (_pendingGameResolve) { _pendingGameResolve(null); _pendingGameResolve = null; }
         if (_pendingBreedResolve) { _pendingBreedResolve(null); _pendingBreedResolve = null; }
@@ -1579,7 +1580,7 @@ function initWorker() {
     worker.onerror = function(err) {
       workerFailed = true;
       _workerReadyResolve();
-      setEngineStatus('python engine unavailable', 'error');
+      setEngineStatus('Python engine unavailable', 'error');
       if (_pendingGameResolve) { _pendingGameResolve(null); _pendingGameResolve = null; }
       if (_pendingBreedResolve) { _pendingBreedResolve(null); _pendingBreedResolve = null; }
     };
@@ -1587,7 +1588,7 @@ function initWorker() {
   } catch (err) {
     workerFailed = true;
     _workerReadyResolve();
-    setEngineStatus('python engine unavailable', 'error');
+    setEngineStatus('Python engine unavailable', 'error');
   }
 }
 
@@ -1643,12 +1644,12 @@ async function runComparison() {
   fill.style.width = '0%';
 
   if (!workerReady && !workerFailed) {
-    text.textContent = 'waiting for python engine…';
+    text.textContent = 'Waiting for Python engine…';
     await workerReadyPromise;
   }
 
   if (workerFailed) {
-    text.textContent = 'python engine unavailable.';
+    text.textContent = 'Python engine unavailable.';
     btn.disabled = false;
     return;
   }
@@ -1657,7 +1658,7 @@ async function runComparison() {
 
   for (let g = 0; g < nGames; g++) {
     fill.style.width = `${(g / nGames) * 100}%`;
-    text.textContent = `running game ${g + 1} of ${nGames}…`;
+    text.textContent = `Running game ${g + 1} of ${nGames}…`;
 
     // randomly pick 2 from each group
     const s0pick = [...stage0].sort(() => Math.random() - 0.5).slice(0, 2);
@@ -1679,7 +1680,7 @@ async function runComparison() {
 
   fill.style.width = '100%';
   const ran = gameLog.length;
-  text.textContent = `done — ${ran} game${ran !== 1 ? 's' : ''} completed. results below.`;
+  text.textContent = `Done — ${ran} game${ran !== 1 ? 's' : ''} completed. Results below.`;
   btn.disabled = false;
 
   renderComparisonResults(gameLog);
@@ -1693,7 +1694,7 @@ function renderCmpBotMini(bot) {
     ? bot.tickets.map(t =>
         `<span class="perf-tag ${t.achieved ? 'ticket-yes' : 'ticket-no'}">${t.achieved ? '✓' : '✗'} ${t.route}</span>`
       ).join('')
-    : '<span class="perf-tag unknown">no ticket data</span>';
+    : '<span class="perf-tag unknown">No Ticket Data</span>';
   return `<div class="cmp-bot-mini">
     <div class="cmp-bot-score">${bot.score} pts</div>
     <div class="perf-row">${lrHtml}${ticketHtml}</div>
@@ -1723,9 +1724,9 @@ function renderComparisonResults(gameLog) {
     const topS0 = r.s0Bots.length ? Math.max(...r.s0Bots.map(b => b.score)) : -Infinity;
     const topFn = r.fnBots.length ? Math.max(...r.fnBots.map(b => b.score)) : -Infinity;
     let winnerLabel, winnerClass;
-    if (topFn > topS0)      { winnerLabel = 'final wins';   winnerClass = 'final'; }
-    else if (topS0 > topFn) { winnerLabel = 'stage 0 wins'; winnerClass = 'stage0'; }
-    else                    { winnerLabel = 'tie';           winnerClass = 'tie'; }
+    if (topFn > topS0)      { winnerLabel = 'Final wins';   winnerClass = 'final'; }
+    else if (topS0 > topFn) { winnerLabel = 'Stage 0 wins'; winnerClass = 'stage0'; }
+    else                    { winnerLabel = 'Tie';           winnerClass = 'tie'; }
     const s0Html = r.s0Bots.map(renderCmpBotMini).join('');
     const fnHtml = r.fnBots.map(renderCmpBotMini).join('');
     return `<div class="cmp-game-card">
@@ -1766,7 +1767,7 @@ function renderGenNav() {
   generations.forEach((_, i) => {
     const btn = document.createElement('button');
     btn.className = 'gen-btn' + (i === activeGen ? ' active' : '');
-    btn.textContent = i === 0 ? 'initial' : `gen ${i}`;
+    btn.textContent = i === 0 ? 'Initial' : `Gen ${i}`;
     btn.onclick = () => { activeGen = i; renderGenNav(); renderStats(); renderGrid(); };
     nav.appendChild(btn);
   });
@@ -1779,27 +1780,27 @@ function renderStats() {
   const best = Math.max(...scores);
   const offspring = pop.filter(b => b.isChild).length;
   document.getElementById('gen-stats').innerHTML = `
-    <div class="stat"><span class="stat-label">generation</span><span class="stat-value">${activeGen === 0 ? 'initial' : activeGen}</span></div>
-    <div class="stat"><span class="stat-label">population</span><span class="stat-value">${pop.length}</span></div>
-    <div class="stat"><span class="stat-label">avg score</span><span class="stat-value">${avg} pts</span></div>
-    <div class="stat"><span class="stat-label">top score</span><span class="stat-value">${best} pts</span></div>
-    <div class="stat"><span class="stat-label">offspring</span><span class="stat-value">${offspring}</span></div>
+    <div class="stat"><span class="stat-label">Generation</span><span class="stat-value">${activeGen === 0 ? 'Initial' : activeGen}</span></div>
+    <div class="stat"><span class="stat-label">Population</span><span class="stat-value">${pop.length}</span></div>
+    <div class="stat"><span class="stat-label">Avg Score</span><span class="stat-value">${avg} pts</span></div>
+    <div class="stat"><span class="stat-label">Top Score</span><span class="stat-value">${best} pts</span></div>
+    <div class="stat"><span class="stat-label">Offspring</span><span class="stat-value">${offspring}</span></div>
   `;
 }
 
 function perfTagsHTML(bot) {
   const tags = [];
-  if (bot.isChild) tags.push('<span class="perf-tag offspring">offspring</span>');
+  if (bot.isChild) tags.push('<span class="perf-tag offspring">Offspring</span>');
   if (bot.avgEval) {
-    tags.push('<span class="perf-tag unknown">3-game avg score</span>');
+    tags.push('<span class="perf-tag unknown">3-Game Avg Score</span>');
   } else if (bot.tickets === null) {
-    tags.push('<span class="perf-tag unknown">not yet evaluated</span>');
+    tags.push('<span class="perf-tag unknown">Not Yet Evaluated</span>');
   } else {
     if (bot.longestRoute === true) tags.push('<span class="perf-tag longest">★ longest route</span>');
     const achieved = bot.tickets.filter(t => t.achieved).length;
     const total = bot.tickets.length;
     const cls = (achieved === total) ? 'ticket-yes' : (achieved === 0 ? 'ticket-no' : 'ticket-yes');
-    tags.push(`<span class="perf-tag ${cls}">${achieved}/${total} tickets</span>`);
+    tags.push(`<span class="perf-tag ${cls}">${achieved}/${total} Tickets</span>`);
   }
   return tags.join('');
 }
@@ -1823,7 +1824,7 @@ function renderGrid() {
     card.style.borderTop = `3px solid ${color}`;
     card.innerHTML = `
       <div class="bot-header">
-        <span class="bot-id">bot ${bot.id}</span>
+        <span class="bot-id">Bot ${bot.id}</span>
         <span class="bot-score${bot.score >= 70 ? ' high' : ''}">${bot.score} pts</span>
       </div>
       <div class="perf-row">${perfTagsHTML(bot)}</div>
@@ -1840,8 +1841,8 @@ function showDetail(bot, color) {
   const bot2 = [...sorted].sort((a, b) => a.norm - b.norm).slice(0, 2);
 
   const strategyItems = [
-    ...top3.map(w => `<li>high ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
-    ...bot2.map(w => `<li>low ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
+    ...top3.map(w => `<li>High ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
+    ...bot2.map(w => `<li>Low ${w.name.toLowerCase()} (${(w.norm*100).toFixed(0)}%)</li>`),
   ].join('');
 
   const weightRows = bot.w.map((v, i) => {
@@ -1857,30 +1858,30 @@ function showDetail(bot, color) {
   if (bot.avgEval) {
     perfHTML = `
       <div class="perf-item">
-        <span class="perf-item-label">score</span>
-        <span class="perf-item-value unknown">average of 3 games — per-game breakdown not shown</span>
+        <span class="perf-item-label">Score</span>
+        <span class="perf-item-value unknown">Average of 3 games — per-game breakdown not shown</span>
       </div>`;
   } else if (bot.tickets === null) {
     perfHTML = `
       <div class="perf-item">
-        <span class="perf-item-label">longest route</span>
-        <span class="perf-item-value unknown">not yet evaluated</span>
+        <span class="perf-item-label">Longest Route</span>
+        <span class="perf-item-value unknown">Not yet evaluated</span>
       </div>
       <div class="perf-item">
-        <span class="perf-item-label">tickets</span>
-        <span class="perf-item-value unknown">not yet evaluated</span>
+        <span class="perf-item-label">Tickets</span>
+        <span class="perf-item-value unknown">Not yet evaluated</span>
       </div>`;
   } else {
     const lrClass = bot.longestRoute ? 'yes' : 'no';
-    const lrText  = bot.longestRoute ? 'yes — held longest route' : 'no';
+    const lrText  = bot.longestRoute ? 'Yes — held longest route' : 'No';
     const ticketRows = bot.tickets.map(t => `
       <div class="perf-item">
         <span class="perf-item-label">${t.route}</span>
-        <span class="perf-item-value ${t.achieved ? 'yes' : 'no'}">${t.achieved ? '✓ completed' : '✗ incomplete'}</span>
+        <span class="perf-item-value ${t.achieved ? 'yes' : 'no'}">${t.achieved ? '✓ Completed' : '✗ Incomplete'}</span>
       </div>`).join('');
     perfHTML = `
       <div class="perf-item">
-        <span class="perf-item-label">longest route</span>
+        <span class="perf-item-label">Longest Route</span>
         <span class="perf-item-value ${lrClass}">${lrText}</span>
       </div>
       ${ticketRows}`;
@@ -1890,16 +1891,16 @@ function showDetail(bot, color) {
     <div class="bot-detail">
       <div class="detail-header">
         <div class="detail-dot" style="background:${color}"></div>
-        <span class="detail-title">bot ${bot.id} — strategy profile</span>
+        <span class="detail-title">Bot ${bot.id} — Strategy Profile</span>
         <span class="detail-score">${bot.score} pts</span>
         <button class="detail-close" onclick="document.getElementById('bot-detail').innerHTML=''">✕</button>
       </div>
       <div class="perf-section">
-        <div class="perf-section-title">game performance</div>
+        <div class="perf-section-title">Game Performance</div>
         ${perfHTML}
       </div>
       <div class="strategy-box">
-        <div class="strategy-title">defining traits</div>
+        <div class="strategy-title">Defining Traits</div>
         <ul class="strategy-list">${strategyItems}</ul>
       </div>
       <div class="detail-weights">${weightRows}</div>
@@ -1945,7 +1946,7 @@ async function evalPopulation(pop, nEvalRounds, phaseIdx, totalPhases, fillEl, t
 
   const gamesPerRound = Math.ceil(pop.length / 4);
   const totalGamesInPhase = nEvalRounds * gamesPerRound;
-  const phaseLabel = phaseIdx === 0 ? 'initial population' : `gen ${phaseIdx} of ${totalPhases - 1}`;
+  const phaseLabel = phaseIdx === 0 ? 'initial population' : `Gen ${phaseIdx} of ${totalPhases - 1}`;
 
   for (let round = 0; round < nEvalRounds; round++) {
     const groups = makeGameGroups(pop);
@@ -1953,7 +1954,7 @@ async function evalPopulation(pop, nEvalRounds, phaseIdx, totalPhases, fillEl, t
       const gamesDoneInPhase = round * gamesPerRound + g;
       fillEl.style.width = `${(phaseIdx + (gamesDoneInPhase + 0.5) / totalGamesInPhase) / totalPhases * 100}%`;
       const roundLabel = nEvalRounds > 1 ? ` (round ${round + 1}/${nEvalRounds})` : '';
-      textEl.textContent = `evaluating ${phaseLabel} — game ${g + 1} of ${gamesPerRound}${roundLabel}…`;
+      textEl.textContent = `Evaluating ${phaseLabel} — game ${g + 1} of ${gamesPerRound}${roundLabel}…`;
 
       const { primaryIds, bots } = groups[g];
       const result = await runGameAsync(bots.map(b => b.w));
@@ -2012,7 +2013,7 @@ async function runBreeding() {
     const currentLr = lr * Math.pow(lrDecay, c);
 
     fill.style.width = `${(c + 1) / (nCycles + 1) * 100}%`;
-    text.textContent = `gen ${c + 1} of ${nCycles} — breeding…`;
+    text.textContent = `Gen ${c + 1} of ${nCycles} — breeding…`;
     const breedResult = await runBreedAsync(prevPop, currentLr, selectionMode, elitePct);
     let newGen = [];
     if (breedResult) {
@@ -2032,9 +2033,9 @@ async function runBreeding() {
 
   fill.style.width = '100%';
   const evalNote = nEvalRounds > 1
-    ? ` scores averaged over ${nEvalRounds} games per generation.`
-    : ' scores are from live python game evaluation.';
-  text.textContent = `done — ${nCycles} generation${nCycles > 1 ? 's' : ''} bred.${evalNote} click any bot to explore its strategy.`;
+    ? ` Scores averaged over ${nEvalRounds} games per generation.`
+    : ' Scores are from live Python game evaluation.';
+  text.textContent = `Done — ${nCycles} generation${nCycles > 1 ? 's' : ''} bred.${evalNote} Click any bot to explore its strategy.`;
 
   activeGen = generations.length - 1;
   const resultsEl = document.getElementById('results');
