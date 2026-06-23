@@ -1,11 +1,3 @@
-"""
-Run N games with four copies of the best greedy40 bot against itself
-and write results to greedy40-bot-results/greedy40-bot-results.tsv.
-
-Run from the Code/ directory:
-    python run_greedy40_games.py [N_GAMES]
-"""
-
 import os
 import sys
 import ast
@@ -32,21 +24,6 @@ def load_best_bot(path):
             if score > best_score:
                 best_score, best_weights = score, weights
     return best_weights
-
-def make_bots(weights, c_deck, t_deck):
-    return [
-        HeuristicPlayer(
-            playercolor=color,
-            c_deck=c_deck,
-            t_deck=t_deck,
-            colors=NUMCOLORS.keys(),
-            CITIES=initialize_connections_cities_board()[1],
-            USER_INPUT_CARDS=False,
-            PRINT_THINGS=False,
-            weights=weights,
-        )
-        for color in COLORS
-    ]
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)

@@ -1,11 +1,3 @@
-"""
-Run N games with four copies of the best elite40 bot against itself
-and write results to elite40-bot-results/elite40-bot-results.tsv.
-
-Run from the Code/ directory:
-    python run_elite40_games.py [N_GAMES]
-"""
-
 import os
 import sys
 import ast

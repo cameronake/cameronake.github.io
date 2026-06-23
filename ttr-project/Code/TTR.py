@@ -1,3 +1,4 @@
+import os
 import random
 import copy
 import queue
@@ -20,27 +21,36 @@ NUMCOLORS = {
     "white": 12,
     "WILD": 14
 }
-TICKETS = {tuple(ticket.split("\t")[:2]): int(ticket.split("\t")[2]) for ticket in open("txt_storage/routes.txt")}
-
 USER_INPUT_CARDS = False
 PRINT_THINGS = False
 SHUFFLE_ORDER = False
 
+_TICKETS_CACHE = None
+_CONNECTIONS_CACHE = None
+_CITIES_CACHE = None
+
 def initialize_decks():
+    global _TICKETS_CACHE
+    if _TICKETS_CACHE is None:
+        _TICKETS_CACHE = {
+            tuple(ticket.split("\t")[:2]): int(ticket.split("\t")[2])
+            for ticket in open("txt_storage/routes.txt")
+        }
+
     card_deck = []
     for col, num in NUMCOLORS.items():
         card_deck = card_deck + [col]*num
     random.shuffle(card_deck)
 
     face_up_cards = []
-    
+
     if USER_INPUT_CARDS:
         for _ in range(5):
             col = input("Please input face-up card: ")
             if "none" in col.strip().lower():
                 print("No card was added. Moving on")
                 break
-            if col.strip().upper() == 'WILD' or col.strip().upper() == 'LOCO': 
+            if col.strip().upper() == 'WILD' or col.strip().upper() == 'LOCO':
                 face_up_cards.append('WILD')
             else:
                 # if card is not locomotive
@@ -53,11 +63,8 @@ def initialize_decks():
         face_up_cards = card_deck[:5]
         card_deck = card_deck[5:]
 
-    ticket_deck = copy.deepcopy(TICKETS)
+    ticket_deck = copy.deepcopy(_TICKETS_CACHE)
     return card_deck, ticket_deck, face_up_cards, []
-
-_CONNECTIONS_CACHE = None
-_CITIES_CACHE = None
 
 def initialize_connections_cities_board():
     global _CONNECTIONS_CACHE, _CITIES_CACHE
@@ -67,21 +74,16 @@ def initialize_connections_cities_board():
     connections = {}
 
     for conn in open("txt_storage/newconnectionroutes.txt"):
-        conn = conn.strip()
-        list_cits = conn.split("\t")[:2]
-        cits = tuple(sorted(list_cits))
+        parts = conn.strip().split("\t")
+        cits = tuple(sorted(parts[:2]))
         if cits not in connections:
-            l = conn.split("\t")[2]
-            c = conn.split("\t")[3]
-            connections[cits] = tuple((int(l), [c]))
+            connections[cits] = (int(parts[2]), [parts[3]])
         else:
             # add color to already-existing connection
-            c = conn.split("\t")[3]
-
             # whoever made this source txt file just straight-up originally failed to account for gray double routes, because of course they did.
             # all routes are also listed both ways, for some reason
             # i fixed the gray-double-routes thing, i'm 99% sure, but beware of that
-            connections[cits][1].append(c)
+            connections[cits][1].append(parts[3])
 
     for connec, tup in connections.items():
         cols = tup[1]
@@ -93,7 +95,7 @@ def initialize_connections_cities_board():
         newcols = []
         for col, num in cd.items(): # make new list of colors with number of each color halved
             newcols = newcols + [col]*num
-        connections[connec] = tuple((tup[0], newcols))
+        connections[connec] = (tup[0], newcols)
 
     cities = set()
     for tup in connections:
@@ -141,7 +143,7 @@ def is_last_turn(bots):
 
 # bots is a list of bots
 def bots_play_game(bots, c_deck, face_ups, t_deck, board, discard):
-    print("Beginning game\n")
+    if PRINT_THINGS: print("Beginning game\n")
     order = copy.deepcopy(bots) #DON'T reference bots - bots is only the bots as they ORIGINALLY were
     if SHUFFLE_ORDER: random.shuffle(order)
     s_initial_order = [str(o) for o in order]
@@ -244,7 +246,7 @@ def collection_of_games(weights_list):
     
         # set up game values
         card_deck, ticket_deck, face_up_cards, discard_pile = initialize_decks()
-        CONNECTIONS, CITIES, board = initialize_connections_cities_board()
+        _, CITIES, board = initialize_connections_cities_board()
 
         # set up bots
         RedBot = HeuristicPlayer(playercolor='RED', c_deck=card_deck, t_deck=ticket_deck, colors=NUMCOLORS.keys(), CITIES=CITIES, USER_INPUT_CARDS=USER_INPUT_CARDS, PRINT_THINGS=PRINT_THINGS,
@@ -270,11 +272,6 @@ def collection_of_games(weights_list):
     return output_weightspoints
 
 def collection_of_games_averaged(weights_list, n_rounds=3):
-    """
-    Evaluates each bot in weights_list over n_rounds rounds with reshuffled groupings each round.
-    Scores are averaged across rounds.
-    Returns [[weights, avg_score, last_has_longest, last_tickets], ...] preserving original order.
-    """
     n = len(weights_list)
     score_sums = [0] * n
     game_counts = [0] * n
@@ -295,7 +292,7 @@ def collection_of_games_averaged(weights_list, n_rounds=3):
             group_weights = [weights_list[j] for j in group_idx]
 
             card_deck, ticket_deck, face_up_cards, discard_pile = initialize_decks()
-            CONNECTIONS, CITIES, board = initialize_connections_cities_board()
+            _, CITIES, board = initialize_connections_cities_board()
             PLAYER_COLORS = ['RED', 'YELLOW', 'GREEN', 'BLUE']
             game_bots = [
                 HeuristicPlayer(
@@ -352,16 +349,9 @@ def breed(bot1, bot2, lr=0.25):
     return tuple(new1), tuple(new2)
 
 def breed_cycle(weights_scores_list, selection_mode="linear", elite_pct=0.0, lr=0.25):
-    """
-    selection_mode: "linear"    — selection probability proportional to score
-                    "quadratic" — selection probability proportional to score^2
-    elite_pct:      fraction 0.0–0.5 of bots guaranteed to survive each cycle
-                        by simply preserving highest scorers automatically 
-    lr:             learning rate for mutation; defaults to global LEARNING_RATE
-
-    Returns a list of (weights, is_child) tuples. is_child=False for survivors,
-    is_child=True for newly bred offspring.
-    """
+    # selection_mode: "linear" or "quadratic" (score^2) fitness weighting
+    # elite_pct: fraction of top bots that survive unconditionally each cycle
+    # returns list of (weights, is_child) tuples
     n = len(weights_scores_list)
     half = n // 2
     n_pairs = n // 4
@@ -423,27 +413,24 @@ def breed_cycle(weights_scores_list, selection_mode="linear", elite_pct=0.0, lr=
     return results
 
 def output_bots(weights_scores_list, output_file):
-    f = open(output_file, "w")
-    for l in weights_scores_list:
-        bot = l[0]
-        score = l[1]
-        line = str([round(n, 3) for n in list(bot)]) + "\t" + str(score)
-        if len(l) > 2:
-            line += "\t" + str(l[2])  # has_longest
-        if len(l) > 3:
-            ticket_str = ";".join(str(ticket) + ":" + str(sat) for ticket, sat in l[3].items())
-            line += "\t" + ticket_str
-        f.write(line + "\n")
-    f.close()
+    with open(output_file, "w") as f:
+        for l in weights_scores_list:
+            bot = l[0]
+            score = l[1]
+            line = str([round(n, 3) for n in list(bot)]) + "\t" + str(score)
+            if len(l) > 2:
+                line += "\t" + str(l[2])  # has_longest
+            if len(l) > 3:
+                ticket_str = ";".join(str(ticket) + ":" + str(sat) for ticket, sat in l[3].items())
+                line += "\t" + ticket_str
+            f.write(line + "\n")
 
 # input: bots that just played. output: bots that just played. spits out each cycle of weights and scores into its own file
 def cycle_bots(weights_scores_list, output_file_base_name, start=0, N_repetitions=11, selection_mode="linear", elite_pct=0.0, n_rounds=1, lr=0.25, lr_decay=1.0):
-    # resumes from stage start; caller is expected to load {output_file_base_name}{start}.txt as the starting checkpoint
-    # n_rounds > 1 uses averaged multi-game evaluation (collection_of_games_averaged) instead of single-game
-    # lr_decay < 1.0 multiplies the learning rate by lr_decay each cycle (exponential decay)
+    stem, ext = os.path.splitext(output_file_base_name)
     for i in range(start, N_repetitions):
         # output each cycle into a new file so I can retrieve it later if I hit a stopping point now
-        output_bots(weights_scores_list, output_file_base_name[:output_file_base_name.index(".")] + str(i) + output_file_base_name[output_file_base_name.index("."):])
+        output_bots(weights_scores_list, f"{stem}{i}{ext}")
         current_lr = lr * (lr_decay ** i)
         new_bots = [b[0] for b in breed_cycle(weights_scores_list, selection_mode=selection_mode, elite_pct=elite_pct, lr=current_lr)]
         new_bots = [tuple([round(n, 3) for n in list(b)]) for b in new_bots]
@@ -453,7 +440,7 @@ def cycle_bots(weights_scores_list, output_file_base_name, start=0, N_repetition
             weights_scores_list = collection_of_games_averaged(new_bots, n_rounds=n_rounds)
         else:
             weights_scores_list = collection_of_games(new_bots)
-    output_bots(weights_scores_list, output_file_base_name[:output_file_base_name.index(".")] + "FINAL" + output_file_base_name[output_file_base_name.index("."):])
+    output_bots(weights_scores_list, f"{stem}FINAL{ext}")
     return weights_scores_list
 
 '''

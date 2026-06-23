@@ -282,7 +282,7 @@ class HeuristicPlayer():
                             possibs.append(c)
                 elif self.cards[col] + self.cards['WILD'] >= num_needed and col not in possibs:
                     possibs.append(col)
-            if len(possibs) > 0: possib_routes[route] = tuple((num_needed, possibs))
+            if len(possibs) > 0: possib_routes[route] = (num_needed, possibs)
         return possib_routes
 
     # takes new tickets
@@ -775,12 +775,8 @@ class HeuristicPlayer():
 
         return my_new_lrnum - my_lrnum
 
+    # Dreyfus-Wagner Steiner tree DP: min trains to connect all tickets simultaneously
     def total_trains_needed_for_tickets(self, tickets, board):
-        """
-        Returns (cost, route_list) — minimum train cars and the corresponding unclaimed
-        routes to build a network satisfying all tickets simultaneously. Already-claimed
-        routes cost 0. Uses Dreyfus-Wagner Steiner tree DP.
-        """
         ticket_list = list(tickets)
         terminals = list({city for ticket in ticket_list for city in ticket})
         k = len(terminals)
@@ -910,10 +906,6 @@ class HeuristicPlayer():
         return best_cost, list(routes_used)
 
     def total_cards_away_from_tickets(self, route_list, board):
-        """
-        Returns the minimum additional train cards needed beyond self.cards to claim
-        all routes in route_list. Mirrors cards_away_from_ticket over a full route set.
-        """
         dist_left = sum(board[r][0] for r in route_list if self.player_color not in board[r][1])
         original_hand_size = sum(self.cards.values())
         hypothetical_hands = [self.cards.copy()]
@@ -938,7 +930,7 @@ class HeuristicPlayer():
                     new_hands.append(h)
                 hypothetical_hands = new_hands
 
-        # Pass 2: double (two-color) non-gray routes — greedy: pick the color that covers the most
+        # double routes: pick whichever color covers the most
         for route in route_list:
             cols = board[route][1]
             if self.player_color in cols:
@@ -961,7 +953,7 @@ class HeuristicPlayer():
                     new_hands.append(h)
                 hypothetical_hands = new_hands
 
-        # Pass 3: gray routes — greedy: pick the color that covers the most (avoids 9^N blowup)
+        # gray routes: greedy best-color (otherwise branches into 9^N hands)
         for route in route_list:
             cols = board[route][1]
             if self.player_color in cols:
@@ -1102,6 +1094,8 @@ class HeuristicPlayer():
                 val += dist * (a * reduction) / (len(self.tickets) * 5)
                 val += dist * (m * caftc) / (len(self.tickets) * 5)
 
+            if other_max_lr is None:
+                other_max_lr = max((p.find_longest_route(board)[1] for p in players if str(p) != str(self)), default=0)
             if my_lr is None:
                 my_lr = self.find_longest_route(board)[1]
             lr_change, lr_diff = self._lr_change_and_diff(board, route_playing, other_max_lr, my_lr)
@@ -1121,8 +1115,7 @@ class HeuristicPlayer():
         other_max_lr = max((p.find_longest_route(board)[1] for p in players if str(p) != str(self)), default=0)
         my_lr = self.find_longest_route(board)[1]
 
-        # Endgame override: on the last turn, restrict to train-playing only and score
-        # by direct point benefit (no heuristic weights — maximize immediate points).
+        # last turn: skip heuristic, just maximize immediate points
         if any(p.num_trains <= 2 for p in players):
             play_moves = [m for m in possible_moves if m.startswith('play-')]
             if play_moves:
@@ -1177,14 +1170,7 @@ class HeuristicPlayer():
         if len(possibs) == 0:
             raise ValueError("Not enough trains to take route", route)
 
-        # decide which route to take
-        col_to_take = ""
-        n_had = 0
-        for c, n in possibs.items(): #random.choice(possibs.keys())
-            if n > n_had:
-                col_to_take = c
-                n_had = n
-        # play trains (update data structures)
+        col_to_take = max(possibs, key=possibs.get)
         new_cols = cols
         num_left = num_needed
         for i in range(len(cols)):
@@ -1200,7 +1186,7 @@ class HeuristicPlayer():
                     discard += ['WILD'] * num_left # number of wilds used
                     self.cards['WILD'] -= num_left
                 break #don't want to replace all in case it's a gray route
-        board[route] = tuple((num_needed, new_cols))
+        board[route] = (num_needed, new_cols)
 
         # update number of trains and points
         self.num_trains -= num_needed
@@ -1239,7 +1225,7 @@ class HeuristicPlayer():
             c_deck, face_ups, discard = self.clean_face_ups(c_deck=c_deck, face_ups=face_ups, discard=discard)
 
             # find and make best move, depending on whether or not we've already drawn
-            if turn_going_to_end == False: # any move is available
+            if not turn_going_to_end:
 
                 possib_routes = self.possible_routes(board)
 
@@ -1310,7 +1296,8 @@ class HeuristicPlayer():
 
             # turn-ending choices first
             if choice == 'play':
-                r = (move_info[:move_info.index("-")], move_info[move_info.index("-")+1:])
+                dash = move_info.index("-")
+                r = (move_info[:dash], move_info[dash+1:])
 
                 if self.PRINT_THINGS: print("HeuristicBot", self.player_color, "playing trains on route", r)
                 board, discard = self.play_trains(r, board, discard)

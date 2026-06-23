@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
         # set up game values
         card_deck, ticket_deck, face_up_cards, discard_pile = initialize_decks()
-        CONNECTIONS, CITIES, board = initialize_connections_cities_board()
+        _, CITIES, board = initialize_connections_cities_board()
 
         # bots RED and YELLOW correspond to quadratic updating
         RedBot = HeuristicPlayer(playercolor='RED', c_deck=card_deck, t_deck=ticket_deck, colors=NUMCOLORS.keys(), CITIES=CITIES, USER_INPUT_CARDS=USER_INPUT_CARDS, PRINT_THINGS=PRINT_THINGS,
@@ -82,12 +82,11 @@ if __name__ == '__main__':
                 [longest route: true or false?]
                         [ticket information: satisfied or no?]
         '''
-        weights_scores = bots_play_game(bots=game_bots, 
-                                            c_deck=card_deck, 
-                                            face_ups=face_up_cards, 
-                                            t_deck=ticket_deck, 
-                                            board=board, 
-                                            discard=discard_pile, 
-                                            players=copy.deepcopy(game_bots))
+        weights_scores = bots_play_game(bots=game_bots,
+                                            c_deck=card_deck,
+                                            face_ups=face_up_cards,
+                                            t_deck=ticket_deck,
+                                            board=board,
+                                            discard=discard_pile)
 
     

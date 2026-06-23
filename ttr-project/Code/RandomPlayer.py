@@ -257,7 +257,7 @@ class RandomPlayer():
                             possibs.append(c)
                 elif self.cards[col] + self.cards['WILD'] >= num_needed and col not in possibs:
                     possibs.append(col)
-            if len(possibs) > 0: possib_routes[route] = tuple((num_needed, possibs))
+            if len(possibs) > 0: possib_routes[route] = (num_needed, possibs)
         return possib_routes
 
     # takes new tickets
@@ -459,81 +459,6 @@ class RandomPlayer():
         for col in self.cards:
             if worse_hand[col] > better_hand[col]: return False
         return True
-
-    # DEFUNCT
-    def BAD_cards_away_from_ticket(self, tup, board):
-        import queue as _queue
-        pq = _queue.PriorityQueue()
-
-        hand = copy.deepcopy(self.cards) # adding to each pq element so I can track which cards I've used
-        pq.put((0, tup[0], hand)) # tuples in format (priority, city that search is currently at). search for tup[1]
-        cities_found = [] #list of cities found and shortest distances and hands - list so we can store same city several times (better dist, better hand)
-        cities_found.append((tup[0], 0, hand)) #tuple of (city we've reached, length, hand as of reaching city)
-
-        # BFS to find tup[1]
-        while pq.qsize() != 0:
-            dist, city, hypothetical_hand = pq.get()
-            if city == tup[1]:
-                return dist
-
-            # find all neighboring cities
-            for pair in board:
-                if city in pair:
-                    other = [p for p in pair if p != city][0] # the other value of the tuple besides city
-                    d = board[pair][0] #distance from city to other
-                    if self.player_color in board[pair][1]: #if i've taken this route
-                        d = 0
-
-                    # determine which colors we need to try
-                    pq_cols_to_try = _queue.PriorityQueue()
-                    for col in board[pair][1]:
-                        # try all colors if col == 'gray'
-                        if col == 'gray':
-                            for possiblecol in self.cards:
-                                if possiblecol != "WILD":
-                                    pq_cols_to_try.put((self.cards[possiblecol], possiblecol))
-
-                        # try this color (if it's an actual color and not just a player color)
-                        elif col.lower() == col:
-                            pq_cols_to_try.put((self.cards[col], col))
-
-                    # best three colors
-                    cols_selected = []
-                    while pq_cols_to_try.qsize() > 0 and len(cols_selected) < 2:
-                        cols_selected.append(pq_cols_to_try.get()[1])
-
-                    for col in cols_selected:
-
-                        # if we have the hypothetical cards for this
-                        if hypothetical_hand[col] > d:
-                            hypothetical_hand[col] -= d
-                            d = 0
-
-                        else:
-                            d -= hypothetical_hand[col]
-                            hypothetical_hand[col] = 0
-                            # if we have the locomotives for this even though we don't have quite enough regular cards
-                            if hypothetical_hand['WILD'] > d:
-                                hypothetical_hand['WILD'] -= d
-                                d = 0
-                            else:
-                                d -= hypothetical_hand['WILD']
-                                hypothetical_hand['WILD'] = 0
-
-                        # now we've changed d based on how many cards we have!
-                        # make an entry for each color in cols_to_try, if new city or distance is better or hand could be better (all possibilities)
-                        if other not in cities_found:
-                            cities_found.append((other, dist + d, hypothetical_hand))
-                            pq.put((dist + d, other, hypothetical_hand))
-                        else:
-                            for entry in cities_found:
-                                if entry[0] == other: #for relevant cities_found entries
-                                    if entry[1] > dist + d:
-                                        cities_found.append((other, dist + d, hypothetical_hand))
-                                        pq.put((dist + d, other, hypothetical_hand))
-                                    elif not self.hand_objectively_better(entry[2], hypothetical_hand):
-                                        cities_found.append((other, dist + d, hypothetical_hand))
-                                        pq.put((dist + d, other, hypothetical_hand))
 
     # how many cards away are we from having enough cards to take the entire route given?  (route_taken is a list of tuples here)
     def cards_away_from_ticket(self, tup, route_taken, dist_left, board):
@@ -745,14 +670,7 @@ class RandomPlayer():
         if len(possibs) == 0:
             raise ValueError("Not enough trains to take route", route)
 
-        # decide which route to take
-        col_to_take = ""
-        n_had = 0
-        for c, n in possibs.items(): #random.choice(possibs.keys())
-            if n > n_had:
-                col_to_take = c
-                n_had = n
-        # play trains (update data structures)
+        col_to_take = max(possibs, key=possibs.get)
         new_cols = cols
         num_left = num_needed
 
@@ -769,7 +687,7 @@ class RandomPlayer():
                     discard += ['WILD'] * num_left # number of wilds used
                     self.cards['WILD'] -= num_left
                 break #don't want to replace all in case it's a gray route
-        board[route] = tuple((num_needed, new_cols))
+        board[route] = (num_needed, new_cols)
 
         # update number of trains and points
         self.num_trains -= num_needed
