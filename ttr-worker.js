@@ -3,10 +3,10 @@ importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js');
 let pyodide = null;
 
 async function initPyodide() {
-  self.postMessage({ type: 'status', msg: 'loading python runtime…' });
+  self.postMessage({ type: 'status', msg: 'Loading python runtime…' });
   pyodide = await loadPyodide();
 
-  self.postMessage({ type: 'status', msg: 'fetching game files…' });
+  self.postMessage({ type: 'status', msg: 'Fetching game files…' });
   const noCache = { cache: 'no-cache' };
   const [ttrCode, heuristicCode, randomCode, connectionRoutesText, ticketRoutesText] = await Promise.all([
     fetch('./ttr-project/Code/TTR.py', noCache).then(r => r.text()),

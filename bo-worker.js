@@ -3,13 +3,13 @@ importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js');
 let pyodide = null;
 
 async function initPyodide() {
-  self.postMessage({ type: 'status', msg: 'loading python runtime…' });
+  self.postMessage({ type: 'status', msg: 'Loading python runtime…' });
   pyodide = await loadPyodide();
 
-  self.postMessage({ type: 'status', msg: 'loading numpy…' });
+  self.postMessage({ type: 'status', msg: 'Loading numpy…' });
   await pyodide.loadPackage('numpy');
 
-  self.postMessage({ type: 'status', msg: 'loading bo module…' });
+  self.postMessage({ type: 'status', msg: 'Loading bo module…' });
   const boCode = await fetch('./bo-project/bo.py', { cache: 'no-cache' }).then(r => r.text());
   pyodide.FS.writeFile('/bo.py', boCode);
   await pyodide.runPythonAsync('import sys; sys.path.insert(0, "/"); import bo');
