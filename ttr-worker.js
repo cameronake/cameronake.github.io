@@ -3,7 +3,7 @@ importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js');
 let pyodide = null;
 
 async function initPyodide() {
-  self.postMessage({ type: 'status', msg: 'Loading python runtime…' });
+  self.postMessage({ type: 'status', msg: 'Loading Python runtime…' });
   pyodide = await loadPyodide();
 
   self.postMessage({ type: 'status', msg: 'Fetching game files…' });
@@ -25,7 +25,7 @@ async function initPyodide() {
 
   pyodide.FS.writeFile('/TTR.py', ttrCode);
 
-  self.postMessage({ type: 'status', msg: 'initializing game engine…' });
+  self.postMessage({ type: 'status', msg: 'Initializing game engine…' });
   await pyodide.runPythonAsync('import os, sys; os.chdir("/"); sys.path.insert(0, "/")');
   await pyodide.runPythonAsync('from TTR import *');
 
