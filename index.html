@@ -84,13 +84,13 @@
       </div>
       <div class="about-photo-item"
            data-src="assets/about-me/xkcd.PNG"
-           data-caption="I had a geography nerd era in middle school and I've literally had this as a top pet peeve ever since. When I found this XKCD a few years later I felt so seen. Also, I know this is an ice-cold take but XKCD is the best."
+           data-caption="I had a geography nerd era in middle school and I've literally had this as a top pet peeve ever since. When I found this XKCD a few years later I felt so seen. Also, I know this is an ice-cold take, but XKCD is the best."
            onclick="openPhotoModal(this)">
         <img src="assets/about-me/xkcd.PNG" alt="xkcd comic about geographic profile maps" />
       </div>
       <div class="about-photo-item wide" 
            data-src="assets/about-me/sunset.jpg"
-           data-caption="Plane ride from BWI to ONT where I had the perfect seat to do nothing but watch the sunset for hours. (Westward flights during sunset are actually the best.) Not to brag or anything, but I managed to take this picture out of cloudy, dusty airplane window. (A blizzard had also just hit the Midwest and we flew over the Midwest, so I have an entire photo album that's completely just stunning photos from this plane ride. Best plane ride of my life.)"
+           data-caption="Plane ride from BWI to ONT where I had the perfect seat to do nothing but watch the sunset for hours. (Westward flights during sunset are actually the best.) Not to brag or anything, but I managed to take this picture out of a cloudy, dusty airplane window. (A blizzard had also just hit the Midwest and we flew over the Midwest, so I have an entire photo album that's just stunning photos from this plane ride. Best plane ride of my life.)"
            onclick="openPhotoModal(this)">
         <img src="assets/about-me/sunset.jpg" alt="sunset" />
       </div>
@@ -538,6 +538,37 @@
           </div>
         </div>
       </div>
+    <!--
+      <! Systematic Trading Backtester: strategy equity curve vs benchmark + drawdown >
+      <div class="card">
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#140f2e"/>
+            <line x1="20" y1="118" x2="388" y2="118" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="20" y1="138" x2="20" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <! benchmark (flatter, gray) >
+            <path d="M20 110 C90 102 150 96 220 84 C290 72 340 70 388 60" fill="none" stroke="rgba(170,170,170,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <! strategy equity (rising, light purple) with subtle fill >
+            <path d="M20 110 C80 96 130 100 190 70 C250 42 300 50 388 24 L388 118 L20 118Z" fill="rgba(92,63,163,0.22)"/>
+            <path d="M20 110 C80 96 130 100 190 70 C250 42 300 50 388 24" fill="none" stroke="#c4b0e8" stroke-width="2.5" stroke-linecap="round"/>
+            <! drawdown notch markers >
+            <circle cx="130" cy="100" r="3.5" fill="#cf6f63" opacity="0.9"/>
+            <circle cx="190" cy="70" r="3.5" fill="#c4b0e8" opacity="0.9"/>
+            <! entry/exit ticks >
+            <rect x="78" y="124" width="3" height="10" rx="1.5" fill="rgba(196,176,232,0.7)"/>
+            <rect x="188" y="124" width="3" height="10" rx="1.5" fill="rgba(196,176,232,0.7)"/>
+            <rect x="300" y="124" width="3" height="10" rx="1.5" fill="rgba(196,176,232,0.7)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Systematic Trading Backtester</h3>
+          <p>An event-driven backtesting engine built from scratch: signal → order → next-open fill → portfolio, with realistic transaction costs, momentum / mean-reversion / cointegration-based pairs strategies, and from-scratch ADF &amp; Engle-Granger stats. Surfaces the three things serious quants care about — lookahead bias, cost drag, and out-of-sample overfitting.</p>
+          <div class="card-links">
+            <a href="stb-demo.html">Live Demo</a>
+          </div>
+        </div>
+      </div>
+    -->
 
       <!-- Monte Carlo: sample price paths fanning out, distribution on right -->
       <div class="card">
