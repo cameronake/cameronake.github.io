@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Systematic Trading Backtester — Cameron Ake</title>
+  <meta name="description" content="An event-driven backtesting engine built with NumPy: momentum, mean-reversion, and pairs/cointegration strategies, with transaction-cost modeling, walk-forward validation, and an overfitting-detection parameter sweep." />
+  <link rel="canonical" href="https://cameronake.com/stb-demo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Systematic Trading Backtester — Cameron Ake" />
+  <meta property="og:description" content="A backtesting engine built with NumPy: momentum, mean-reversion, and pairs/cointegration strategies, with transaction-cost modeling, walk-forward validation, and an overfitting-detection parameter sweep." />
+  <meta property="og:url" content="https://cameronake.com/stb-demo.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link type="image/png" sizes="96x96" rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 17px; }
+    :root {
+      --bg: #f5f4f0; --surface: #ffffff; --border: #dddbd5;
+      --text: #1e1c1a; --muted: #6b6863; --accent: #5c3fa3;
+      --accent-hover: #4a3185; --max-width: 940px; --radius: 8px;
+      --green: #3f9d58; --red: #cf4b3f; --amber: #d99a2b;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 1rem; line-height: 1.7; }
+
+    header { position: sticky; top: 0; z-index: 100; background: var(--accent); border-bottom: 1px solid var(--accent-hover); }
+    nav { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; height: 60px; display: flex; align-items: center; gap: 16px; }
+    .back-link { color: rgba(255,255,255,0.75); font-size: 0.9rem; text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: #fff; }
+    .nav-title { font-weight: 600; font-size: 1rem; color: #fff; font-style: italic; }
+
+    main { max-width: var(--max-width); margin: 0 auto; padding: 44px 32px 80px; }
+    .page-hero { margin-bottom: 28px; }
+    h1 { font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 600; margin-bottom: 12px; }
+    h1::after { content: ''; display: block; width: 40px; height: 3px; background: var(--accent); margin-top: 8px; border-radius: 2px; }
+    .subtitle { font-size: 1rem; color: var(--muted); line-height: 1.7; }
+
+    section { margin-bottom: 40px; }
+    h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+
+    .tab-nav { display: flex; gap: 4px; margin-bottom: 32px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .tab-btn {
+      padding: 9px 18px; border: none; border-bottom: 3px solid transparent;
+      background: none; font-family: 'Lora', Georgia, serif; font-size: 1.0rem;
+      cursor: pointer; color: var(--muted); transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .status-bar {
+      display: flex; align-items: center; gap: 10px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px;
+      margin-bottom: 24px; font-size: 0.9rem; color: var(--muted);
+    }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
+    .status-dot.ready { background: var(--green); }
+    .status-dot.busy  { background: var(--amber); animation: pulse 1s infinite; }
+    .status-dot.error { background: var(--red); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+    .chart-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; font-style: italic; }
+
+    .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 30px; margin-bottom: 22px; }
+    @media (max-width: 640px) { .controls-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-label { font-size: 0.9rem; font-weight: 600; color: var(--text); display: flex; justify-content: space-between; align-items: baseline; }
+    .range-value { color: var(--accent); font-weight: 600; }
+    .range-hints { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
+    input[type="range"] { width: 100%; accent-color: var(--accent); margin-top: 2px; }
+    select, input[type="text"] {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 7px 10px; font-family: 'Lora', Georgia, serif; font-size: 0.9rem; color: var(--text); width: 100%;
+    }
+    select:focus { outline: none; border-color: var(--accent); }
+    label.check { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    label.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+    .btn { display: inline-block; padding: 10px 22px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'Lora', Georgia, serif; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; font-weight: 600; }
+    .btn:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-secondary { background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-secondary:hover:not(:disabled) { background: var(--accent); color: #fff; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; align-items: center; }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+    .metric-cell { background: var(--surface); padding: 12px 14px; }
+    .metric-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .metric-label .no-caps { text-transform: none; }
+    .metric-val { font-weight: 600; font-size: 1.05rem; margin-top: 2px; }
+    .metric-val.pos { color: var(--green); } .metric-val.neg { color: var(--red); }
+
+    .callout { background: #f0eeea; border-left: 3px solid var(--accent); padding: 14px 18px; margin: 16px 0; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.92rem; }
+    .callout + .callout { margin-top: 10px; }
+    .callout strong { color: var(--accent); }
+    .verdict { display: inline-block; padding: 3px 12px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; }
+    .verdict.yes { background: #e3f3e8; color: var(--green); } .verdict.no { background: #fbe7e5; color: var(--red); }
+
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-bottom: 16px; }
+    table.data th, table.data td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+    table.data th { color: var(--muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .progress-track { height: 8px; background: var(--border); border-radius: 6px; overflow: hidden; margin: 14px 0; display: none; }
+    .progress-track.show { display: block; }
+    .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.15s; }
+
+    .heatmaps { display: flex; gap: 18px; flex-wrap: wrap; }
+    .heatmap-box { flex: 1; min-width: 280px; }
+    .hm-cell { aspect-ratio: 1.6; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; color: #1e1c1a; border-radius: 3px; font-variant-numeric: tabular-nums; }
+    .hm-cell.best { outline: 2.5px solid var(--accent); outline-offset: -2.5px; font-weight: 700; }
+    .hm-grid { display: grid; gap: 2px; margin-top: 8px; }
+    .hm-ytitle { display: flex; align-items: center; justify-content: center; padding-right: 2px; }
+    .hm-ytitle span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.74rem; color: var(--muted); font-weight: 600; }
+    .hm-ytick { display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .hm-xtick { text-align: center; font-size: 0.68rem; color: var(--muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+    .hm-xtitle { text-align: center; font-size: 0.74rem; color: var(--muted); font-weight: 600; padding-top: 4px; }
+    .charts-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .charts-row .chart-wrap { flex: 1; min-width: 280px; }
+
+    .explain-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .explain-box p { color: var(--muted); font-size: 0.94rem; margin-top: 8px; }
+    code { font-family: 'Courier New', monospace; font-size: 0.88rem; background: #f0eeea; padding: 1px 5px; border-radius: 3px; }
+    .math-block { font-family: 'Courier New', monospace; font-size: 0.85rem; background: #f0eeea; border-left: 3px solid var(--accent); padding: 12px 16px; margin: 10px 0; border-radius: 0 var(--radius) var(--radius) 0; white-space: pre; overflow-x: auto; }
+    .step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 18px 0; }
+    .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .step-num { font-size: 1.3rem; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+    .step-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
+    .hint { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 24px; font-size: 0.85rem; color: var(--muted); }
+
+    /* The "i" glyph is a single vector shape (SVG mask), not a font glyph and not two
+       separately-positioned CSS boxes. Two independent boxes (dot + stem) each get
+       anti-aliased/pixel-snapped on their own, and in contexts with fractional layout
+       widths (the metrics grid's 1fr columns, table th auto-widths) that snapping lands
+       differently per context, making the glyph look fatter in some places than others.
+       A single mask-image rasterizes as one unit, so its stroke weight stays consistent
+       everywhere regardless of the icon's exact sub-pixel position on the page. The text
+       node inside .info (still "i" for accessibility) is hidden via font-size:0. Alignment
+       against adjacent label text is handled by the .label-text flex wrapper, not vertical-align. */
+    .info {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 12px; height: 12px; border-radius: 50%; background: var(--muted);
+      font-size: 0; text-transform: none; cursor: help; margin-left: 5px;
+      flex-shrink: 0;
+    }
+    .info::after {
+      content: ''; display: block; width: 4px; height: 9px; background-color: #fff;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 9'%3E%3Ccircle cx='2' cy='1.1' r='1.1'/%3E%3Crect x='1' y='3.4' width='2' height='5.6' rx='1'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 9'%3E%3Ccircle cx='2' cy='1.1' r='1.1'/%3E%3Crect x='1' y='3.4' width='2' height='5.6' rx='1'/%3E%3C/svg%3E");
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-position: center; mask-position: center;
+      -webkit-mask-size: contain; mask-size: contain;
+    }
+    .info:hover, .info:focus { background: var(--accent); outline: none; }
+    /* Shared wrapper for "label text + .info icon": centers the icon against the text's
+       actual rendered line box via flexbox, rather than vertical-align:middle (which centers
+       on font metrics like ex-height/cap-height that don't line up the same way across a
+       plain label, an all-caps metric label, and an all-caps table header). */
+    .label-text { display: inline-flex; align-items: center; }
+    /* Tooltip is rendered as a single body-level element (JS-positioned) rather than
+       a per-icon ::after, so it isn't clipped by ancestors with overflow:hidden
+       (e.g. .metrics-grid, used for the rounded grid-line effect). */
+    #tooltip-portal {
+      position: fixed; max-width: 240px; width: max-content; background: #1e1c1a; color: #f5f4f0;
+      font-size: 0.78rem; font-weight: 400; font-family: 'Lora', Georgia, serif; line-height: 1.45;
+      padding: 9px 11px; border-radius: 6px; box-shadow: 0 6px 18px rgba(0,0,0,0.22); text-align: left;
+      z-index: 500; opacity: 0; visibility: hidden; transition: opacity 0.12s ease; pointer-events: none;
+    }
+    #tooltip-portal.show { opacity: 1; visibility: visible; }
+    #tooltip-portal::after {
+      content: ''; position: absolute; top: 100%; left: var(--arrow-x, 50%); transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: #1e1c1a;
+    }
+    #tooltip-portal.below::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: #1e1c1a; }
+    .strategy-desc { font-size: 0.9rem; color: var(--muted); margin: -6px 0 18px; padding: 12px 16px; background: #f0eeea; border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; }
+  </style>
+</head>
+<body>
+
+<div id="tooltip-portal" role="tooltip"></div>
+
+<header>
+  <nav>
+    <a class="back-link" href="index.html">← Portfolio</a>
+    <span class="nav-title">Systematic Trading Backtester</span>
+  </nav>
+</header>
+
+<main>
+  <div class="page-hero">
+    <h1>Systematic Trading Backtester</h1>
+    <p class="subtitle">
+      A backtesting engine built with NumPy: momentum, mean-reversion, 
+      and pairs/cointegration strategies, with transaction-cost modeling, walk-forward validation, 
+      and an overfitting-detection parameter sweep. This includes from-scratch cointegration testing
+      for pairs trading, along with explicit gauges of lookahead bias, transaction costs, and overfitting
+      for realistic strategy assessment. Data comes from Yahoo Finance.
+    </p>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusMsg">Initializing…</span>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('backtest', this)">Live Backtest</button>
+    <button class="tab-btn" onclick="switchTab('pairs', this)">Pairs / Cointegration</button>
+    <button class="tab-btn" onclick="switchTab('walkforward', this)">Walk-Forward</button>
+    <button class="tab-btn" onclick="switchTab('sweep', this)">Param Sweep</button>
+    <button class="tab-btn" onclick="switchTab('method', this)">Limitations</button>
+  </div>
+
+  <!-- ───────────────────────── TAB 1: LIVE BACKTEST ───────────────────────── -->
+  <div id="tab-backtest" class="tab-panel active">
+    <section>
+      <h2>Strategy &amp; parameters</h2>
+      <div class="controls-grid">
+        <div class="form-group">
+          <label class="form-label">Strategy</label>
+          <select id="bt-strategy" onchange="onStrategyChange()">
+            <option value="momentum">Cross-sectional momentum</option>
+            <option value="mean_reversion" selected>Mean reversion (z-score)</option>
+            <option value="pairs">Pairs trading (cointegration)</option>
+          </select>
+        </div>
+        <div class="form-group" id="bt-asset-group">
+          <label class="form-label">Asset</label>
+          <select id="bt-ticker"></select>
+        </div>
+        <div class="form-group" id="bt-pair-group" style="display:none;">
+          <label class="form-label">Pair</label>
+          <select id="bt-pair"></select>
+        </div>
+      </div>
+
+      <div id="bt-strategy-desc" class="strategy-desc"></div>
+
+      <!-- momentum params -->
+      <div id="mom-params" class="controls-grid" style="display:none;">
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Lookback (days)<span class="info" tabindex="0" data-tip="Number of trailing trading days used to compute each asset's return (for ranking)">i</span></span> <span class="range-value" id="mom-lb-v">126</span></label>
+          <input type="range" id="mom-lb" min="21" max="252" step="21" value="126" oninput="document.getElementById('mom-lb-v').textContent=this.value">
+          <div class="range-hints"><span>21</span><span>252</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Top N held<span class="info" tabindex="0" data-tip="How many of the top-ranked assets to hold at once (equal-weighted)">i</span></span> <span class="range-value" id="mom-tn-v">3</span></label>
+          <input type="range" id="mom-tn" min="1" max="6" step="1" value="3" oninput="document.getElementById('mom-tn-v').textContent=this.value">
+          <div class="range-hints"><span>1</span><span>6</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Rebalance every (days)<span class="info" tabindex="0" data-tip="After how many days the portfolio re-ranks assets and adjusts holdings">i</span></span> <span class="range-value" id="mom-rb-v">21</span></label>
+          <input type="range" id="mom-rb" min="5" max="63" step="1" value="21" oninput="document.getElementById('mom-rb-v').textContent=this.value">
+          <div class="range-hints"><span>5</span><span>63</span></div>
+        </div>
+      </div>
+
+      <!-- mean reversion params -->
+      <div id="mr-params" class="controls-grid">
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Lookback (days)<span class="info" tabindex="0" data-tip="Trailing window (days) used to compute the rolling mean and standard deviation for z-score">i</span></span> <span class="range-value" id="mr-lb-v">20</span></label>
+          <input type="range" id="mr-lb" min="5" max="60" step="1" value="20" oninput="document.getElementById('mr-lb-v').textContent=this.value">
+          <div class="range-hints"><span>5</span><span>60</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Entry z-score<span class="info" tabindex="0" data-tip="Open a position once the price is this many standard deviations from its own rolling mean">i</span></span> <span class="range-value" id="mr-ze-v">1.0</span></label>
+          <input type="range" id="mr-ze" min="0.5" max="3" step="0.1" value="1.0" oninput="document.getElementById('mr-ze-v').textContent=(+this.value).toFixed(1)">
+          <div class="range-hints"><span>0.5</span><span>3.0</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Exit z-score<span class="info" tabindex="0" data-tip="Close the position once the z-score reverts back to within this many standard deviations of the mean">i</span></span> <span class="range-value" id="mr-zx-v">0.25</span></label>
+          <input type="range" id="mr-zx" min="0" max="1" step="0.05" value="0.25" oninput="document.getElementById('mr-zx-v').textContent=(+this.value).toFixed(2)">
+          <div class="range-hints"><span>0.0</span><span>1.0</span></div>
+        </div>
+      </div>
+
+      <!-- pairs params -->
+      <div id="pairs-params" class="controls-grid" style="display:none;">
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Hedge window (days)<span class="info" tabindex="0" data-tip="Trailing window used to estimate the OLS hedge ratio β between the two series (and the spread's rolling mean/std)">i</span></span> <span class="range-value" id="pa-lb-v">60</span></label>
+          <input type="range" id="pa-lb" min="20" max="120" step="5" value="60" oninput="document.getElementById('pa-lb-v').textContent=this.value">
+          <div class="range-hints"><span>20</span><span>120</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Entry z-score<span class="info" tabindex="0" data-tip="Open the trade once the spread is this many standard deviations from its rolling mean">i</span></span> <span class="range-value" id="pa-ze-v">2.0</span></label>
+          <input type="range" id="pa-ze" min="1" max="3" step="0.1" value="2.0" oninput="document.getElementById('pa-ze-v').textContent=(+this.value).toFixed(1)">
+          <div class="range-hints"><span>1.0</span><span>3.0</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Exit z-score<span class="info" tabindex="0" data-tip="Close the trade once the spread's z-score reverts back to within this many standard deviations of the mean">i</span></span> <span class="range-value" id="pa-zx-v">0.5</span></label>
+          <input type="range" id="pa-zx" min="0" max="1.5" step="0.05" value="0.5" oninput="document.getElementById('pa-zx-v').textContent=(+this.value).toFixed(2)">
+          <div class="range-hints"><span>0.0</span><span>1.5</span></div>
+        </div>
+        <div class="form-group">
+          <label class="check"><input type="checkbox" id="pa-gate"> <span class="label-text">ADF stationarity gate<span class="info" tabindex="0" data-tip="Only trade when an Augmented Dickey-Fuller test indicates stationarity">i</span></span></label>
+        </div>
+      </div>
+
+      <h3>Transaction costs</h3>
+      <div class="controls-grid">
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Commission (bps)<span class="info" tabindex="0" data-tip="Flat fee charged on the notional value of every trade. 1 basis point (bp) = 0.01%">i</span></span> <span class="range-value" id="c-comm-v">1.0</span></label>
+          <input type="range" id="c-comm" min="0" max="10" step="0.5" value="1.0" oninput="document.getElementById('c-comm-v').textContent=(+this.value).toFixed(1)">
+          <div class="range-hints"><span>0</span><span>10</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Spread (bps)<span class="info" tabindex="0" data-tip="Bid-ask spread: gap between the price you can buy at and the price you can sell at">i</span></span> <span class="range-value" id="c-spread-v">2.0</span></label>
+          <input type="range" id="c-spread" min="0" max="20" step="0.5" value="2.0" oninput="document.getElementById('c-spread-v').textContent=(+this.value).toFixed(1)">
+          <div class="range-hints"><span>0</span><span>20</span></div>
+        </div>
+        <div class="form-group">
+          <label class="check"><input type="checkbox" id="c-slip" checked> <span class="label-text">Apply slippage<span class="info" tabindex="0" data-tip="Extra cost of actually trading versus the quoted price. Modeled here as paying half the bid-ask spread on every fill">i</span></span></label>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" id="bt-run" onclick="runBacktest()">Run backtest</button>
+        <span class="hint" style="margin:0;">Benchmark: buy &amp; hold SPY</span>
+      </div>
+    </section>
+
+    <section id="bt-results" style="display:none;">
+      <div id="bt-metrics" class="metrics-grid"></div>
+      <div id="bt-drag" class="callout"></div>
+      <div class="chart-wrap">
+        <div class="chart-label">Equity: strategy vs. buy &amp; hold SPY</div>
+        <canvas id="equityChart" height="150"></canvas>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-label">Drawdown (strategy, net of costs)</div>
+        <canvas id="ddChart" height="90"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────── TAB 2: PAIRS / COINTEGRATION ───────────────────────── -->
+  <div id="tab-pairs" class="tab-panel">
+    <section>
+      <h2>Cointegration test (Engle-Granger)</h2>
+      <p class="hint">Pick any two series. We fit an OLS hedge ratio and test whether the residual spread is
+        stationary with an Augmented Dickey-Fuller test, which indicates whether the pair is cointegrated.</p>
+      <div class="controls-grid">
+        <div class="form-group">
+          <label class="form-label">Series A</label><select id="cg-a"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Series B</label><select id="cg-b"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Z-score window (days)<span class="info" tabindex="0" data-tip="Trailing window for the spread's rolling mean/std used in the z-score chart below (hedge ratio β, α, and ADF test are fit once over the whole date range)">i</span></span> <span class="range-value" id="cg-w-v">60</span></label>
+          <input type="range" id="cg-w" min="20" max="120" step="5" value="60" oninput="document.getElementById('cg-w-v').textContent=this.value">
+          <div class="range-hints"><span>20</span><span>120</span></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="cg-run" onclick="runCointegration()">Test pair</button>
+        <span class="hint" style="margin:0;">Try EWA/EWC (cointegrated) vs. KO/PEP (no longer).</span>
+      </div>
+    </section>
+
+    <section id="cg-results" style="display:none;">
+      <div id="cg-metrics" class="metrics-grid"></div>
+      <div id="cg-verdict" class="callout"></div>
+      <div class="charts-row">
+        <div class="chart-wrap"><div class="chart-label">Normalized prices (start = 100)</div><canvas id="cgPriceChart" height="180"></canvas></div>
+        <div class="chart-wrap"><div class="chart-label">Spread z-score (entry bands at z = ±2)</div><canvas id="cgZChart" height="180"></canvas></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────── TAB 3: WALK-FORWARD ───────────────────────── -->
+  <div id="tab-walkforward" class="tab-panel">
+    <section>
+      <h2>Walk-forward validation</h2>
+      <p class="hint">Finds optimized parameters for each in-sample window, then judged on the
+        out-of-sample window that follows. Use the gap between in-sample and out-of-sample Sharpe 
+        to assess how much the strategy was overfit.</p>
+      <div class="controls-grid">
+        <div class="form-group">
+          <label class="form-label">Strategy</label>
+          <select id="wf-strategy" onchange="onWFStrategyChange()">
+            <option value="mean_reversion" selected>Mean reversion</option>
+            <option value="momentum">Momentum</option>
+            <option value="pairs">Pairs</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Folds<span class="info" tabindex="0" data-tip="Number of sequential train/test splits. Each fold picks its best parameters on the training window, then is scored on the following unseen test window">i</span></span> <span class="range-value" id="wf-folds-v">4</span></label>
+          <input type="range" id="wf-folds" min="2" max="6" step="1" value="4" oninput="document.getElementById('wf-folds-v').textContent=this.value">
+          <div class="range-hints"><span>2</span><span>6</span></div>
+        </div>
+        <div class="form-group">
+          <label class="check"><input type="checkbox" id="wf-anchored" checked> <span class="label-text">Anchored (expanding) training window<span class="info" tabindex="0" data-tip="Anchored: the training window always starts at day 1 and grows each fold. Unanchored (rolling): the training window is a fixed size that slides forward">i</span></span></label>
+        </div>
+      </div>
+      <div id="wf-strategy-desc" class="strategy-desc"></div>
+      <div class="btn-row"><button class="btn" id="wf-run" onclick="runWalkForward()">Run walk-forward</button></div>
+      <div class="progress-track" id="wf-prog"><div class="progress-fill" id="wf-fill"></div></div>
+    </section>
+
+    <section id="wf-results" style="display:none;">
+      <div id="wf-metrics" class="metrics-grid"></div>
+      <div id="wf-headline" class="callout"></div>
+      <div class="chart-wrap"><div class="chart-label" id="wf-chart-label">Stitched out-of-sample equity curve</div><canvas id="wfChart" height="130"></canvas></div>
+      <h3>Per-fold results</h3>
+      <table class="data" id="wf-table"></table>
+    </section>
+  </div>
+
+  <!-- ───────────────────────── TAB 4: PARAM SWEEP ───────────────────────── -->
+  <div id="tab-sweep" class="tab-panel">
+    <section>
+      <h2>Parameter sweep</h2>
+      <p class="hint">Each cell is the Sharpe ratio for one parameter combination. A sharp peak
+        in-sample that flattens or vanishes out-of-sample is a sign of overfitting.</p>
+      <div class="controls-grid">
+        <div class="form-group">
+          <label class="form-label">Strategy</label>
+          <select id="sw-strategy" onchange="onSweepStrategyChange()">
+            <option value="mean_reversion" selected>Mean reversion</option>
+            <option value="momentum">Momentum</option>
+            <option value="pairs">Pairs</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">In-sample fraction<span class="info" tabindex="0" data-tip="Fraction of the date range used to pick optimal parameters (in-sample). The rest is held out to score those same parameters out-of-sample">i</span></span> <span class="range-value" id="sw-tf-v">0.70</span></label>
+          <input type="range" id="sw-tf" min="0.5" max="0.85" step="0.05" value="0.70" oninput="document.getElementById('sw-tf-v').textContent=(+this.value).toFixed(2)">
+          <div class="range-hints"><span>0.50</span><span>0.85</span></div>
+        </div>
+      </div>
+      <div id="sw-strategy-desc" class="strategy-desc"></div>
+      <p class="hint" id="sw-axes-desc"></p>
+      <div class="btn-row"><button class="btn" id="sw-run" onclick="runSweep()">Run sweep</button></div>
+      <div class="progress-track" id="sw-prog"><div class="progress-fill" id="sw-fill"></div></div>
+    </section>
+
+    <section id="sw-results" style="display:none;">
+      <div id="sw-best" class="callout"></div>
+      <div class="heatmaps">
+        <div class="heatmap-box"><h3>In-sample Sharpe</h3><div id="sw-is"></div></div>
+        <div class="heatmap-box"><h3>Out-of-sample Sharpe</h3><div id="sw-oos"></div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────── TAB 5: LIMITATIONS ───────────────────────── -->
+  <div id="tab-method" class="tab-panel">
+    <section>
+      <h2>Limitations</h2>
+      <p class="hint">This backtester makes a number of simplifying assumptions, partially due to 
+        design decisions made to keep it fast and runnable entirely in-browser.</p>
+      <h3>Signal Timing</h3>
+      <div class="explain-box">
+        <p>The engine processes one trading day at a time and only ever looks at information available
+          up through that day's close (it can't peek ahead). Because a day's closing price isn't known
+          until the day is over, any order a signal generates at close[i] is filled at the <em>next</em>
+          day's open (open[i+1]) rather than at that same close, so the backtest can never trade at a
+          price it couldn't actually have gotten in real time.</p>
+        <div class="math-block">for each bar i:
+    1. fill orders queued for open[i]      (placed yesterday)
+    2. mark portfolio equity at close[i]
+    3. strategy reads history up to i  ->  target weights
+    4. size orders vs. current positions   ->  queue for open[i+1]</div>
+      </div>
+
+      <h3 style="margin-top:24px;">Other Limitations</h3>
+      <div class="callout"><p><strong>Daily bars.</strong> Every decision is made once per day at 
+        the close and executed once per day at the next open, so any strategy that depends on intraday 
+        timing can't be represented here.</p></div>
+      <div class="callout"><p><strong>Simplified cost and fill model.</strong> I aimed to approximate
+        trading frictions with commission and half-spread. None of this models order-book depth, 
+        queue position, or adverse selection from other participants, so costs here are just an estimate.</p></div>
+      <div class="callout"><p><strong>Small universe.</strong> The panel is 18 series and 3 notable pairs 
+        (SPY, sector ETFs, and cointegration candidates like EWA/EWC). This is of course a narrower
+        scope than the entire market.</p></div>
+      <div class="callout"><p><strong>Adjusted-price accounting only.</strong> Prices are
+        split/dividend-adjusted via yfinance, which is standard for return calculations but means the
+        backtest doesn't model things a live account actually pays or earns (dividend cash flows,
+        financing/borrow costs for short positions, taxes, etc.).</p></div>
+      <div class="callout"><p><strong>Only 2018-26 real data.</strong> All results are only computed 
+        over the history of the series from 2018-26. This is partially just the nature of backtesting,
+        but a different time interval could yield different results. Also, for simplicity and speed, 
+        the walk-forward and sweep analyses are coarse and aren't an exhaustive optimization.</p></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <span>Cameron Ake — <a href="index.html">Portfolio</a></span>
+</footer>
+
+<script src="data/prices.js"></script>
+<script>
+// ── State ────────────────────────────────────────────────────────────────────
+let workerReady = false, workerBusy = false;
+const charts = {};
+const worker = new Worker('./stb-worker.js');
+
+// Short, math-first descriptions of what each strategy actually does (not finance jargon).
+const STRATEGY_DESCRIPTIONS = {
+  momentum: `<strong>Cross-sectional momentum:</strong> at each rebalance, rank all assets by their
+    return over the lookback window and hold the top N. The bet is that assets that have recently
+    performed relatively well continue performing relatively well.`,
+  mean_reversion: `<strong>Mean reversion (z-score):</strong> track how many standard deviations
+    one asset's price sits from its own rolling mean. Open a position once that deviation passes the 
+    entry threshold, betting the price will later revert toward the mean. Close once it reverts back 
+    near zero.`,
+  pairs: `<strong>Pairs trading (cointegration):</strong> find two assets whose price difference
+    (the spread between them) is statistically stationary rather than trending, meaning the stocks tend to 
+    move together and are cointegrated. When one asset is outperforming the other more than we would expect
+    from our cointegration model, trade expecting the former's stock to fall and the latter to rise.
+    This strategy bets that the relationship between the two assets reverts.`,
+};
+
+const SWEEP_PRESETS = {
+  mean_reversion: { base: { ticker: 'SPY', z_exit: 0.25 },
+    x: { name: 'lookback', label: 'lookback', values: [10, 15, 20, 30, 40, 50, 60] },
+    y: { name: 'z_entry', label: 'entry z', values: [0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0] } },
+  momentum: { base: { rebalance: 21 },
+    x: { name: 'lookback', label: 'lookback', values: [21, 42, 63, 105, 147, 189, 252] },
+    y: { name: 'top_n', label: 'top N', values: [1, 2, 3, 4, 5, 6] } },
+  pairs: { base: { pair: ['EWA', 'EWC'], z_exit: 0.5, recompute: 5 },
+    x: { name: 'lookback', label: 'hedge window', values: [30, 45, 60, 75, 90, 120] },
+    y: { name: 'z_entry', label: 'entry z', values: [1.0, 1.5, 2.0, 2.5, 3.0] } },
+};
+
+// ── Populate selectors from bundled data ─────────────────────────────────────
+function fillSelect(el, values, selected) {
+  el.innerHTML = '';
+  values.forEach(v => {
+    const o = document.createElement('option');
+    o.value = Array.isArray(v) ? v.join(',') : v;
+    o.textContent = Array.isArray(v) ? `${v[0]} / ${v[1]}` : v;
+    if ((Array.isArray(v) ? v.join(',') : v) === selected) o.selected = true;
+    el.appendChild(o);
+  });
+}
+fillSelect(document.getElementById('bt-ticker'), DATA_PRICES.tickers, 'SPY');
+fillSelect(document.getElementById('bt-pair'), DATA_PRICES.pairs, 'EWA,EWC');
+fillSelect(document.getElementById('cg-a'), DATA_PRICES.tickers, 'EWA');
+fillSelect(document.getElementById('cg-b'), DATA_PRICES.tickers, 'EWC');
+
+// ── Worker comms ─────────────────────────────────────────────────────────────
+worker.onmessage = function (e) {
+  const { type, msg, result, done, total, phase } = e.data;
+  if (type === 'status') { setStatus('busy', msg); return; }
+  if (type === 'ready') { workerReady = true; setStatus('ready', 'Ready'); enableAll(true); return; }
+  if (type === 'error') { setStatus('error', 'Init error: ' + msg); return; }
+  if (type === 'progress') { updateProgress(phase, done, total); return; }
+
+  workerBusy = false; enableAll(true); setStatus('ready', 'Ready');
+  if (type === 'backtest_result') renderBacktest(result);
+  else if (type === 'cointegration_result') renderCointegration(result);
+  else if (type === 'walkforward_result') renderWalkForward(result);
+  else if (type === 'sweep_result') renderSweep(result);
+  else if (type.endsWith('_error')) setStatus('error', 'Error: ' + msg);
+};
+
+function request(type, data, phase) {
+  if (!workerReady || workerBusy) return;
+  workerBusy = true; enableAll(false); setStatus('busy', 'Running…');
+  if (phase) startProgress(phase);
+  worker.postMessage({ type, data });
+}
+
+// ── Spec builders ────────────────────────────────────────────────────────────
+function v(id) { return +document.getElementById(id).value; }
+function costsSpec() {
+  return { commission_bps: v('c-comm'), spread_bps: v('c-spread'),
+           slippage: document.getElementById('c-slip').checked };
+}
+function strategyParams(strat) {
+  if (strat === 'momentum')
+    return { lookback: v('mom-lb'), top_n: v('mom-tn'), rebalance: v('mom-rb') };
+  if (strat === 'mean_reversion')
+    return { ticker: document.getElementById('bt-ticker').value,
+             lookback: v('mr-lb'), z_entry: v('mr-ze'), z_exit: v('mr-zx') };
+  // pairs
+  return { pair: document.getElementById('bt-pair').value.split(','),
+           lookback: v('pa-lb'), z_entry: v('pa-ze'), z_exit: v('pa-zx'),
+           recompute: 5, adf_gate: document.getElementById('pa-gate').checked };
+}
+
+function runBacktest() {
+  const strat = document.getElementById('bt-strategy').value;
+  request('run_backtest', { strategy: strat, params: strategyParams(strat),
+    benchmark: 'SPY', costs: costsSpec(), compare_no_costs: true });
+}
+function runCointegration() {
+  request('run_cointegration', { pairA: document.getElementById('cg-a').value,
+    pairB: document.getElementById('cg-b').value, window: v('cg-w') });
+}
+function runWalkForward() {
+  const strat = document.getElementById('wf-strategy').value;
+  const p = SWEEP_PRESETS[strat];
+  // Coarse 2-param grid drawn from the sweep presets (every other value).
+  const grid = {};
+  grid[p.x.name] = p.x.values.filter((_, i) => i % 2 === 0);
+  grid[p.y.name] = p.y.values.filter((_, i) => i % 2 === 0);
+  request('run_walkforward', { strategy: strat, params: { ...p.base },
+    paramGrid: grid, nFolds: v('wf-folds'),
+    anchored: document.getElementById('wf-anchored').checked, metric: 'sharpe' }, 'walkforward');
+}
+function runSweep() {
+  const strat = document.getElementById('sw-strategy').value;
+  const p = SWEEP_PRESETS[strat];
+  request('run_sweep', { strategy: strat, params: { ...p.base },
+    axisX: { name: p.x.name, values: p.x.values },
+    axisY: { name: p.y.name, values: p.y.values },
+    metric: 'sharpe', trainFrac: v('sw-tf') }, 'sweep');
+}
+
+// ── Renderers ────────────────────────────────────────────────────────────────
+const pct = x => (x * 100).toFixed(1) + '%';
+const f2 = x => x.toFixed(2);
+
+function tip(text) {
+  return `<span class="info" tabindex="0" data-tip="${text.replace(/"/g, '&quot;')}">i</span>`;
+}
+function labelTip(label, text) {
+  return `<span class="label-text">${label}${tip(text)}</span>`;
+}
+function metricCell(label, val, cls) {
+  return `<div class="metric-cell"><div class="metric-label">${label}</div>
+    <div class="metric-val ${cls || ''}">${val}</div></div>`;
+}
+function signCls(x) { return x > 0 ? 'pos' : (x < 0 ? 'neg' : ''); }
+
+function renderBacktest(r) {
+  document.getElementById('bt-results').style.display = 'block';
+  const m = r.metrics, bm = r.benchmark_metrics;
+  document.getElementById('bt-metrics').innerHTML =
+    metricCell(labelTip('CAGR', 'Compound Annual Growth Rate: the constant annual return that would turn the starting equity into the ending equity, i.e. (end/start)^(1/years) − 1'), pct(m.cagr), signCls(m.cagr)) +
+    metricCell(labelTip('Sharpe', 'Mean return (minus risk-free rate) divided by its standard deviation, annualized'), f2(m.sharpe), signCls(m.sharpe)) +
+    metricCell(labelTip('Sortino', 'Like Sharpe, but the denominator only counts downside volatility (stdev of the negative returns)'), f2(m.sortino), signCls(m.sortino)) +
+    metricCell(labelTip('Calmar', 'CAGR divided by |max drawdown|'), f2(m.calmar), signCls(m.calmar)) +
+    metricCell(labelTip('Volatility', 'Annualized standard deviation of daily returns'), pct(m.vol)) +
+    metricCell(labelTip('Win rate', 'Fraction of closed trades with positive profit'), pct(m.win_rate)) +
+    metricCell(labelTip('Max DD', 'Max drawdown: the largest peak-to-trough decline in equity over the run, as a fraction of the peak'), pct(m.max_drawdown)) +
+    metricCell(labelTip('Turnover', 'Annualized average of |change in portfolio weight| (measures how much of the portfolio is bought/sold per year)'), m.turnover.toFixed(1) + '×') +
+    metricCell('Trades', m.n_trades) +
+    metricCell('SPY Sharpe', f2(bm.sharpe));
+  const drag = r.cost_drag;
+  document.getElementById('bt-drag').innerHTML =
+    `<strong>Cost drag:</strong> transaction costs reduced annualized return by
+     <strong>${(drag * 100).toFixed(2)}%</strong> per year
+     (gross ${pct(m.cagr + drag)} → net ${pct(m.cagr)}). In total,
+     $${Math.round(m.total_costs).toLocaleString()} paid in costs.`;
+
+  const labels = r.dates;
+  lineChart('equityChart', labels, [
+    { label: 'Strategy (net)', data: r.equity, borderColor: '#5c3fa3', borderWidth: 1.6 },
+    { label: 'Strategy (no costs)', data: r.no_cost_equity, borderColor: '#d99a2b', borderWidth: 1.2, borderDash: [4, 3] },
+    { label: 'Buy & hold SPY', data: r.benchmark, borderColor: '#999', borderWidth: 1.2 },
+  ]);
+  lineChart('ddChart', labels, [
+    { label: 'Drawdown', data: r.drawdown.map(x => x * 100), borderColor: '#cf4b3f', borderWidth: 1, fill: true, backgroundColor: 'rgba(207,75,63,0.12)' },
+  ], { yFmt: v => v.toFixed(0) + '%' });
+}
+
+function renderCointegration(r) {
+  document.getElementById('cg-results').style.display = 'block';
+  document.getElementById('cg-metrics').innerHTML =
+    metricCell(labelTip('Hedge ratio&nbsp;<span class="no-caps">β</span>', 'OLS slope from regressing A on B: A = α + β·B + spread'), r.beta.toFixed(3)) +
+    metricCell(labelTip('Intercept&nbsp;<span class="no-caps">α</span>', 'OLS intercept from the same regression'), r.alpha.toFixed(2)) +
+    metricCell(labelTip('ADF stat', 'Augmented Dickey-Fuller test statistic on the spread. More negative = stronger evidence against a unit root, i.e. more evidence of mean-reversion'), r.adf_stat.toFixed(2)) +
+    metricCell(labelTip('ADF p-value', 'Probability of seeing a statistic this extreme if the spread were actually a non-stationary random walk. Small (< 0.05) means we reject that null and the spread looks stationary'), r.adf_pvalue.toFixed(3)) +
+    metricCell(labelTip('ADF lag', 'Number of lagged Δspread terms included in the ADF regression, to correct for autocorrelation in the residuals'), r.adf_lag);
+  const yes = r.cointegrated;
+  document.getElementById('cg-verdict').innerHTML =
+    `<span class="verdict ${yes ? 'yes' : 'no'}">${yes ? 'COINTEGRATED' : 'NOT COINTEGRATED'}</span>
+     &nbsp; ${r.pairA} = ${r.alpha.toFixed(2)} + ${r.beta.toFixed(3)}·${r.pairB} + ε, where ε is the spread.
+     The spread's ADF p-value is <strong>${r.adf_pvalue.toFixed(3)}</strong>
+     ${yes ? '< 0.05. We conclude that the spread is stationary and tradeable as a pair.'
+           : '≥ 0.05. We cannot conclude the spread is stationary, so a pairs trade here is unreliable.'}`;
+
+  lineChart('cgPriceChart', r.dates, [
+    { label: r.pairA, data: r.priceA, borderColor: '#5c3fa3', borderWidth: 1.4 },
+    { label: r.pairB, data: r.priceB, borderColor: '#3f9d58', borderWidth: 1.4 },
+  ]);
+  const band = r.zscore.map(() => 2), nband = r.zscore.map(() => -2), zero = r.zscore.map(() => 0);
+  lineChart('cgZChart', r.dates, [
+    { label: 'z-score', data: r.zscore, borderColor: '#1e1c1a', borderWidth: 1.2 },
+    { label: '+2', data: band, borderColor: '#cf4b3f', borderWidth: 0.8, borderDash: [4, 3], ref: true },
+    { label: '-2', data: nband, borderColor: '#cf4b3f', borderWidth: 0.8, borderDash: [4, 3], ref: true },
+    { label: '0', data: zero, borderColor: '#bbb', borderWidth: 0.8, ref: true },
+  ]);
+}
+
+function renderWalkForward(r) {
+  document.getElementById('wf-results').style.display = 'block';
+  document.getElementById('wf-chart-label').textContent =
+    `Stitched out-of-sample equity curve (each fold uses its own best in-sample lookback/threshold params; see per-fold table below)`;
+  const isS = r.is_metric_avg, oos = r.oos_metric_overall;
+  const degraded = isS - oos;
+  document.getElementById('wf-metrics').innerHTML =
+    metricCell(labelTip('IS Sharpe', 'In-sample: average Sharpe ratio of the best parameters across folds, measured on the training window each fold was optimized on'), f2(isS), signCls(isS)) +
+    metricCell(labelTip('OOS Sharpe', 'Out-of-sample: Sharpe ratio of those same parameters, measured on the following unseen test window, stitched across all folds'), f2(oos), signCls(oos));
+  document.getElementById('wf-headline').innerHTML =
+    `The strategy lost <strong>${f2(degraded)}</strong> Sharpe on unseen data. 
+     ${oos < isS * 0.6 ? 'This is a large gap and suggests we are overfitting to the training windows.'
+                       : 'This is a relatively modest gap and suggests the strategy holds up reasonably out of sample.'}
+     Out-of-sample CAGR was ${pct(r.oos_metrics.cagr)} with max drawdown ${pct(r.oos_metrics.max_drawdown)}.`;
+
+  lineChart('wfChart', r.oos_dates, [
+    { label: 'Stitched OOS equity', data: r.oos_equity, borderColor: '#5c3fa3', borderWidth: 1.6 },
+  ]);
+
+  let rows = '<tr><th>Fold</th><th>Train</th><th>Test</th><th>Best params</th>'
+           + `<th class="num">${labelTip('IS Sharpe', 'In-sample: average Sharpe ratio of the best parameters across folds, measured on the training window each fold was optimized on')}</th>`
+           + `<th class="num">${labelTip('OOS Sharpe', 'Out-of-sample: Sharpe ratio of those same parameters, measured on the following unseen test window, stitched across all folds')}</th></tr>`;
+  r.folds.forEach((f, i) => {
+    const params = Object.entries(f.best_params).map(([k, val]) =>
+      `${k}=${Array.isArray(val) ? val.join('/') : val}`).join(', ');
+    rows += `<tr><td>${i + 1}</td><td>${f.train[0]} → ${f.train[1]}</td>
+      <td>${f.test[0]} → ${f.test[1]}</td><td>${params}</td>
+      <td class="num">${f2(f.is_metric)}</td><td class="num">${f2(f.oos_metric)}</td></tr>`;
+  });
+  document.getElementById('wf-table').innerHTML = rows;
+}
+
+function renderSweep(r) {
+  document.getElementById('sw-results').style.display = 'block';
+  document.getElementById('sw-best').innerHTML =
+    `<strong>Best in-sample cell:</strong> ${r.axisX.name}=${r.best.x},
+     ${r.axisY.name}=${r.best.y} → Sharpe ${f2(r.best.is_metric)}.
+     Compare its position on the two grids. If the in-sample hotspot is in a cold area out-of-sample,
+     those parameters were likely overfit. Out-of-sample split at ${r.split_date}.`;
+  const p = SWEEP_PRESETS[document.getElementById('sw-strategy').value];
+  const labels = { x: p.x.label, y: p.y.label };
+  heatmap('sw-is', r, 'is_grid', labels);
+  heatmap('sw-oos', r, 'oos_grid', labels);
+}
+
+// ── Charts & heatmaps ────────────────────────────────────────────────────────
+const _MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// Compact x-tick formatter: turns "2018-06-19" into "Jun '18"; leaves non-dates as-is.
+function dateTick(value) {
+  const lbl = this.getLabelForValue(value);
+  if (typeof lbl === 'string') {
+    const m = /^(\d{4})-(\d{2})-\d{2}$/.exec(lbl);
+    if (m) return `${_MONTHS[+m[2] - 1]} '${m[1].slice(2)}`;
+  }
+  return lbl;
+}
+function lineChart(id, labels, datasets, opts = {}) {
+  if (charts[id]) charts[id].destroy();
+  charts[id] = new Chart(document.getElementById(id), {
+    type: 'line',
+    // "ref: true" marks a flat reference line (e.g. a z-score entry/exit band) — it still
+    // draws and appears in the legend, but doesn't get a hover point or a tooltip row, so
+    // hovering the chart only calls out the series that actually varies.
+    data: { labels, datasets: datasets.map(d => ({ pointRadius: 0, pointHoverRadius: d.ref ? 0 : 3, tension: 0, fill: false, ...d })) },
+    options: {
+      responsive: true, maintainAspectRatio: true, animation: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { boxWidth: 14, font: { size: 11 } } },
+        tooltip: { filter: item => !datasets[item.datasetIndex].ref },
+      },
+      scales: {
+        x: { ticks: { maxTicksLimit: opts.noXLabels ? 0 : 6, maxRotation: 0, minRotation: 0, autoSkip: true, font: { size: 10 }, color: '#6b6863', display: !opts.noXLabels, callback: dateTick }, grid: { display: false } },
+        y: { ticks: { font: { size: 10 }, color: '#6b6863', callback: opts.yFmt || (v => v) }, grid: { color: '#eee' } },
+      },
+    },
+  });
+}
+
+function heatmap(containerId, r, key, labels = {}) {
+  const grid = r[key], xs = r.axisX.values, ys = r.axisY.values;
+  const xTitle = labels.x || r.axisX.name, yTitle = labels.y || r.axisY.name;
+  let flat = [];
+  grid.forEach(row => row.forEach(c => flat.push(c)));
+  const lo = Math.min(...flat), hi = Math.max(...flat), span = (hi - lo) || 1;
+  const el = document.getElementById(containerId);
+  // Single grid: col 1 = y-axis title, col 2 = y ticks, cols 3.. = one per x value.
+  // Rows 1..N are data (ys-descending so the axis increases upward), then an x-tick
+  // row and an x-title row. Titles are placed to span ONLY the data rows/columns so
+  // they centre on the cells, not on the tick gutters.
+  const nx = xs.length, ny = ys.length;
+  let html = `<div class="hm-grid" style="grid-template-columns: auto auto repeat(${nx}, 1fr);">`;
+  html += `<div class="hm-ytitle" style="grid-row: 1 / ${ny + 1}; grid-column: 1;"><span>${yTitle}</span></div>`;
+  for (let row = 1, yi = ny - 1; yi >= 0; yi--, row++) {
+    html += `<div class="hm-ytick" style="grid-row: ${row}; grid-column: 2;">${ys[yi]}</div>`;
+    for (let xi = 0; xi < nx; xi++) {
+      const val = grid[yi][xi];
+      const t = (val - lo) / span;             // 0..1
+      const hue = 8 + t * 122;                 // red->green
+      const isBest = (xs[xi] === r.best.x && ys[yi] === r.best.y);
+      html += `<div class="hm-cell ${isBest ? 'best' : ''}" style="grid-row: ${row}; grid-column: ${xi + 3}; background:hsl(${hue},62%,${78 - t * 22}%)" title="${xTitle}=${xs[xi]}, ${yTitle}=${ys[yi]}: ${val}">${f2(val)}</div>`;
+    }
+  }
+  for (let xi = 0; xi < nx; xi++)
+    html += `<div class="hm-xtick" style="grid-row: ${ny + 1}; grid-column: ${xi + 3};">${xs[xi]}</div>`;
+  html += `<div class="hm-xtitle" style="grid-row: ${ny + 2}; grid-column: 3 / -1;">${xTitle}</div>`;
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// ── Progress ─────────────────────────────────────────────────────────────────
+function startProgress(phase) {
+  const t = document.getElementById(phase === 'sweep' ? 'sw-prog' : 'wf-prog');
+  const f = document.getElementById(phase === 'sweep' ? 'sw-fill' : 'wf-fill');
+  if (t) { t.classList.add('show'); f.style.width = '0%'; }
+}
+function updateProgress(phase, done, total) {
+  const f = document.getElementById(phase === 'sweep' ? 'sw-fill' : 'wf-fill');
+  if (f) f.style.width = Math.round(100 * done / total) + '%';
+}
+
+// ── UI plumbing ──────────────────────────────────────────────────────────────
+function setStatus(state, msg) {
+  document.getElementById('statusDot').className = 'status-dot ' + state;
+  document.getElementById('statusMsg').textContent = msg;
+}
+function enableAll(on) {
+  ['bt-run', 'cg-run', 'wf-run', 'sw-run'].forEach(id => {
+    const b = document.getElementById(id); if (b) b.disabled = !on;
+  });
+}
+function onStrategyChange() {
+  const s = document.getElementById('bt-strategy').value;
+  document.getElementById('mom-params').style.display = s === 'momentum' ? 'grid' : 'none';
+  document.getElementById('mr-params').style.display = s === 'mean_reversion' ? 'grid' : 'none';
+  document.getElementById('pairs-params').style.display = s === 'pairs' ? 'grid' : 'none';
+  document.getElementById('bt-asset-group').style.display = s === 'mean_reversion' ? 'flex' : 'none';
+  document.getElementById('bt-pair-group').style.display = s === 'pairs' ? 'flex' : 'none';
+  document.getElementById('bt-strategy-desc').innerHTML = STRATEGY_DESCRIPTIONS[s];
+}
+function onWFStrategyChange() {
+  document.getElementById('wf-strategy-desc').innerHTML = STRATEGY_DESCRIPTIONS[document.getElementById('wf-strategy').value];
+}
+function onSweepStrategyChange() {
+  const strat = document.getElementById('sw-strategy').value;
+  const p = SWEEP_PRESETS[strat];
+  document.getElementById('sw-strategy-desc').innerHTML = STRATEGY_DESCRIPTIONS[strat];
+  document.getElementById('sw-axes-desc').textContent =
+    `Sweeping ${p.x.label} (x) × ${p.y.label} (y) — ${p.x.values.length}×${p.y.values.length} = ${p.x.values.length * p.y.values.length} backtests.`;
+}
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Tooltip portal ───────────────────────────────────────────────────────────
+// Delegated so it also covers .info icons inserted later (metric cells, table
+// headers). Positioned with a fixed element rather than a per-icon ::after so
+// it isn't clipped by ancestors like .metrics-grid (overflow:hidden).
+(function () {
+  const portal = document.getElementById('tooltip-portal');
+  let current = null;
+  function place(el) {
+    const r = el.getBoundingClientRect();
+    portal.textContent = el.getAttribute('data-tip');
+    portal.classList.add('show');
+    const pr = portal.getBoundingClientRect();
+    let left = r.left + r.width / 2 - pr.width / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - pr.width - 8));
+    let top = r.top - pr.height - 10;
+    let arrowX = r.left + r.width / 2 - left;
+    if (top < 4) { top = r.bottom + 10; portal.classList.add('below'); }
+    else { portal.classList.remove('below'); }
+    portal.style.left = left + 'px';
+    portal.style.top = top + 'px';
+    portal.style.setProperty('--arrow-x', arrowX + 'px');
+  }
+  function show(e) {
+    const el = e.target.closest && e.target.closest('.info');
+    if (!el) return;
+    current = el;
+    place(el);
+  }
+  function hide(e) {
+    if (e && e.target.closest && e.target.closest('.info') !== current) return;
+    portal.classList.remove('show');
+    current = null;
+  }
+  document.addEventListener('mouseover', show);
+  document.addEventListener('mouseout', hide);
+  document.addEventListener('focusin', show);
+  document.addEventListener('focusout', hide);
+  window.addEventListener('scroll', () => { if (current) place(current); }, true);
+})();
+
+onStrategyChange();
+onWFStrategyChange();
+onSweepStrategyChange();
+enableAll(false);
+worker.postMessage({ type: 'init' });
+</script>
+</body>
+</html>
