@@ -579,7 +579,7 @@
           <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <rect width="400" height="160" fill="#140f2e"/>
             <line x1="20" y1="118" x2="388" y2="118" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <line x1="20" y1="138" x2="20" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="20" y1="118" x2="20" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
             <!-- benchmark (flatter, gray) -->
             <path d="M20 110 C90 102 150 96 220 84 C290 72 340 70 388 60" fill="none" stroke="rgba(170,170,170,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>
             <!-- strategy equity (rising, light purple, with a small drawdown dip) with subtle fill -->
@@ -588,10 +588,10 @@
             <!-- drawdown notch markers (placed exactly on-curve, at real path vertices) -->
             <circle cx="150" cy="95" r="3.5" fill="#cf6f63" opacity="0.9"/>
             <circle cx="220" cy="60" r="3.5" fill="#c4b0e8" opacity="0.9"/>
-            <!-- entry/exit ticks -->
-            <rect x="108" y="124" width="3" height="10" rx="1.5" fill="rgba(196,176,232,0.7)"/>
-            <rect x="218" y="124" width="3" height="10" rx="1.5" fill="rgba(196,176,232,0.7)"/>
-            <rect x="298" y="124" width="3" height="10" rx="1.5" fill="rgba(196,176,232,0.7)"/>
+            <!-- x-axis ticks: evenly spaced, dividing the plot width into 4 equal intervals -->
+            <rect x="112" y="121" width="3" height="8" rx="1.5" fill="rgba(196,176,232,0.5)"/>
+            <rect x="204" y="121" width="3" height="8" rx="1.5" fill="rgba(196,176,232,0.5)"/>
+            <rect x="296" y="121" width="3" height="8" rx="1.5" fill="rgba(196,176,232,0.5)"/>
           </svg>
         </div>
         <div class="card-body">
