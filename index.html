@@ -545,34 +545,6 @@
         </div>
       </div>
 
-      <!-- Bayesian Optimization: GP mean curve + uncertainty bands + data points -->
-      <div class="card">
-        <div class="card-image">
-          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="400" height="160" fill="#140f2e"/>
-            <!-- GP uncertainty band: wide 2-sigma + narrow 1-sigma, both centered on the mean curve and
-                 pinching to ~0 width exactly at the 4 observed points below (real GP behavior) -->
-            <path d="M0 66 C10.0 69.2 43.3 87.7 60 85 C76.7 82.3 86.7 56.0 100 50 C113.3 44.0 125.0 51.3 140 49 C155.0 46.7 173.3 32.7 190 36 C206.7 39.3 223.3 68.0 240 69 C256.7 70.0 273.3 44.8 290 42 C306.7 39.2 321.7 57.3 340 52 C358.3 46.7 390.0 17.0 400 10 L400 74 C390.0 71.3 358.3 56.0 340 58 C321.7 60.0 306.7 83.2 290 86 C273.3 88.8 256.7 75.3 240 75 C223.3 74.7 206.7 87.3 190 84 C173.3 80.7 155.0 54.0 140 55 C125.0 56.0 113.3 84.0 100 90 C86.7 96.0 76.7 83.7 60 91 C43.3 98.3 10.0 126.8 0 134 Z" fill="rgba(92,63,163,0.16)"/>
-            <path d="M0 83 C10.0 83.6 43.3 90.3 60 86.5 C76.7 82.7 86.7 66.0 100 60 C113.3 54.0 125.0 52.5 140 50.5 C155.0 48.5 173.3 44.7 190 48 C206.7 51.3 223.3 69.7 240 70.5 C256.7 71.3 273.3 55.8 290 53 C306.7 50.2 321.7 58.0 340 53.5 C358.3 49.0 390.0 30.6 400 26 L400 58 C390.0 57.8 358.3 53.7 340 56.5 C321.7 59.3 306.7 72.2 290 75 C273.3 77.8 256.7 74.0 240 73.5 C223.3 73.0 206.7 75.3 190 72 C173.3 68.7 155.0 52.2 140 53.5 C125.0 54.8 113.3 74.0 100 80 C86.7 86.0 76.7 83.3 60 89.5 C43.3 95.7 10.0 112.4 0 117 Z" fill="rgba(92,63,163,0.28)"/>
-            <path d="M0 100 C10.0 98.0 43.3 93.0 60 88 C76.7 83.0 86.7 76.0 100 70 C113.3 64.0 125.0 53.7 140 52 C155.0 50.3 173.3 56.7 190 60 C206.7 63.3 223.3 71.3 240 72 C256.7 72.7 273.3 66.8 290 64 C306.7 61.2 321.7 58.7 340 55 C358.3 51.3 390.0 44.2 400 42" fill="none" stroke="#c4b0e8" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="20" y1="150" x2="20" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <line x1="20" y1="150" x2="390" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <circle cx="60" cy="88" r="5" fill="white" opacity="0.85"/>
-            <circle cx="140" cy="52" r="5" fill="white" opacity="0.85"/>
-            <circle cx="240" cy="72" r="5" fill="white" opacity="0.85"/>
-            <circle cx="340" cy="55" r="5" fill="white" opacity="0.85"/>
-            <circle cx="140" cy="52" r="9" fill="none" stroke="#c4b0e8" stroke-width="2" stroke-dasharray="4,3" opacity="0.8"/>
-          </svg>
-        </div>
-        <div class="card-body">
-          <h3>Bayesian Optimization</h3>
-          <p>Implements Bayesian optimization from scratch using only NumPy. Fits a Gaussian process posterior via an RBF kernel and Cholesky decomposition, then selects the next sample point via Upper Confidence Bound (UCB) or Expected Improvement acquisition functions.</p>
-          <div class="card-links">
-            <a href="bo-demo.html">Live Demo</a>
-          </div>
-        </div>
-      </div>
-    
       <!-- Systematic Trading Backtester: strategy equity curve vs benchmark + drawdown -->
       <div class="card">
         <div class="card-image">
@@ -603,6 +575,34 @@
         </div>
       </div>
 
+      <!-- Bayesian Optimization: GP mean curve + uncertainty bands + data points -->
+      <div class="card">
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#140f2e"/>
+            <!-- GP uncertainty band: wide 2-sigma + narrow 1-sigma, both centered on the mean curve and
+                 pinching to ~0 width exactly at the 4 observed points below (real GP behavior) -->
+            <path d="M0 66 C10.0 69.2 43.3 87.7 60 85 C76.7 82.3 86.7 56.0 100 50 C113.3 44.0 125.0 51.3 140 49 C155.0 46.7 173.3 32.7 190 36 C206.7 39.3 223.3 68.0 240 69 C256.7 70.0 273.3 44.8 290 42 C306.7 39.2 321.7 57.3 340 52 C358.3 46.7 390.0 17.0 400 10 L400 74 C390.0 71.3 358.3 56.0 340 58 C321.7 60.0 306.7 83.2 290 86 C273.3 88.8 256.7 75.3 240 75 C223.3 74.7 206.7 87.3 190 84 C173.3 80.7 155.0 54.0 140 55 C125.0 56.0 113.3 84.0 100 90 C86.7 96.0 76.7 83.7 60 91 C43.3 98.3 10.0 126.8 0 134 Z" fill="rgba(92,63,163,0.16)"/>
+            <path d="M0 83 C10.0 83.6 43.3 90.3 60 86.5 C76.7 82.7 86.7 66.0 100 60 C113.3 54.0 125.0 52.5 140 50.5 C155.0 48.5 173.3 44.7 190 48 C206.7 51.3 223.3 69.7 240 70.5 C256.7 71.3 273.3 55.8 290 53 C306.7 50.2 321.7 58.0 340 53.5 C358.3 49.0 390.0 30.6 400 26 L400 58 C390.0 57.8 358.3 53.7 340 56.5 C321.7 59.3 306.7 72.2 290 75 C273.3 77.8 256.7 74.0 240 73.5 C223.3 73.0 206.7 75.3 190 72 C173.3 68.7 155.0 52.2 140 53.5 C125.0 54.8 113.3 74.0 100 80 C86.7 86.0 76.7 83.3 60 89.5 C43.3 95.7 10.0 112.4 0 117 Z" fill="rgba(92,63,163,0.28)"/>
+            <path d="M0 100 C10.0 98.0 43.3 93.0 60 88 C76.7 83.0 86.7 76.0 100 70 C113.3 64.0 125.0 53.7 140 52 C155.0 50.3 173.3 56.7 190 60 C206.7 63.3 223.3 71.3 240 72 C256.7 72.7 273.3 66.8 290 64 C306.7 61.2 321.7 58.7 340 55 C358.3 51.3 390.0 44.2 400 42" fill="none" stroke="#c4b0e8" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="150" x2="20" y2="20" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="20" y1="150" x2="390" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <circle cx="60" cy="88" r="5" fill="white" opacity="0.85"/>
+            <circle cx="140" cy="52" r="5" fill="white" opacity="0.85"/>
+            <circle cx="240" cy="72" r="5" fill="white" opacity="0.85"/>
+            <circle cx="340" cy="55" r="5" fill="white" opacity="0.85"/>
+            <circle cx="140" cy="52" r="9" fill="none" stroke="#c4b0e8" stroke-width="2" stroke-dasharray="4,3" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Bayesian Optimization</h3>
+          <p>Implements Bayesian optimization from scratch using only NumPy. Fits a Gaussian process posterior via an RBF kernel and Cholesky decomposition, then selects the next sample point via Upper Confidence Bound (UCB) or Expected Improvement acquisition functions.</p>
+          <div class="card-links">
+            <a href="bo-demo.html">Live Demo</a>
+          </div>
+        </div>
+      </div>
+
       <!-- Monte Carlo: sample price paths fanning out, distribution on right -->
       <div class="card">
         <div class="card-image">
@@ -626,30 +626,6 @@
           <div class="card-links">
             <a href="mcop-demo.html">Live Demo</a>
           </div>
-        </div>
-      </div>
-
-      <!-- LLM Agent: input box → router → three tool boxes -->
-      <div class="card">
-        <div class="card-image">
-          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="400" height="160" fill="#160f35"/>
-            <rect x="20" y="62" width="68" height="36" rx="6" fill="rgba(92,63,163,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
-            <rect x="158" y="62" width="76" height="36" rx="6" fill="rgba(92,63,163,0.7)" stroke="rgba(196,176,232,0.65)" stroke-width="2"/>
-            <rect x="302" y="18" width="78" height="30" rx="5" fill="rgba(139,108,200,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
-            <rect x="302" y="65" width="78" height="30" rx="5" fill="rgba(139,108,200,0.55)" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
-            <rect x="302" y="112" width="78" height="30" rx="5" fill="rgba(139,108,200,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
-            <line x1="88" y1="80" x2="156" y2="80" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
-            <line x1="234" y1="73" x2="300" y2="33" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
-            <line x1="234" y1="80" x2="300" y2="80" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
-            <line x1="234" y1="87" x2="300" y2="127" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
-            <circle cx="54" cy="80" r="4" fill="rgba(255,255,255,0.3)"/>
-            <circle cx="196" cy="80" r="4" fill="rgba(255,255,255,0.4)"/>
-          </svg>
-        </div>
-        <div class="card-body">
-          <h3>LLM Agent App for Workflow Automation</h3>
-          <p>Built a web application to host custom AI agent workflows for the <a href="https://www.fcm.com/" target="_blank" rel="noopener noreferrer">Fermat</a> R&amp;D team. Integrated the Anthropic API via AWS Bedrock with Gmail, Drive, and Box APIs. Balanced LLM inference with lower-cost algorithmic approaches and designed custom processing pipelines for tasks exceeding the model's capabilities.</p>
         </div>
       </div>
 
@@ -681,6 +657,30 @@
         <div class="card-body">
           <h3>ILW Remodeling for EP Curves</h3>
           <p>Extended an existing production codebase at <a href="https://www.fcm.com/" target="_blank" rel="noopener noreferrer">Fermat</a> into an interactive dashboard for remodeling industry loss warranties (ILWs), constructing exceedance probability (EP) curves from user-defined combinations of catastrophe scenarios with custom trigger logic, querying MSSQL databases live in place of manual querying for risk analytics team.</p>
+        </div>
+      </div>
+
+      <!-- LLM Agent: input box → router → three tool boxes -->
+      <div class="card">
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#160f35"/>
+            <rect x="20" y="62" width="68" height="36" rx="6" fill="rgba(92,63,163,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <rect x="158" y="62" width="76" height="36" rx="6" fill="rgba(92,63,163,0.7)" stroke="rgba(196,176,232,0.65)" stroke-width="2"/>
+            <rect x="302" y="18" width="78" height="30" rx="5" fill="rgba(139,108,200,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <rect x="302" y="65" width="78" height="30" rx="5" fill="rgba(139,108,200,0.55)" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
+            <rect x="302" y="112" width="78" height="30" rx="5" fill="rgba(139,108,200,0.5)" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <line x1="88" y1="80" x2="156" y2="80" stroke="rgba(196,176,232,0.5)" stroke-width="1.5"/>
+            <line x1="234" y1="73" x2="300" y2="33" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <line x1="234" y1="80" x2="300" y2="80" stroke="rgba(196,176,232,0.45)" stroke-width="1.5"/>
+            <line x1="234" y1="87" x2="300" y2="127" stroke="rgba(196,176,232,0.4)" stroke-width="1.5"/>
+            <circle cx="54" cy="80" r="4" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="196" cy="80" r="4" fill="rgba(255,255,255,0.4)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>LLM Agent App for Workflow Automation</h3>
+          <p>Built a web application to host custom AI agent workflows for the <a href="https://www.fcm.com/" target="_blank" rel="noopener noreferrer">Fermat</a> R&amp;D team. Integrated the Anthropic API via AWS Bedrock with Gmail, Drive, and Box APIs. Balanced LLM inference with lower-cost algorithmic approaches and designed custom processing pipelines for tasks exceeding the model's capabilities.</p>
         </div>
       </div>
 
