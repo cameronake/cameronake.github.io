@@ -600,6 +600,7 @@ h2::after {
   background: var(--surface);
   border-radius: var(--radius);
   max-width: min(680px, 90vw);
+  max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -649,6 +650,8 @@ h2::after {
   font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.6;
+  max-height: 30vh;
+  overflow-y: auto;
 }
 .photo-modal-caption p {
   margin: 0;
