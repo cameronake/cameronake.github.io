@@ -587,6 +587,37 @@
         </div>
       </div>
 
+      <!-- Limit Order Book: depth ladder — coral asks above, lavender bids below, dashed spread -->
+      <div class="card">
+        <div class="card-image">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="160" fill="#17112f"/>
+            <line x1="46" y1="18" x2="46" y2="142" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <!-- ask depth (top), widening away from the mid -->
+            <rect x="48" y="24" width="288" height="12" rx="2" fill="rgba(207,111,99,0.20)"/>
+            <rect x="48" y="40" width="214" height="12" rx="2" fill="rgba(207,111,99,0.28)"/>
+            <rect x="48" y="56" width="150" height="12" rx="2" fill="rgba(207,111,99,0.36)"/>
+            <!-- best ask marker -->
+            <rect x="48" y="56" width="6" height="12" rx="2" fill="#cf6f63"/>
+            <!-- spread -->
+            <line x1="46" y1="80" x2="360" y2="80" stroke="rgba(255,255,255,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+            <!-- best bid marker -->
+            <rect x="48" y="92" width="6" height="12" rx="2" fill="#c4b0e8"/>
+            <!-- bid depth (bottom), widening away from the mid -->
+            <rect x="48" y="92"  width="158" height="12" rx="2" fill="rgba(196,176,232,0.38)"/>
+            <rect x="48" y="108" width="232" height="12" rx="2" fill="rgba(196,176,232,0.30)"/>
+            <rect x="48" y="124" width="300" height="12" rx="2" fill="rgba(196,176,232,0.22)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>Limit Order Book &amp; Matching Engine</h3>
+          <p>A low-latency matching engine in C++: price-time priority using a cache-conscious flat price ladder, order nodes from a custom pool allocator, an open-addressing id map, and a lock-free SPSC ring buffer feeding a separate engine thread. The core is compiled to WebAssembly to run live in the browser, with benchmarks from the native build.</p>
+          <div class="card-links">
+            <a href="lob-demo.html">Live Demo</a>
+          </div>
+        </div>
+      </div>
+
       <!-- Bayesian Optimization: GP mean curve + uncertainty bands + data points -->
       <div class="card">
         <div class="card-image">

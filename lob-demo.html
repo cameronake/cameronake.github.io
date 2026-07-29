@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Limit Order Book &amp; Matching Engine — Cameron Ake</title>
+  <meta name="description" content="A low-latency limit order book and matching engine in C++ using price-time priority. Includes a cache-conscious flat price ladder, a pool allocator, an open-addressing order map, and a lock-free SPSC feed handler. Runs live in the browser via WebAssembly, with native benchmarks." />
+  <link rel="canonical" href="https://cameronake.com/lob-demo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Limit Order Book &amp; Matching Engine — Cameron Ake" />
+  <meta property="og:description" content="Low-latency C++ matching engine with price-time priority, using pool allocator, cache-conscious flat ladder, and lock-free SPSC feed handler. Live in the browser via WebAssembly." />
+  <meta property="og:url" content="https://cameronake.com/lob-demo.html" />
+  <link type="image/png" sizes="96x96" rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 17px; }
+
+    :root {
+      --bg: #f5f4f0; --surface: #ffffff; --border: #dddbd5;
+      --text: #1e1c1a; --muted: #6b6863; --accent: #5c3fa3;
+      --accent-hover: #4a3185; --max-width: 940px; --radius: 8px;
+      --bid: #3f8f5c; --bid-bg: rgba(63,143,92,0.14);
+      --ask: #cf6f63; --ask-bg: rgba(207,111,99,0.16);
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 1rem; line-height: 1.75; }
+
+    header { position: sticky; top: 0; z-index: 100; background: var(--accent); border-bottom: 1px solid var(--accent-hover); }
+    nav { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; height: 60px; display: flex; align-items: center; gap: 16px; }
+    .back-link { color: rgba(255,255,255,0.75); font-size: 0.9rem; text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: #fff; }
+    .nav-title { font-weight: 600; font-size: 1rem; color: #fff; font-style: italic; }
+
+    main { max-width: var(--max-width); margin: 0 auto; padding: 48px 32px 80px; }
+
+    .page-hero { margin-bottom: 32px; }
+    h1 { font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 600; margin-bottom: 12px; }
+    h1::after { content: ''; display: block; width: 40px; height: 3px; background: var(--accent); margin-top: 8px; border-radius: 2px; }
+    .subtitle { font-size: 1rem; color: var(--muted); line-height: 1.75; }
+
+    section { margin-bottom: 40px; }
+    h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 18px; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+    p { margin-bottom: 10px; }
+    a { color: var(--accent); }
+
+    /* tabs */
+    .tab-nav { display: flex; gap: 4px; margin-bottom: 36px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .tab-btn {
+      padding: 9px 20px; border: none; border-bottom: 3px solid transparent;
+      background: none; font-family: 'Lora', Georgia, serif; font-size: 1.05rem;
+      cursor: pointer; color: var(--muted); transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* status + notes */
+    .status-bar {
+      display: flex; align-items: center; gap: 10px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 10px 16px; margin-bottom: 16px; font-size: 0.9rem; color: var(--muted);
+    }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
+    .status-dot.ready { background: #5cb85c; }
+    .status-dot.busy  { background: #f0ad4e; animation: pulse 1s infinite; }
+    .status-dot.error { background: #d9534f; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .note {
+      background: #fbf6e9; border: 1px solid #e8d9a8; color: #7a611f;
+      border-radius: var(--radius); padding: 10px 16px; margin-bottom: 20px; font-size: 0.86rem;
+    }
+    .note code { background: rgba(0,0,0,0.05); }
+
+    /* controls */
+    .controls { display: flex; flex-wrap: wrap; gap: 18px 26px; align-items: flex-end; margin-bottom: 18px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    input[type="number"] {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 7px 10px; font-family: 'Courier New', monospace; font-size: 0.9rem; color: var(--text);
+      width: 110px; transition: border-color 0.2s;
+    }
+    input[type="number"]:focus { outline: none; border-color: var(--accent); }
+    input[type="range"] { width: 160px; accent-color: var(--accent); }
+
+    .side-toggle { display: flex; gap: 6px; }
+    .side-btn {
+      padding: 6px 16px; border: 1.5px solid var(--border); border-radius: 20px; background: var(--surface);
+      font-family: 'Lora', Georgia, serif; font-size: 0.86rem; cursor: pointer; color: var(--muted); transition: all 0.15s;
+    }
+    .side-btn.buy.active  { background: var(--bid); border-color: var(--bid); color: #fff; font-weight: 600; }
+    .side-btn.sell.active { background: var(--ask); border-color: var(--ask); color: #fff; font-weight: 600; }
+
+    .btn {
+      display: inline-block; padding: 9px 18px; background: var(--accent); color: #fff; border: none;
+      border-radius: var(--radius); font-family: 'Lora', Georgia, serif; font-size: 0.92rem; cursor: pointer;
+      transition: background 0.2s; font-weight: 600;
+    }
+    .btn:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-secondary { background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-secondary:hover:not(:disabled) { background: var(--accent); color: #fff; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; }
+
+    /* stats strip */
+    .stats-strip {
+      display: flex; gap: 22px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 20px; margin-bottom: 20px; font-size: 0.9rem;
+    }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .stat-val { font-weight: 600; color: var(--text); font-family: 'Courier New', monospace; }
+
+    /* book + tape */
+    .book-wrap { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+    .ladder {
+      flex: 1 1 380px; min-width: 300px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 0; overflow: hidden;
+    }
+    .lrow { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+      padding: 2px 16px; font-family: 'Courier New', monospace; font-size: 0.9rem; }
+    .lrow .bar { position: absolute; top: 1px; bottom: 1px; right: 0; z-index: 0; border-radius: 2px 0 0 2px; }
+    .lrow.ask .bar { background: var(--ask-bg); }
+    .lrow.bid .bar { background: var(--bid-bg); }
+    .lrow .lprice { z-index: 1; font-weight: 600; }
+    .lrow.ask .lprice { color: var(--ask); }
+    .lrow.bid .lprice { color: var(--bid); }
+    .lrow .lqty { z-index: 1; text-align: right; color: var(--text); }
+    .spread-row {
+      display: flex; justify-content: center; gap: 18px; padding: 6px 16px; margin: 3px 0;
+      border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border);
+      font-size: 0.78rem; color: var(--muted); font-family: 'Courier New', monospace;
+    }
+    .tape {
+      flex: 0 0 210px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 10px 14px; max-height: 420px; overflow-y: auto;
+    }
+    .tape h4 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 8px; }
+    .trow { display: flex; justify-content: space-between; font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 1px 0; }
+    .trow.buy  .tp { color: var(--bid); }
+    .trow.sell .tp { color: var(--ask); }
+    .trow .tq { color: var(--muted); }
+
+    /* explainer */
+    .step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .step-num { font-size: 1.4rem; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+    .step-card h3 { font-size: 0.95rem; margin-bottom: 6px; }
+    .step-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; margin: 0; }
+
+    .explain-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; margin-bottom: 20px; }
+    .explain-box p { color: var(--muted); font-size: 0.95rem; }
+    code { font-family: 'Courier New', monospace; font-size: 0.88rem; background: #f0eeea; padding: 1px 5px; border-radius: 3px; }
+    .math-block {
+      font-family: 'Courier New', monospace; font-size: 0.83rem; background: #f0eeea; border-left: 3px solid var(--accent);
+      padding: 12px 16px; margin: 12px 0; border-radius: 0 var(--radius) var(--radius) 0; color: var(--text);
+      white-space: pre; overflow-x: auto;
+    }
+
+    /* side-by-side comparison blocks: real columns instead of hand-spaced text,
+       so the split reads cleanly regardless of font metrics or screen width */
+    .compare {
+      display: flex; flex-wrap: wrap; margin: 12px 0; border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .compare-col {
+      flex: 1 1 200px; background: #f0eeea; padding: 14px 16px;
+      font-family: 'Courier New', monospace; font-size: 0.83rem; color: var(--text);
+    }
+    .compare-col h4 {
+      font-family: 'Lora', Georgia, serif; font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .compare-col.win h4 { color: var(--accent); }
+    .compare-code { white-space: pre-wrap; overflow-x: auto; }
+    .compare-div {
+      flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+      padding: 0 16px; background: var(--surface); color: var(--muted);
+      font-family: 'Lora', Georgia, serif; font-size: 0.85rem; font-style: italic;
+    }
+    @media (max-width: 640px) {
+      .compare-div { flex-basis: 100%; padding: 6px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    }
+
+    /* charts */
+    .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+    .chart-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; font-style: italic; }
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 720px) { .chart-grid { grid-template-columns: 1fr; } }
+
+    ul.tight { margin: 4px 0 12px 20px; }
+    ul.tight li { color: var(--muted); font-size: 0.92rem; margin-bottom: 5px; }
+
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 24px; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="back-link" href="/">← Portfolio</a>
+    <span class="nav-title">Limit Order Book &amp; Matching Engine</span>
+  </nav>
+</header>
+
+<main>
+  <div class="page-hero">
+    <h1>Limit Order Book &amp; Matching Engine</h1>
+    <p class="subtitle">
+      A low-latency matching engine written from scratch in modern C++ using price-time priority. Includes a
+      cache-conscious flat price ladder, order nodes from a custom pool allocator, cancels/modifies
+      through an open-addressing hash map, and a lock-free SPSC ring buffer feeding a separate engine
+      thread. The single-threaded core is compiled to WebAssembly and runs live below;
+      performance numbers and benchmarks come from the native build.
+    </p>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('demo', this)">Live Demo</button>
+    <button class="tab-btn" onclick="switchTab('explainer', this)">How It Works</button>
+    <button class="tab-btn" onclick="switchTab('bench', this)">Benchmarks</button>
+    <button class="tab-btn" onclick="switchTab('design', this)">Design &amp; Limitations</button>
+  </div>
+
+  <!-- ── Live Demo ── -->
+  <div id="tab-demo" class="tab-panel active">
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusMsg">Initializing…</span>
+    </div>
+    <div class="note" id="fallbackNote" style="display:none;">
+      The compiled engine (<code>lob.wasm</code>) isn’t loaded, so this is a <strong>recorded replay</strong>
+      of a native run. Build it with <code>lob-project/build_wasm.sh</code> to submit live orders.
+    </div>
+
+    <section>
+      <h2>Order Entry</h2>
+      <div class="controls">
+        <div class="form-group">
+          <span class="form-label">Side</span>
+          <div class="side-toggle">
+            <button class="side-btn buy active" id="sideBuy"  onclick="setSide(0)">Buy</button>
+            <button class="side-btn sell"        id="sideSell" onclick="setSide(1)">Sell</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="priceIn">Price ($)</label>
+          <input type="number" id="priceIn" value="100.00" step="0.01" min="0.01" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="qtyIn">Quantity</label>
+          <input type="number" id="qtyIn" value="100" step="1" min="1" />
+        </div>
+        <button class="btn" id="btnLimit"  onclick="submitLimit()"  disabled>Submit Limit</button>
+        <button class="btn btn-secondary" id="btnMarket" onclick="submitMarket()" disabled>Market Order</button>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" id="btnPlay" onclick="togglePlay()" disabled>▶ Replay Feed</button>
+        <button class="btn btn-secondary" id="btnStep" onclick="stepOnce()" disabled>Step</button>
+        <button class="btn btn-secondary" id="btnReset" onclick="resetBook()" disabled>Reset</button>
+        <span class="form-label" style="margin-left:8px;">Speed</span>
+        <input type="range" id="speed" min="1" max="60" value="18" />
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat"><span class="stat-label">Best Bid</span><span class="stat-val" id="stBid">—</span></div>
+        <div class="stat"><span class="stat-label">Best Ask</span><span class="stat-val" id="stAsk">—</span></div>
+        <div class="stat"><span class="stat-label">Spread</span><span class="stat-val" id="stSpread">—</span></div>
+        <div class="stat"><span class="stat-label">Resting Orders</span><span class="stat-val" id="stResting">—</span></div>
+        <div class="stat"><span class="stat-label">Engine Ops</span><span class="stat-val" id="stOps">0</span></div>
+      </div>
+
+      <div class="book-wrap">
+        <div class="ladder" id="ladder"></div>
+        <div class="tape">
+          <h4>Trade Tape</h4>
+          <div id="tapeBody"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── How It Works ── -->
+  <div id="tab-explainer" class="tab-panel">
+    <section>
+      <h2>The Matching Loop</h2>
+      <div class="step-grid">
+        <div class="step-card"><div class="step-num">1</div><h3>Receive</h3><p>An order arrives (limit, market, or IOC). In the native build, a feed-handler thread decodes it and provides it to the engine over a lock-free queue.</p></div>
+        <div class="step-card"><div class="step-num">2</div><h3>Match</h3><p>An aggressive order walks the opposite side best-price-first, FIFO within each price, emitting trades until it is filled or the book can’t improve.</p></div>
+        <div class="step-card"><div class="step-num">3</div><h3>Rest</h3><p>Any unfilled remainder of a limit order joins the tail of its price level, taking a time-priority ticket behind everything already there.</p></div>
+        <div class="step-card"><div class="step-num">4</div><h3>Report</h3><p>Fills go out as trades; cancels and modifies find their order in O(1) through the id → node map and unlink it.</p></div>
+      </div>
+
+      <div class="explain-box">
+        <h3>Price-time priority</h3>
+        <p>Better prices trade first, and at the same price, the order that arrived first trades first.</p>
+        <div class="math-block">buy limit @ 100.03, qty 500  ── walks the ask side ──►
+
+  ask 100.05 | 200     left untouched (worse price)
+  ask 100.04 | 150     left untouched (worse price)
+  ask 100.03 |  80     #1 oldest ─► fill  80   (price ok, FIFO first)
+  ask 100.03 | 120     #2        ─► fill 120
+  ask 100.03 |  90     #3        ─► fill  90   → 290 filled
+                                    residual 210 rests as the new best bid @ 100.03</div>
+      </div>
+
+      <div class="explain-box">
+        <h3>Book as a flat price ladder</h3>
+        <p>Prices live on a discrete tick grid, so the book is one contiguous array indexed directly by price. Best bid/ask and any level are O(1) array lookups into cache-resident memory. The alternative, <code>std::map&lt;Price, Level&gt;</code>, is a red-black tree (O(log n)) whose every node is a separate heap allocation reached by pointer, which leads to a cache miss per level touched.</p>
+        <div class="compare">
+          <div class="compare-col win">
+            <h4>Flat ladder (this engine)</h4>
+            <div class="compare-code">levels[10003] ─► [FIFO]
+levels[10004] ─► [FIFO]
+levels[10005] ─► [FIFO]
+
+contiguous · O(1)
+1 cache line</div>
+          </div>
+          <div class="compare-div">vs</div>
+          <div class="compare-col">
+            <h4>std::map&lt;Price,Level&gt;</h4>
+            <div class="compare-code">       (root)
+      /      \
+  (node)    (node)
+
+pointer-chased tree
+scattered · O(log n)
+miss per hop</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="explain-box">
+        <h3>Intrusive FIFO levels + pool allocator</h3>
+        <p>Each price level is an intrusive doubly-linked list (the order carries its own <code>prev</code>/<code>next</code>, so a level needs no per-node container allocation). The nodes themselves come from a fixed pool (one contiguous slab, with memory handed out from a free list) so adds and cancels never call <code>malloc</code> on the hot path and neighboring orders stay close in memory.</p>
+        <div class="math-block">struct Order {      // the node is the order (no wrapper)
+  OrderId id;
+  Side    side;
+  Price   price;
+  Qty     qty;      // remaining, unfilled
+  Order*  prev;
+  Order*  next;
+};
+
+level.head ─►[ id 7 · qty 80 ]◄─►[ id 9 · qty 120 ]◄─►[ id 12 · qty 90 ]◄─ level.tail</div>
+        <div class="math-block">Pool&lt;Order&gt;: [■■■■□□□□□□□□]  slab + free list
+  allocate() → pop a free slot   (O(1), no malloc, no lock)
+  deallocate() → push it back    (O(1), instant reuse)</div>
+      </div>
+
+      <div class="explain-box">
+        <h3>Lock-free feed handler</h3>
+        <p>One thread decodes the inbound feed and the other runs the engine. They interact via a single-producer / single-consumer ring buffer, using two atomic counters with acquire/release ordering. The head and tail sit on separate cache lines so the producer's writes don't invalidate the consumer's line. This part is native-only (browser WASM is single-threaded).</p>
+        <div class="math-block">buf_ — capacity 8, mask_ = 7
+
+idx    0     1     2     3     4     5     6     7
+     [    ][    ][ 43 ][ 44 ][    ][    ][    ][    ]
+                   ▲           ▲
+                  head        tail
+
+push(v)  — producer: buf_[tail &amp; mask_] = v;   tail_.store(tail+1, release)
+pop(out) — consumer: out = buf_[head &amp; mask_]; head_.store(head+1, release)
+
+live count = tail − head   (indices only ever grow; wraparound is just &amp; mask_)</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Benchmarks ── -->
+  <div id="tab-bench" class="tab-panel">
+    <section>
+      <h2>Native Benchmarks</h2>
+      <p class="subtitle" style="margin-bottom:16px;">
+        Measured on the native build (the browser never runs these). Latency is per-message, single
+        threaded; throughput and the lock-free comparison use the threaded feed handler.
+      </p>
+      <div class="note" id="benchNote" style="display:none;"></div>
+
+      <div class="stats-strip" id="latStats"></div>
+
+      <div class="chart-wrap">
+        <div class="chart-label">Per-operation latency distribution (native, nanoseconds)</div>
+        <canvas id="chartLatency" height="150"></canvas>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-wrap">
+          <div class="chart-label">Throughput: lock-free SPSC vs std::mutex queue (M msg/s, higher is better)</div>
+          <canvas id="chartSpsc" height="200"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-label">Node allocation: pool vs new/delete (ns/op, lower is better)</div>
+          <canvas id="chartAlloc" height="200"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-label">Level access: flat ladder vs std::map (ns/op, lower is better)</div>
+          <canvas id="chartLadder" height="200"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-label">Order lookup: FlatHash vs std::unordered_map (ns/op, lower is better)</div>
+          <canvas id="chartHash" height="200"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Design & Limitations ── -->
+  <div id="tab-design" class="tab-panel">
+    <section>
+      <h2>Engineering Decisions</h2>
+      <div class="explain-box">
+        <h3>Data structure choices</h3>
+        <ul class="tight">
+          <li><strong>Flat price ladder over <code>std::map</code>:</strong> a book clusters near the mid, so a direct-indexed array keeps hot levels in cache and makes best-price and level access O(1) and doesn't use pointer hopping</li>
+          <li><strong>Pool allocator over <code>new</code>/<code>delete</code>:</strong> the hot path allocates a node per add and frees one per fill/cancel; a slab + free list makes both O(1) and more cache-friendly</li>
+          <li><strong>Open-addressing map over <code>std::unordered_map</code>:</strong> cancels/modifies look up by id frequently, so a flat linear-probed table is useful to avoid a chained map's per-entry allocation and pointer hop</li>
+          <li><strong>Lock-free SPSC over a mutex queue:</strong> exactly one producer and one consumer means the ingest needs only two atomics with acquire/release</li>
+        </ul>
+      </div>
+      <div class="explain-box">
+        <h3>Limitations</h3>
+        <ul class="tight">
+          <li>Live demo runs single-threaded in WebAssembly (browser WASM has no shared-memory threads without special headers GitHub Pages can't set), so this project only uses the lock-free feed handler in the native benchmarks</li>
+          <li>Order feed is synthetically generated rather than a real exchange protocol (ITCH/OUCH/FIX)</li>
+          <li>Best-price search uses a short linear scan of the ladder rather than a bitset/SIMD index (fine while the book is concentrated, but not asymptotically ideal)</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <span>Cameron Ake — <a href="/">Portfolio</a></span>
+  </footer>
+</main>
+
+<script src="data/lob_bench.js"></script>
+<script src="data/lob_replay.js"></script>
+<script>
+(function () {
+'use strict';
+// ── shared state ────────────────────────────────────────────────────────────
+const TICK = 0.01;
+let side = 0;                 // 0 = buy, 1 = sell
+let mode = null;             // 'wasm' | 'replay'
+let playing = false;
+let playTimer = null;
+
+const $ = (id) => document.getElementById(id);
+const dot = $('statusDot'), msg = $('statusMsg');
+function setStatus(cls, text) { dot.className = 'status-dot ' + cls; msg.textContent = text; }
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  $('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'bench') renderBench();
+}
+
+function setSide(s) {
+  side = s;
+  $('sideBuy').classList.toggle('active', s === 0);
+  $('sideSell').classList.toggle('active', s === 1);
+}
+
+// ── rendering (shared by both modes) ────────────────────────────────────────
+function renderBook(bids, asks) {
+  const maxq = Math.max(1, ...bids.map(b => b[1]), ...asks.map(a => a[1]));
+  const row = (cls, p, q) => {
+    const w = (q / maxq * 100).toFixed(1);
+    return `<div class="lrow ${cls}"><span class="bar" style="width:${w}%"></span>` +
+           `<span class="lprice">${(p * TICK).toFixed(2)}</span><span class="lqty">${q}</span></div>`;
+  };
+  const bestBid = bids.length ? bids[0][0] : null;
+  const bestAsk = asks.length ? asks[0][0] : null;
+  const spread = (bestBid != null && bestAsk != null)
+      ? `spread ${((bestAsk - bestBid) * TICK).toFixed(2)}  ·  mid ${((bestAsk + bestBid) / 2 * TICK).toFixed(2)}`
+      : 'no two-sided market';
+  const askHtml = asks.slice().reverse().map(a => row('ask', a[0], a[1])).join('');
+  const bidHtml = bids.map(b => row('bid', b[0], b[1])).join('');
+  $('ladder').innerHTML = askHtml + `<div class="spread-row"><span>${spread}</span></div>` + bidHtml;
+
+  $('stBid').textContent = bestBid != null ? (bestBid * TICK).toFixed(2) : '—';
+  $('stAsk').textContent = bestAsk != null ? (bestAsk * TICK).toFixed(2) : '—';
+  $('stSpread').textContent = (bestBid != null && bestAsk != null) ? ((bestAsk - bestBid) * TICK).toFixed(2) : '—';
+}
+
+function renderTape(trades) {
+  // newest first; trades entries are [priceTick, qty, takerSide]
+  const rows = trades.slice(-18).reverse().map(t => {
+    const cls = t[2] === 0 ? 'buy' : 'sell';
+    return `<div class="trow ${cls}"><span class="tp">${(t[0] * TICK).toFixed(2)}</span><span class="tq">${t[1]}</span></div>`;
+  }).join('');
+  $('tapeBody').innerHTML = rows || '<div class="trow"><span class="tq">—</span></div>';
+}
+
+// ── WASM mode ───────────────────────────────────────────────────────────────
+let worker = null;
+function startWorker() {
+  try {
+    worker = new Worker('./lob-worker.js');
+  } catch (e) { switchToReplay(); return; }
+
+  worker.onmessage = (e) => {
+    const d = e.data;
+    if (d.type === 'status') setStatus('busy', d.msg);
+    else if (d.type === 'ready') { mode = 'wasm'; setStatus('ready', 'C++ engine live (WebAssembly).'); enableControls(true); }
+    else if (d.type === 'error') { switchToReplay(); }
+    else if (d.type === 'snapshot') applySnapshot(d.result);
+  };
+  worker.onerror = () => switchToReplay();
+  worker.postMessage({ type: 'init' });
+}
+
+function applySnapshot(s) {
+  renderBook(s.bids || [], s.asks || []);
+  renderTape(s.trades || []);
+  $('stResting').textContent = s.resting ?? '—';
+  $('stOps').textContent = s.ops ?? '0';
+}
+
+// ── replay (fallback) mode ──────────────────────────────────────────────────
+let frames = [], cursor = 0, tape = [], opCount = 0;
+function switchToReplay() {
+  if (mode === 'replay') return;
+  mode = 'replay';
+  if (worker) { worker.terminate(); worker = null; }
+  frames = (typeof DATA_LOB_REPLAY !== 'undefined' && DATA_LOB_REPLAY.frames) ? DATA_LOB_REPLAY.frames : [];
+  $('fallbackNote').style.display = 'block';
+  setStatus('ready', 'Recorded replay (WASM engine not built).');
+  enableControls(false);           // live order entry needs the engine
+  cursor = 0; tape = []; opCount = 0;
+  renderFrame(0);
+}
+function renderFrame(i) {
+  if (!frames.length) return;
+  const f = frames[i];
+  if (f.trades && f.trades.length) tape = tape.concat(f.trades).slice(-40);
+  renderBook(f.bids || [], f.asks || []);
+  renderTape(tape);
+  $('stResting').textContent = (f.bids.reduce((s, b) => s + 1, 0) + f.asks.reduce((s, a) => s + 1, 0)) + '+ lvls';
+  $('stOps').textContent = ++opCount;
+}
+function replayStep() {
+  if (!frames.length) return;
+  cursor = (cursor + 1) % frames.length;
+  if (cursor === 0) { tape = []; }
+  renderFrame(cursor);
+}
+
+// ── control dispatch (mode-agnostic) ────────────────────────────────────────
+function enableControls(live) {
+  $('btnPlay').disabled = false; $('btnStep').disabled = false; $('btnReset').disabled = false;
+  $('btnLimit').disabled = !live; $('btnMarket').disabled = !live;
+}
+function priceTick() { return Math.max(1, Math.round(parseFloat($('priceIn').value || '0') / TICK)); }
+function qtyVal()   { return Math.max(1, Math.floor(parseFloat($('qtyIn').value || '0'))); }
+
+function submitLimit()  { if (mode === 'wasm') worker.postMessage({ type: 'submit', data: { side, price: priceTick(), qty: qtyVal() } }); }
+function submitMarket() { if (mode === 'wasm') worker.postMessage({ type: 'market', data: { side, qty: qtyVal() } }); }
+function stepOnce()     { if (mode === 'wasm') worker.postMessage({ type: 'step', data: { n: 1 } }); else replayStep(); }
+function resetBook() {
+  stopPlay();
+  if (mode === 'wasm') worker.postMessage({ type: 'reset' });
+  else { cursor = 0; tape = []; opCount = 0; renderFrame(0); }
+}
+function togglePlay() { playing ? stopPlay() : startPlay(); }
+function startPlay() {
+  playing = true; $('btnPlay').textContent = '❚❚ Pause';
+  const tick = () => {
+    const fps = parseInt($('speed').value, 10);
+    if (mode === 'wasm') worker.postMessage({ type: 'step', data: { n: Math.max(1, Math.round(fps / 6)) } });
+    else replayStep();
+    playTimer = setTimeout(tick, 1000 / fps);
+  };
+  tick();
+}
+function stopPlay() { playing = false; $('btnPlay').textContent = '▶ Replay Feed'; if (playTimer) { clearTimeout(playTimer); playTimer = null; } }
+
+// ── benchmarks tab ──────────────────────────────────────────────────────────
+let benchDrawn = false;
+function renderBench() {
+  if (benchDrawn || typeof DATA_LOB_BENCH === 'undefined') return;
+  benchDrawn = true;
+  const B = DATA_LOB_BENCH;
+
+  if (B.meta && /PLACEHOLDER/i.test(B.meta.note || '')) {
+    const n = $('benchNote'); n.style.display = 'block';
+    n.innerHTML = 'Showing <strong>placeholder</strong> benchmark data. Build <code>lob-project</code> and run <code>./lob_bench</code> to replace it with numbers measured on your machine.';
+  }
+
+  const L = B.latency;
+  $('latStats').innerHTML = [['p50', L.p50], ['p90', L.p90], ['p99', L.p99], ['p99.9', L.p999]]
+    .map(([k, v]) => `<div class="stat"><span class="stat-label">${k} latency</span><span class="stat-val">${v} ns</span></div>`).join('');
+
+  const purple = '#5c3fa3', muted = '#b3a9cc', bid = '#3f8f5c', ask = '#cf6f63';
+  const baseOpts = (yTitle) => ({
+    responsive: true, plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: yTitle }, grid: { color: '#eee' } }, x: { grid: { display: false } } }
+  });
+
+  const edgeLabels = L.hist_edges.map((e, i) => i === 0 ? `≤${e}` : (e > 1e9 ? '>1k' : `≤${e}`));
+  new Chart($('chartLatency'), {
+    type: 'bar',
+    data: { labels: edgeLabels, datasets: [{ data: L.hist_counts, backgroundColor: purple, borderRadius: 3 }] },
+    options: baseOpts('operations')
+  });
+
+  const pairBar = (canvas, ab, unit, colors) => new Chart($(canvas), {
+    type: 'bar',
+    data: { labels: ab.labels, datasets: [{ data: ab.ns || ab.mops, backgroundColor: colors, borderRadius: 3 }] },
+    options: baseOpts(unit)
+  });
+  pairBar('chartSpsc',   B.ab.spsc_vs_mutex,    'M msg/s', [bid, muted]);
+  pairBar('chartAlloc',  B.ab.pool_vs_malloc,   'ns/op',   [bid, ask]);
+  pairBar('chartLadder', B.ab.ladder_vs_map,    'ns/op',   [bid, ask]);
+  pairBar('chartHash',   B.ab.flathash_vs_umap, 'ns/op',   [bid, ask]);
+}
+
+// ── boot ────────────────────────────────────────────────────────────────────
+// Expose the handlers used by inline onclick= attributes (the IIFE keeps
+// everything else — notably `frames` — out of global scope, where it would
+// collide with the built-in window.frames property and abort the whole script).
+Object.assign(window, { switchTab, setSide, submitLimit, submitMarket, stepOnce, resetBook, togglePlay });
+
+setStatus('busy', 'Starting C++ engine…');
+startWorker();
+})();
+</script>
+
+</body>
+</html>
