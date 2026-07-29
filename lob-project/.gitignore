@@ -1,0 +1,29 @@
+# CMake build output
+build/
+*.o
+*.obj
+
+# Stray CMake/CTest files if something ever gets configured in-source
+# instead of into build/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+compile_commands.json
+
+# Ninja build files, if a generator other than the default gets used in-source
+.ninja_deps
+.ninja_log
+build.ninja
+
+# Compiled binaries, wherever they end up
+*.exe
+*.lib
+*.a
+*.so
+*.dylib
+*.dll
+*.pdb
+*.ilk
