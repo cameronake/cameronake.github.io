@@ -291,11 +291,11 @@
   <!-- ── How It Works ── -->
   <div id="tab-explainer" class="tab-panel">
     <section>
-      <h2>The Matching Loop</h2>
+      <h2>How Matches Work</h2>
       <div class="step-grid">
         <div class="step-card"><div class="step-num">1</div><h3>Receive</h3><p>An order arrives (limit, market, or IOC). In the native build, a feed-handler thread decodes it and provides it to the engine over a lock-free queue.</p></div>
         <div class="step-card"><div class="step-num">2</div><h3>Match</h3><p>An aggressive order walks the opposite side best-price-first, FIFO within each price, emitting trades until it is filled or the book can’t improve.</p></div>
-        <div class="step-card"><div class="step-num">3</div><h3>Rest</h3><p>Any unfilled remainder of a limit order joins the tail of its price level, taking a time-priority ticket behind everything already there.</p></div>
+        <div class="step-card"><div class="step-num">3</div><h3>Remainder</h3><p>Any unfilled remainder of a limit order joins the tail of its price level, taking a time-priority ticket behind everything already there.</p></div>
         <div class="step-card"><div class="step-num">4</div><h3>Report</h3><p>Fills go out as trades; cancels and modifies find their order in O(1) through the id → node map and unlink it.</p></div>
       </div>
 
